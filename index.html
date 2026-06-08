@@ -21,67 +21,79 @@
     <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 
     <style>
-
         /* ================================================================
            DESIGN TOKENS — Edit colors, sizes, spacing, and easing here.
            These variables cascade through the entire stylesheet.
            ================================================================ */
         :root {
             /* Background shades */
-            --bg:               #060606;
-            --bg-card:          rgba(255, 255, 255, 0.030);
-            --bg-card-hover:    rgba(255, 255, 255, 0.055);
+            --bg: #060606;
+            --bg-card: rgba(255, 255, 255, 0.030);
+            --bg-card-hover: rgba(255, 255, 255, 0.055);
 
             /* Glass borders */
-            --border:           rgba(255, 255, 255, 0.07);
-            --border-hover:     rgba(255, 255, 255, 0.18);
+            --border: rgba(255, 255, 255, 0.07);
+            --border-hover: rgba(255, 255, 255, 0.18);
 
             /* Typography */
-            --text:             #f0f0f0;
-            --text-muted:       #9a9ab0;  /* !! EDIT: Muted text color — raise hex brightness for more visibility !! */
-            --text-dim:         rgba(240, 240, 240, 0.4);
+            --text: #f0f0f0;
+            --text-muted: #9a9ab0;
+            /* !! EDIT: Muted text color — raise hex brightness for more visibility !! */
+            --text-dim: rgba(240, 240, 240, 0.4);
 
             /* !! EDIT: Primary accent color — currently cyan !! */
-            --accent:           #22d3ee;
-            --accent-dim:       rgba(34, 211, 238, 0.12);
-            --accent-border:    rgba(34, 211, 238, 0.25);
+            --accent: #22d3ee;
+            --accent-dim: rgba(34, 211, 238, 0.12);
+            --accent-border: rgba(34, 211, 238, 0.25);
 
             /* !! EDIT: Secondary accent color — currently soft purple !! */
-            --purple:           #a78bfa;
-            --purple-dim:       rgba(167, 139, 250, 0.12);
+            --purple: #a78bfa;
+            --purple-dim: rgba(167, 139, 250, 0.12);
 
             /* Glass blur amount */
-            --blur:             24px;
+            --blur: 24px;
 
             /* Layout */
-            --max-width:        960px;
-            --section-gap:      140px;
-            --card-radius:      18px;
+            --max-width: 960px;
+            --section-gap: 140px;
+            --card-radius: 18px;
 
             /* Easing curves */
-            --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
-            --ease-out:         cubic-bezier(0.16, 1, 0.3, 1);
-            --ease-smooth:      cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
         }
 
 
         /* ================================================================
            RESET & BASE
            ================================================================ */
-        *, *::before, *::after {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
         html {
-            scroll-behavior: auto; /* Lenis handles smooth scrolling */
+            scroll-behavior: auto;
+            /* Lenis handles smooth scrolling */
         }
 
         /* Lenis compatibility overrides */
-        html.lenis, html.lenis body { height: auto; }
-        .lenis.lenis-smooth { scroll-behavior: auto !important; }
-        .lenis.lenis-stopped { overflow: hidden; }
+        html.lenis,
+        html.lenis body {
+            height: auto;
+        }
+
+        .lenis.lenis-smooth {
+            scroll-behavior: auto !important;
+        }
+
+        .lenis.lenis-stopped {
+            overflow: hidden;
+        }
 
         body {
             background-color: var(--bg);
@@ -92,7 +104,8 @@
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            cursor: none; /* Default cursor is hidden — we use a custom one */
+            cursor: none;
+            /* Default cursor is hidden — we use a custom one */
         }
 
 
@@ -103,8 +116,10 @@
            ================================================================ */
         #cursor-dot {
             position: fixed;
-            top: 0; left: 0;
-            width: 7px; height: 7px;
+            top: 0;
+            left: 0;
+            width: 7px;
+            height: 7px;
             background: var(--accent);
             border-radius: 50%;
             pointer-events: none;
@@ -112,34 +127,39 @@
             transform: translate(-50%, -50%);
             /* Smooth size transitions on state changes */
             transition: width 0.25s var(--ease-out),
-                        height 0.25s var(--ease-out),
-                        background 0.25s ease,
-                        opacity 0.2s ease;
+                height 0.25s var(--ease-out),
+                background 0.25s ease,
+                opacity 0.2s ease;
         }
 
         #cursor-ring {
             position: fixed;
-            top: 0; left: 0;
-            width: 36px; height: 36px;
+            top: 0;
+            left: 0;
+            width: 36px;
+            height: 36px;
             border: 1.5px solid rgba(34, 211, 238, 0.45);
             border-radius: 50%;
             pointer-events: none;
             z-index: 9998;
             transform: translate(-50%, -50%);
             transition: width 0.35s var(--ease-out),
-                        height 0.35s var(--ease-out),
-                        border-color 0.35s ease,
-                        background 0.35s ease,
-                        opacity 0.3s ease;
+                height 0.35s var(--ease-out),
+                border-color 0.35s ease,
+                background 0.35s ease,
+                opacity 0.3s ease;
         }
 
         /* Cursor expands when hovering clickable elements */
         body.cursor-hover #cursor-dot {
-            width: 5px; height: 5px;
+            width: 5px;
+            height: 5px;
             opacity: 0.5;
         }
+
         body.cursor-hover #cursor-ring {
-            width: 52px; height: 52px;
+            width: 52px;
+            height: 52px;
             border-color: rgba(34, 211, 238, 0.22);
             background: rgba(34, 211, 238, 0.04);
         }
@@ -151,7 +171,8 @@
            Each orb has its own unique animation, with soft blurs and low opacity.
            ================================================================ */
         .orb-layer {
-            position: fixed; /* Keep fixed in viewport for correct percentage sizing */
+            position: fixed;
+            /* Keep fixed in viewport for correct percentage sizing */
             inset: 0;
             pointer-events: none;
             z-index: 0;
@@ -167,47 +188,77 @@
 
         /* TOP-LEFT — Soft Cyan-Purple glow */
         .orb-1 {
-            width: 900px; height: 900px;
+            width: 900px;
+            height: 900px;
             background: radial-gradient(circle, rgba(34, 211, 238, 0.26) 0%, rgba(167, 139, 250, 0.10) 45%, transparent 70%);
-            top: -25%; left: -25%;
+            top: -25%;
+            left: -25%;
             animation: orbFloat1 28s ease-in-out infinite alternate;
         }
 
         /* BOTTOM-RIGHT — Soft Purple-Rose glow */
         .orb-2 {
-            width: 800px; height: 800px;
+            width: 800px;
+            height: 800px;
             background: radial-gradient(circle, rgba(167, 139, 250, 0.22) 0%, rgba(236, 72, 153, 0.08) 45%, transparent 70%);
-            bottom: -20%; right: -20%;
+            bottom: -20%;
+            right: -20%;
             animation: orbFloat2 34s ease-in-out infinite alternate;
         }
 
         /* CENTER — Soft Rose glow for warmth */
         .orb-3 {
-            width: 700px; height: 700px;
+            width: 700px;
+            height: 700px;
             background: radial-gradient(circle, rgba(236, 72, 153, 0.18) 0%, rgba(34, 211, 238, 0.06) 45%, transparent 70%);
-            top: 30%; left: 20%;
+            top: 30%;
+            left: 20%;
             animation: orbFloat3 24s ease-in-out infinite alternate;
         }
 
         /* Float path 1 — drifts right-down */
         @keyframes orbFloat1 {
-            0%   { transform: translate(0, 0) scale(1); }
-            50%  { transform: translate(8vw, 8vh) scale(1.05); }
-            100% { transform: translate(-4vw, 10vh) scale(0.98); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(8vw, 8vh) scale(1.05);
+            }
+
+            100% {
+                transform: translate(-4vw, 10vh) scale(0.98);
+            }
         }
 
         /* Float path 2 — drifts left-up */
         @keyframes orbFloat2 {
-            0%   { transform: translate(0, 0) scale(1); }
-            50%  { transform: translate(-7vw, -8vh) scale(1.08); }
-            100% { transform: translate(6vw, -6vh) scale(0.95); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(-7vw, -8vh) scale(1.08);
+            }
+
+            100% {
+                transform: translate(6vw, -6vh) scale(0.95);
+            }
         }
 
         /* Float path 3 — circular wander */
         @keyframes orbFloat3 {
-            0%   { transform: translate(0, 0) scale(1); }
-            50%  { transform: translate(-6vw, 6vh) scale(0.96); }
-            100% { transform: translate(4vw, -7vh) scale(1.02); }
+            0% {
+                transform: translate(0, 0) scale(1);
+            }
+
+            50% {
+                transform: translate(-6vw, 6vh) scale(0.96);
+            }
+
+            100% {
+                transform: translate(4vw, -7vh) scale(1.02);
+            }
         }
 
 
@@ -234,9 +285,11 @@
            ================================================================ */
         #brand {
             position: fixed;
-            top: 22px; left: 26px;
+            top: 22px;
+            left: 26px;
             z-index: 1001;
-            width: 42px; height: 42px;
+            width: 42px;
+            height: 42px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -277,7 +330,8 @@
             stroke-linecap: round;
             /* Circumference for r=23: 2 * PI * 23 ≈ 144.51 */
             stroke-dasharray: 144.51;
-            stroke-dashoffset: 144.51; /* Starts empty; JS fills it */
+            stroke-dashoffset: 144.51;
+            /* Starts empty; JS fills it */
             transform: rotate(-90deg);
             transform-origin: center;
             transition: stroke-dashoffset 0.1s linear;
@@ -299,6 +353,7 @@
             background: var(--accent-dim);
             border-color: var(--accent-border);
         }
+
         #brand:hover .brand-letter {
             color: var(--accent);
             text-shadow: 0 0 18px rgba(34, 211, 238, 0.6);
@@ -310,12 +365,15 @@
            ================================================================ */
         #nav {
             position: fixed;
-            top: 0; left: 0; right: 0;
+            top: 0;
+            left: 0;
+            right: 0;
             z-index: 1000;
             display: flex;
             justify-content: center;
             padding: 18px 32px;
-            pointer-events: none; /* The pill itself is interactive */
+            pointer-events: none;
+            /* The pill itself is interactive */
         }
 
         .nav-pill {
@@ -330,13 +388,13 @@
             backdrop-filter: blur(var(--blur));
             -webkit-backdrop-filter: blur(var(--blur));
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.06);
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
             pointer-events: auto;
             /* Hidden by default; JS adds .visible after scroll */
             opacity: 0;
             transform: translateY(-20px) scale(0.94);
             transition: opacity 0.5s var(--ease-out),
-                        transform 0.5s var(--ease-spring);
+                transform 0.5s var(--ease-spring);
         }
 
         .nav-pill.visible {
@@ -390,18 +448,18 @@
             backdrop-filter: blur(var(--blur));
             -webkit-backdrop-filter: blur(var(--blur));
             box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            transition: background     0.4s var(--ease-out),
-                        border-color   0.4s var(--ease-out),
-                        box-shadow     0.4s var(--ease-out),
-                        transform      0.4s var(--ease-out);
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: background 0.4s var(--ease-out),
+                border-color 0.4s var(--ease-out),
+                box-shadow 0.4s var(--ease-out),
+                transform 0.4s var(--ease-out);
         }
 
         .glass:hover {
             background: var(--bg-card-hover);
             border-color: var(--border-hover);
             box-shadow: 0 16px 56px rgba(0, 0, 0, 0.45),
-                        inset 0 1px 0 rgba(255, 255, 255, 0.09);
+                inset 0 1px 0 rgba(255, 255, 255, 0.09);
         }
 
 
@@ -461,7 +519,8 @@
             border-radius: 999px;
             font-size: 0.84rem;
             font-weight: 500;
-            color: rgba(255, 255, 255, 0.85); /* redesign: highly visible and crisp text */
+            color: rgba(255, 255, 255, 0.85);
+            /* redesign: highly visible and crisp text */
             letter-spacing: 0.02em;
             transition: color 0.3s ease, background 0.3s ease, border-color 0.3s ease, transform 0.4s var(--ease-spring), box-shadow 0.3s ease;
             cursor: default;
@@ -475,10 +534,28 @@
             box-shadow: 0 4px 14px rgba(34, 211, 238, 0.2);
         }
 
-        .tag-cyan   { color: var(--accent); background: var(--accent-dim); border-color: var(--accent-border); }
-        .tag-cyan:hover { background: rgba(34, 211, 238, 0.16); box-shadow: 0 4px 14px rgba(34, 211, 238, 0.3); }
-        .tag-purple { color: var(--purple); background: var(--purple-dim); border-color: rgba(167,139,250,0.25); }
-        .tag-purple:hover { background: rgba(167, 139, 250, 0.16); box-shadow: 0 4px 14px rgba(167, 139, 250, 0.3); color: var(--purple); }
+        .tag-cyan {
+            color: var(--accent);
+            background: var(--accent-dim);
+            border-color: var(--accent-border);
+        }
+
+        .tag-cyan:hover {
+            background: rgba(34, 211, 238, 0.16);
+            box-shadow: 0 4px 14px rgba(34, 211, 238, 0.3);
+        }
+
+        .tag-purple {
+            color: var(--purple);
+            background: var(--purple-dim);
+            border-color: rgba(167, 139, 250, 0.25);
+        }
+
+        .tag-purple:hover {
+            background: rgba(167, 139, 250, 0.16);
+            box-shadow: 0 4px 14px rgba(167, 139, 250, 0.3);
+            color: var(--purple);
+        }
 
 
         /* ================================================================
@@ -522,7 +599,8 @@
         }
 
         .status-dot {
-            width: 6px; height: 6px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: var(--accent);
             /* Subtle breathing pulse animation */
@@ -530,8 +608,17 @@
         }
 
         @keyframes statusPulse {
-            0%, 100% { opacity: 1;   transform: scale(1);   }
-            50%       { opacity: 0.4; transform: scale(0.75); }
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.4;
+                transform: scale(0.75);
+            }
         }
 
         /* ---- Hero name — single line, J styled as an initial ---- */
@@ -541,7 +628,8 @@
             letter-spacing: -0.04em;
             line-height: 1.0;
             color: var(--text);
-            white-space: nowrap;  /* Keep on one line */
+            white-space: nowrap;
+            /* Keep on one line */
         }
 
         /* The "J" initial — gradient + separator dot */
@@ -555,7 +643,7 @@
         .hero-initial::before {
             content: '·';
             font-size: 0.55em;
-            color: rgba(255,255,255,0.25);
+            color: rgba(255, 255, 255, 0.25);
             letter-spacing: 0;
             font-weight: 300;
             margin-right: 0.04em;
@@ -576,7 +664,8 @@
         .edu-card {
             position: relative;
             padding: 24px;
-            overflow: visible; /* allow border running outline to display */
+            overflow: visible;
+            /* allow border running outline to display */
             display: flex;
             flex-direction: column;
             gap: 8px;
@@ -595,8 +684,8 @@
             padding: 1.5px;
             background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
             background-size: 200% auto;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -630,7 +719,8 @@
         }
 
         .edu-icon-box {
-            width: 32px; height: 32px;
+            width: 32px;
+            height: 32px;
             border-radius: 8px;
             background: var(--accent-dim);
             border: 1px solid var(--accent-border);
@@ -643,7 +733,7 @@
         }
 
         .edu-card:hover .edu-icon-box {
-            background: rgba(34,211,238,0.18);
+            background: rgba(34, 211, 238, 0.18);
             transform: scale(1.08) rotate(-5deg);
         }
 
@@ -670,7 +760,7 @@
             text-transform: uppercase;
             color: var(--purple);
             background: var(--purple-dim);
-            border: 1px solid rgba(167,139,250,0.22);
+            border: 1px solid rgba(167, 139, 250, 0.22);
             padding: 3px 9px;
             border-radius: 999px;
             width: fit-content;
@@ -698,7 +788,7 @@
             align-items: center;
             justify-content: center;
             gap: 9px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
             border-radius: 999px;
             color: var(--text-muted);
@@ -709,7 +799,7 @@
             box-sizing: border-box;
             cursor: pointer;
             z-index: 999;
-            transition: 
+            transition:
                 transform 0.4s var(--ease-spring),
                 background-color 0.35s ease,
                 border-color 0.35s ease,
@@ -738,11 +828,12 @@
             position: absolute;
             inset: -1px;
             border-radius: inherit;
-            padding: 1.5px; /* slightly thicker line */
+            padding: 1.5px;
+            /* slightly thicker line */
             background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
             background-size: 200% auto;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -759,8 +850,9 @@
 
         .resume-btn:hover {
             color: var(--text);
-            background: rgba(255,255,255,0.06);
-            border-color: transparent; /* allow gradient border to stand out */
+            background: rgba(255, 255, 255, 0.06);
+            border-color: transparent;
+            /* allow gradient border to stand out */
             transform: translateY(-2px);
             box-shadow: 0 8px 28px rgba(34, 211, 238, 0.25);
         }
@@ -792,7 +884,8 @@
             background: rgba(34, 211, 238, 0.1);
             color: var(--accent);
             box-shadow: 0 4px 20px rgba(34, 211, 238, 0.25);
-            transform: none; /* keep position locked */
+            transform: none;
+            /* keep position locked */
         }
 
         .resume-btn.docked:hover svg {
@@ -814,7 +907,7 @@
             justify-content: center;
             width: 42px;
             height: 42px;
-            background: rgba(255,255,255,0.03);
+            background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border);
             border-radius: 50%;
             color: var(--text-muted);
@@ -823,19 +916,21 @@
             position: relative;
             overflow: hidden;
             transition:
-                color       0.35s ease,
-                background  0.35s ease,
+                color 0.35s ease,
+                background 0.35s ease,
                 border-color 0.35s ease,
-                transform   0.4s var(--ease-out),
-                box-shadow  0.4s ease;
+                transform 0.4s var(--ease-out),
+                box-shadow 0.4s ease;
         }
 
         .action-icon-btn::before {
             content: '';
             position: absolute;
-            top: 0; left: -80%;
-            width: 55%; height: 100%;
-            background: linear-gradient(105deg, transparent, rgba(255,255,255,0.06), transparent);
+            top: 0;
+            left: -80%;
+            width: 55%;
+            height: 100%;
+            background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.06), transparent);
             pointer-events: none;
             transition: left 0s;
         }
@@ -847,7 +942,7 @@
 
         .action-icon-btn:hover {
             color: var(--accent);
-            background: rgba(255,255,255,0.06);
+            background: rgba(255, 255, 255, 0.06);
             border-color: rgba(34, 211, 238, 0.35);
             transform: translateY(-2px);
             box-shadow: 0 8px 28px rgba(34, 211, 238, 0.15);
@@ -880,7 +975,8 @@
         /* ---- Hero Right — Profile Photo ---- */
         .hero-right {
             position: relative;
-            width: 270px; height: 270px;
+            width: 270px;
+            height: 270px;
             flex-shrink: 0;
         }
 
@@ -889,13 +985,11 @@
             position: absolute;
             inset: -3px;
             border-radius: 30px;
-            background: conic-gradient(
-                from 0deg,
-                var(--accent),
-                var(--purple),
-                rgba(236, 72, 153, 0.6),
-                var(--accent)
-            );
+            background: conic-gradient(from 0deg,
+                    var(--accent),
+                    var(--purple),
+                    rgba(236, 72, 153, 0.6),
+                    var(--accent));
             opacity: 0.45;
             animation: spinRing 9s linear infinite;
             transition: opacity 0.5s ease;
@@ -906,13 +1000,16 @@
         }
 
         @keyframes spinRing {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* The photo container */
         .photo-frame {
             position: relative;
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             border-radius: 26px;
             overflow: hidden;
             background: rgba(10, 10, 20, 0.85);
@@ -921,7 +1018,8 @@
         }
 
         .photo-frame img {
-            width: 100%; height: 100%;
+            width: 100%;
+            height: 100%;
             object-fit: cover;
             display: block;
             border-radius: 26px;
@@ -937,7 +1035,7 @@
             position: absolute;
             inset: 0;
             border-radius: 26px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.09) 0%, transparent 55%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.09) 0%, transparent 55%);
             pointer-events: none;
             z-index: 2;
         }
@@ -969,8 +1067,17 @@
         }
 
         @keyframes nudge {
-            0%, 100% { opacity: 0.45; transform: translateX(-50%) translateY(0);   }
-            50%       { opacity: 0.9;  transform: translateX(-50%) translateY(5px); }
+
+            0%,
+            100% {
+                opacity: 0.45;
+                transform: translateX(-50%) translateY(0);
+            }
+
+            50% {
+                opacity: 0.9;
+                transform: translateX(-50%) translateY(5px);
+            }
         }
 
 
@@ -980,11 +1087,12 @@
         .about-card {
             padding: 38px 42px;
             position: relative;
-            overflow: visible; /* allow border running outline to display */
+            overflow: visible;
+            /* allow border running outline to display */
             transition: transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
-                        border-color 0.4s ease,
-                        background-color 0.4s ease,
-                        box-shadow 0.45s ease;
+                border-color 0.4s ease,
+                background-color 0.4s ease,
+                box-shadow 0.45s ease;
         }
 
         .about-card::before {
@@ -995,8 +1103,8 @@
             padding: 1.5px;
             background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
             background-size: 200% auto;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -1008,10 +1116,11 @@
 
         .about-card:hover {
             transform: translateY(-5px) scale(1.01);
-            border-color: transparent; /* allow gradient border to stand out */
-            background: rgba(255,255,255,0.045);
+            border-color: transparent;
+            /* allow gradient border to stand out */
+            background: rgba(255, 255, 255, 0.045);
             box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45),
-                        0 0 35px rgba(34, 211, 238, 0.15);
+                0 0 35px rgba(34, 211, 238, 0.15);
         }
 
         .about-card:hover::before {
@@ -1021,7 +1130,8 @@
 
         .about-text {
             font-size: 1.05rem;
-            color: rgba(240, 240, 240, 0.9); /* highly visible, readable text */
+            color: rgba(240, 240, 240, 0.9);
+            /* highly visible, readable text */
             line-height: 1.95;
             font-weight: 400;
         }
@@ -1038,7 +1148,8 @@
         .highlights-stage {
             position: relative;
             width: 100%;
-            height: 320px;       /* !! EDIT: Increase if your text overflows !! */
+            height: 320px;
+            /* !! EDIT: Increase if your text overflows !! */
             perspective: 1100px;
             display: flex;
             justify-content: center;
@@ -1056,11 +1167,11 @@
             cursor: pointer;
             /* All property transitions handled here */
             transition:
-                transform    0.65s cubic-bezier(0.34, 1.2, 0.64, 1),
-                opacity      0.55s var(--ease-out),
-                box-shadow   0.55s var(--ease-out),
+                transform 0.65s cubic-bezier(0.34, 1.2, 0.64, 1),
+                opacity 0.55s var(--ease-out),
+                box-shadow 0.55s var(--ease-out),
                 border-color 0.55s var(--ease-out),
-                filter       0.55s var(--ease-out);
+                filter 0.55s var(--ease-out);
             will-change: transform, opacity;
         }
 
@@ -1070,7 +1181,8 @@
             opacity: 1;
             z-index: 3;
             border-color: rgba(34, 211, 238, 0.45);
-            background: rgba(10, 10, 16, 0.65); /* Richer dark glass background */
+            background: rgba(10, 10, 16, 0.65);
+            /* Richer dark glass background */
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             box-shadow:
@@ -1094,8 +1206,17 @@
         }
 
         @keyframes hlGlowPulse {
-            0%, 100% { box-shadow: 0 0 12px rgba(34, 211, 238, 0.15); border-color: rgba(34, 211, 238, 0.3);  }
-            50%       { box-shadow: 0 0 28px rgba(34, 211, 238, 0.35); border-color: rgba(34, 211, 238, 0.55); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 12px rgba(34, 211, 238, 0.15);
+                border-color: rgba(34, 211, 238, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 28px rgba(34, 211, 238, 0.35);
+                border-color: rgba(34, 211, 238, 0.55);
+            }
         }
 
         /* ---- PREV — card to the left, receding into depth ---- */
@@ -1103,8 +1224,10 @@
             transform: translateX(-48%) translateZ(-120px) scale(0.82) rotateY(14deg);
             opacity: 0.35;
             z-index: 2;
-            filter: blur(5px); /* Cinematic depth-of-field blur */
-            pointer-events: auto; /* clickable to bring forward */
+            filter: blur(5px);
+            /* Cinematic depth-of-field blur */
+            pointer-events: auto;
+            /* clickable to bring forward */
         }
 
         /* ---- NEXT — card to the right, receding into depth ---- */
@@ -1112,7 +1235,8 @@
             transform: translateX(48%) translateZ(-120px) scale(0.82) rotateY(-14deg);
             opacity: 0.35;
             z-index: 2;
-            filter: blur(5px); /* Cinematic depth-of-field blur */
+            filter: blur(5px);
+            /* Cinematic depth-of-field blur */
             pointer-events: auto;
         }
 
@@ -1133,22 +1257,23 @@
 
         /* Shimmer sweep overlay — appears on hover of active card */
         .hl-card {
-            overflow: hidden; /* clip the shimmer */
+            overflow: hidden;
+            /* clip the shimmer */
         }
 
         .hl-card::before {
             content: '';
             position: absolute;
-            top: 0; left: -75%;
-            width: 50%; height: 100%;
-            background: linear-gradient(
-                105deg,
-                transparent 0%,
-                rgba(255,255,255,0.04) 40%,
-                rgba(255,255,255,0.09) 50%,
-                rgba(255,255,255,0.04) 60%,
-                transparent 100%
-            );
+            top: 0;
+            left: -75%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(105deg,
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.04) 40%,
+                    rgba(255, 255, 255, 0.09) 50%,
+                    rgba(255, 255, 255, 0.04) 60%,
+                    transparent 100%);
             pointer-events: none;
             transition: left 0s;
             z-index: 0;
@@ -1161,7 +1286,9 @@
         }
 
         /* Keep card content above shimmer */
-        .hl-header, .hl-desc, .hl-tag-container {
+        .hl-header,
+        .hl-desc,
+        .hl-tag-container {
             position: relative;
             z-index: 1;
         }
@@ -1206,16 +1333,17 @@
         /* Description — COLLAPSED BY DEFAULT */
         .hl-desc {
             font-size: 0.88rem;
-            color: rgba(220, 220, 232, 0);  /* starts transparent */
+            color: rgba(220, 220, 232, 0);
+            /* starts transparent */
             line-height: 1.75;
             max-height: 0;
             opacity: 0;
             overflow: hidden;
             margin-top: 0;
             transition: max-height 0.45s cubic-bezier(0.25, 1, 0.5, 1),
-                        opacity 0.35s ease,
-                        color 0.35s ease,
-                        margin-top 0.45s ease;
+                opacity 0.35s ease,
+                color 0.35s ease,
+                margin-top 0.45s ease;
         }
 
         /* Active card hover expands details */
@@ -1239,15 +1367,17 @@
             overflow: hidden;
             margin-top: 0;
             transition: max-height 0.45s cubic-bezier(0.25, 1, 0.5, 1),
-                        opacity 0.35s ease,
-                        margin-top 0.45s ease;
+                opacity 0.35s ease,
+                margin-top 0.45s ease;
         }
 
         .hl-card.hl-active:hover .hl-tag-container {
-            max-height: 60px; /* generous height to avoid vertical clipping */
+            max-height: 60px;
+            /* generous height to avoid vertical clipping */
             opacity: 1;
             margin-top: 12px;
-            overflow: visible; /* prevents tag hover scale/translate transforms from being clipped */
+            overflow: visible;
+            /* prevents tag hover scale/translate transforms from being clipped */
         }
 
         /* Nav dots below the stage */
@@ -1260,7 +1390,8 @@
         }
 
         .hl-dot {
-            width: 6px; height: 6px;
+            width: 6px;
+            height: 6px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.15);
             border: none;
@@ -1345,7 +1476,8 @@
             content: '';
             position: absolute;
             top: 0;
-            bottom: -24px; /* segment joins segment segments */
+            bottom: -24px;
+            /* segment joins segment segments */
             width: 1px;
             background: linear-gradient(to bottom, var(--accent) 0%, var(--purple) 70%, transparent 100%);
             z-index: 0;
@@ -1358,7 +1490,8 @@
         }
 
         .exp-dot {
-            width: 12px; height: 12px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             background: var(--bg);
             border: 2px solid rgba(255, 255, 255, 0.3);
@@ -1394,34 +1527,44 @@
         }
 
         @keyframes radarPulse {
-            0% { transform: scale(0.9); opacity: 0.8; }
-            100% { transform: scale(1.8); opacity: 0; }
+            0% {
+                transform: scale(0.9);
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: scale(1.8);
+                opacity: 0;
+            }
         }
 
         /* ---- CONTENT CARD ---- */
         .exp-content {
             padding: 24px 28px;
             position: relative;
-            overflow: visible; /* to allow running border outline */
-            
+            overflow: visible;
+            /* to allow running border outline */
+
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 16px;
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            
+
             transition:
-                transform       0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
-                box-shadow      0.45s var(--ease-out),
-                border-color    0.4s ease,
+                transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
+                box-shadow 0.45s var(--ease-out),
+                border-color 0.4s ease,
                 background-color 0.4s ease;
         }
 
         .exp-item:hover .exp-content {
             transform: translateY(-4px);
-            border-color: rgba(34, 211, 238, 0.45); /* cyan accent outline */
-            background: rgba(34, 211, 238, 0.04);   /* cyan-tinted glass */
+            border-color: rgba(34, 211, 238, 0.45);
+            /* cyan accent outline */
+            background: rgba(34, 211, 238, 0.04);
+            /* cyan-tinted glass */
             box-shadow:
                 0 20px 48px rgba(0, 0, 0, 0.5),
                 0 0 35px rgba(34, 211, 238, 0.12),
@@ -1433,7 +1576,9 @@
         .exp-content::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: 2.5px;
             background: linear-gradient(90deg, var(--accent), var(--purple));
             opacity: 0.25;
@@ -1456,8 +1601,8 @@
             padding: 1px;
             background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
             background-size: 200% auto;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -1515,8 +1660,8 @@
 
         .exp-link:hover {
             color: var(--text);
-            border-color: rgba(255,255,255,0.2);
-            background: rgba(255,255,255,0.04);
+            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.04);
         }
 
         /* ---- Responsive: collapse to single column on tablet/mobile ---- */
@@ -1574,28 +1719,40 @@
         .projects-grid {
             display: flex;
             flex-direction: row;
-            gap: 26px; /* Increased space between containers */
+            gap: 26px;
+            /* Increased space between containers */
             overflow-x: auto;
             scroll-behavior: smooth;
-            scrollbar-width: none;           /* Firefox: hide native bar */
+            scrollbar-width: none;
+            /* Firefox: hide native bar */
             -ms-overflow-style: none;
             padding: 16px 4px 28px;
             cursor: grab;
         }
-        .projects-grid::-webkit-scrollbar { display: none; }
-        .projects-grid.dragging { cursor: grabbing; scroll-behavior: auto; }
+
+        .projects-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .projects-grid.dragging {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
 
         /* ---- CARD ---- */
         .proj-card {
-            flex: 0 0 min(320px, 85vw);                 /* Card width */
-            height: 315px;                   /* Increased card height to accommodate larger text */
-            padding: 24px 26px;              /* Standard professional padding */
+            flex: 0 0 min(320px, 85vw);
+            /* Card width */
+            height: 315px;
+            /* Increased card height to accommodate larger text */
+            padding: 24px 26px;
+            /* Standard professional padding */
             display: flex;
             flex-direction: column;
             gap: 0;
             position: relative;
             overflow: hidden;
-            
+
             /* standalone frosted glass look by default */
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(255, 255, 255, 0.08);
@@ -1603,19 +1760,21 @@
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            
+
             transition:
-                transform       0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
-                box-shadow      0.45s var(--ease-out),
-                border-color    0.4s ease,
+                transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
+                box-shadow 0.45s var(--ease-out),
+                border-color 0.4s ease,
                 background-color 0.4s ease,
                 backdrop-filter 0.4s ease;
         }
 
         .proj-card:hover {
             transform: translateY(-6px) scale(1.012);
-            border-color: rgba(34, 211, 238, 0.45); /* cyan accent outline */
-            background: rgba(34, 211, 238, 0.05);   /* cyan-tinted glass */
+            border-color: rgba(34, 211, 238, 0.45);
+            /* cyan accent outline */
+            background: rgba(34, 211, 238, 0.05);
+            /* cyan-tinted glass */
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             box-shadow:
@@ -1628,7 +1787,9 @@
         .proj-card::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: 2px;
             background: linear-gradient(90deg, var(--accent), var(--purple));
             opacity: 0.2;
@@ -1642,10 +1803,12 @@
         /* Project number — large ambient watermark */
         .proj-num {
             position: absolute;
-            top: 18px; right: 24px;
+            top: 18px;
+            right: 24px;
             font-size: 3.6rem;
             font-weight: 800;
-            color: rgba(255, 255, 255, 0.08); /* Soft, clearly visible watermark */
+            color: rgba(255, 255, 255, 0.08);
+            /* Soft, clearly visible watermark */
             letter-spacing: -0.04em;
             user-select: none;
             pointer-events: none;
@@ -1653,7 +1816,8 @@
         }
 
         .proj-card:hover .proj-num {
-            color: rgba(255, 255, 255, 0.20); /* Sleek matte watermark, no cyan glow */
+            color: rgba(255, 255, 255, 0.20);
+            /* Sleek matte watermark, no cyan glow */
             text-shadow: none;
             transform: scale(1.08) translateY(-2px);
         }
@@ -1665,11 +1829,12 @@
             position: absolute;
             inset: -1px;
             border-radius: inherit;
-            padding: 1px; /* border thickness */
+            padding: 1px;
+            /* border thickness */
             background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
             background-size: 200% auto;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -1686,12 +1851,15 @@
         }
 
         @keyframes borderRun {
-            to { background-position: 200% center; }
+            to {
+                background-position: 200% center;
+            }
         }
 
         /* Title */
         .project-title {
-            font-size: 1.2rem;               /* Increased title font size */
+            font-size: 1.2rem;
+            /* Increased title font size */
             font-weight: 700;
             color: var(--text);
             line-height: 1.3;
@@ -1705,7 +1873,8 @@
 
         /* Description */
         .project-desc {
-            font-size: 0.92rem;              /* Increased description font size */
+            font-size: 0.92rem;
+            /* Increased description font size */
             color: rgba(220, 220, 232, 0.72);
             line-height: 1.65;
             flex: 1;
@@ -1719,7 +1888,8 @@
         /* Bottom hover zone — tags + button, hidden until hover */
         .proj-bottom {
             display: flex;
-            flex-direction: row; /* Align tags left and round button right */
+            flex-direction: row;
+            /* Align tags left and round button right */
             align-items: center;
             justify-content: space-between;
             gap: 12px;
@@ -1728,7 +1898,7 @@
             opacity: 0;
             transform: translateY(10px);
             transition:
-                opacity   0.4s var(--ease-out),
+                opacity 0.4s var(--ease-out),
                 transform 0.4s var(--ease-out);
         }
 
@@ -1749,24 +1919,27 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 36px;                     /* Circle shape */
+            width: 36px;
+            /* Circle shape */
             height: 36px;
-            border-radius: 50%;              /* Fully round */
+            border-radius: 50%;
+            /* Fully round */
             color: #fff;
             text-decoration: none;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             flex-shrink: 0;
             position: relative;
             transition:
-                background   0.35s ease,
+                background 0.35s ease,
                 border-color 0.35s ease,
-                box-shadow   0.35s ease,
-                transform    0.4s var(--ease-spring);
+                box-shadow 0.35s ease,
+                transform 0.4s var(--ease-spring);
         }
 
         .project-link:hover {
-            background: rgba(34, 211, 238, 0.12); /* tinted hover */
+            background: rgba(34, 211, 238, 0.12);
+            /* tinted hover */
             border-color: transparent;
             box-shadow: 0 4px 20px rgba(34, 211, 238, 0.15);
             transform: translateY(-2px);
@@ -1776,7 +1949,8 @@
         .project-link svg {
             flex-shrink: 0;
             position: relative;
-            z-index: 3; /* Keep icon above masked running border */
+            z-index: 3;
+            /* Keep icon above masked running border */
             transition: transform 0.4s var(--ease-spring);
         }
 
@@ -1788,17 +1962,19 @@
         .proj-arrow {
             position: absolute;
             top: 50%;
-            transform: translateY(calc(-50% - 12px)); /* shift up half the slider space */
-            width: 40px; height: 40px;
+            transform: translateY(calc(-50% - 12px));
+            /* shift up half the slider space */
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: rgba(10,10,18,0.75);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10, 10, 18, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255,255,255,0.55);
+            color: rgba(255, 255, 255, 0.55);
             cursor: pointer;
             z-index: 4;
             opacity: 0;
@@ -1812,14 +1988,19 @@
         }
 
         .proj-arrow:hover {
-            background: rgba(34,211,238,0.12);
-            border-color: rgba(34,211,238,0.35);
+            background: rgba(34, 211, 238, 0.12);
+            border-color: rgba(34, 211, 238, 0.35);
             color: var(--accent);
-            box-shadow: 0 0 18px rgba(34,211,238,0.25);
+            box-shadow: 0 0 18px rgba(34, 211, 238, 0.25);
         }
 
-        .proj-arrow-left  { left: 4px; }
-        .proj-arrow-right { right: 4px; }
+        .proj-arrow-left {
+            left: 4px;
+        }
+
+        .proj-arrow-right {
+            right: 4px;
+        }
 
         /* ---- CUSTOM SLIDER ---- */
         .proj-slider-wrap {
@@ -1830,9 +2011,10 @@
 
         .proj-slider-track {
             width: 140px;
-            height: 6px; /* modern capsule track */
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
+            height: 6px;
+            /* modern capsule track */
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 999px;
             position: relative;
             cursor: pointer;
@@ -1840,15 +2022,17 @@
         }
 
         .proj-slider-wrap:hover .proj-slider-track {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             border-color: rgba(34, 211, 238, 0.3);
         }
 
         .proj-slider-thumb {
             position: absolute;
-            top: 50%; left: 0;
+            top: 50%;
+            left: 0;
             transform: translateY(-50%);
-            height: 10px; /* modern capsule thumb */
+            height: 10px;
+            /* modern capsule thumb */
             border-radius: 999px;
             background: linear-gradient(90deg, var(--accent), var(--purple));
             box-shadow: none;
@@ -1859,13 +2043,13 @@
 
         .proj-slider-wrap:hover .proj-slider-thumb {
             box-shadow:
-                0 0 12px rgba(34,211,238,0.8),
-                0 0 20px rgba(34,211,238,0.5);
+                0 0 12px rgba(34, 211, 238, 0.8),
+                0 0 20px rgba(34, 211, 238, 0.5);
         }
 
         .proj-slider-thumb.dragging {
             cursor: grabbing;
-            box-shadow: 0 0 16px rgba(34,211,238,0.9), 0 0 28px rgba(34,211,238,0.7);
+            box-shadow: 0 0 16px rgba(34, 211, 238, 0.9), 0 0 28px rgba(34, 211, 238, 0.7);
         }
 
 
@@ -1899,7 +2083,8 @@
 
         /* Redesigned highly visible skill tags */
         .skill-tags .tag {
-            color: rgba(255, 255, 255, 0.88); /* high legibility */
+            color: rgba(255, 255, 255, 0.88);
+            /* high legibility */
             background: rgba(255, 255, 255, 0.045);
             border-color: rgba(255, 255, 255, 0.09);
         }
@@ -1925,7 +2110,8 @@
         .courses-grid {
             display: flex;
             flex-direction: row;
-            gap: 26px; /* Space between cards */
+            gap: 26px;
+            /* Space between cards */
             overflow-x: auto;
             scroll-behavior: smooth;
             scrollbar-width: none;
@@ -1933,37 +2119,50 @@
             padding: 16px 4px 28px;
             cursor: grab;
         }
-        .courses-grid::-webkit-scrollbar { display: none; }
-        .courses-grid.dragging { cursor: grabbing; scroll-behavior: auto; }
+
+        .courses-grid::-webkit-scrollbar {
+            display: none;
+        }
+
+        .courses-grid.dragging {
+            cursor: grabbing;
+            scroll-behavior: auto;
+        }
 
         .course-card {
-            flex: 0 0 min(320px, 85vw);                 /* Card width */
-            height: 240px;                   /* Fixed height to accommodate content */
+            flex: 0 0 min(320px, 85vw);
+            /* Card width */
+            height: 240px;
+            /* Fixed height to accommodate content */
             padding: 24px 26px;
             display: flex;
             flex-direction: column;
             gap: 0;
             position: relative;
-            overflow: visible; /* to allow running border outline */
-            
+            overflow: visible;
+            /* to allow running border outline */
+
             background: rgba(255, 255, 255, 0.025);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 20px; /* Smoothed edges */
+            border-radius: 20px;
+            /* Smoothed edges */
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            
+
             transition:
-                transform       0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
-                box-shadow      0.45s var(--ease-out),
-                border-color    0.4s ease,
+                transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
+                box-shadow 0.45s var(--ease-out),
+                border-color 0.4s ease,
                 background-color 0.4s ease;
         }
 
         .course-card:hover {
             transform: translateY(-6px) scale(1.012);
-            border-color: rgba(167, 139, 250, 0.45); /* purple accent outline */
-            background: rgba(167, 139, 250, 0.05);   /* purple-tinted glass */
+            border-color: rgba(167, 139, 250, 0.45);
+            /* purple accent outline */
+            background: rgba(167, 139, 250, 0.05);
+            /* purple-tinted glass */
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             box-shadow:
@@ -1976,7 +2175,9 @@
         .course-card::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; right: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: 2.5px;
             background: linear-gradient(90deg, var(--purple), rgba(236, 72, 153, 0.6));
             opacity: 0.25;
@@ -2005,7 +2206,8 @@
             color: var(--text);
             line-height: 1.3;
             margin-bottom: 6px;
-            padding-right: 48px; /* Leave space for top-right SVG icon */
+            padding-right: 48px;
+            /* Leave space for top-right SVG icon */
         }
 
         /* Certificate SVG icon container */
@@ -2023,7 +2225,8 @@
             justify-content: center;
             color: var(--purple);
             transition: all 0.4s var(--ease-spring);
-            pointer-events: none; /* Let clicks pass through to card */
+            pointer-events: none;
+            /* Let clicks pass through to card */
         }
 
         .course-card:hover .course-icon-box {
@@ -2067,16 +2270,16 @@
             font-size: 0.78rem;
             font-weight: 600;
             text-decoration: none;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.15);
             position: relative;
             overflow: visible;
             letter-spacing: 0.02em;
             transition:
-                background   0.35s ease,
+                background 0.35s ease,
                 border-color 0.35s ease,
-                box-shadow   0.35s ease,
-                transform    0.3s var(--ease-spring);
+                box-shadow 0.35s ease,
+                transform 0.3s var(--ease-spring);
         }
 
         .course-link-btn:hover {
@@ -2110,8 +2313,8 @@
             padding: 1px;
             background: linear-gradient(90deg, var(--purple), var(--accent), var(--purple));
             background-size: 200% auto;
-            -webkit-mask: 
-                linear-gradient(#fff 0 0) content-box, 
+            -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
@@ -2131,16 +2334,17 @@
             position: absolute;
             top: 50%;
             transform: translateY(calc(-50% - 12px));
-            width: 40px; height: 40px;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
-            background: rgba(10,10,18,0.75);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(10, 10, 18, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             display: flex;
             align-items: center;
             justify-content: center;
-            color: rgba(255,255,255,0.55);
+            color: rgba(255, 255, 255, 0.55);
             cursor: pointer;
             z-index: 4;
             opacity: 0;
@@ -2160,8 +2364,13 @@
             box-shadow: 0 0 18px rgba(167, 139, 250, 0.25);
         }
 
-        .course-arrow-left  { left: 4px; }
-        .course-arrow-right { right: 4px; }
+        .course-arrow-left {
+            left: 4px;
+        }
+
+        .course-arrow-right {
+            right: 4px;
+        }
 
         /* ---- COURSE SLIDER ---- */
         .course-slider-wrap {
@@ -2172,9 +2381,10 @@
 
         .course-slider-track {
             width: 140px;
-            height: 6px; /* Thicker modern track */
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.06);
+            height: 6px;
+            /* Thicker modern track */
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 999px;
             position: relative;
             cursor: pointer;
@@ -2182,18 +2392,21 @@
         }
 
         .course-slider-wrap:hover .course-slider-track {
-            background: rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.08);
             border-color: rgba(167, 139, 250, 0.3);
         }
 
         .course-slider-thumb {
             position: absolute;
-            top: 50%; left: 0;
+            top: 50%;
+            left: 0;
             transform: translateY(-50%);
-            height: 10px; /* Modern capsule thumb */
+            height: 10px;
+            /* Modern capsule thumb */
             border-radius: 999px;
             background: linear-gradient(90deg, var(--purple), #ec4899);
-            box-shadow: none; /* remove default static glow */
+            box-shadow: none;
+            /* remove default static glow */
             transition: box-shadow 0.35s ease, height 0.3s ease, background 0.3s ease;
             cursor: grab;
         }
@@ -2258,10 +2471,10 @@
             font-size: 0.9rem;
             font-weight: 500;
             transition: background 0.35s var(--ease-out),
-                        border-color 0.35s var(--ease-out),
-                        color 0.35s var(--ease-out),
-                        transform 0.35s var(--ease-out),
-                        box-shadow 0.35s var(--ease-out);
+                border-color 0.35s var(--ease-out),
+                color 0.35s var(--ease-out),
+                transform 0.35s var(--ease-out),
+                box-shadow 0.35s var(--ease-out);
         }
 
         .connect-btn:hover {
@@ -2321,8 +2534,8 @@
             transform: translateY(28px);
             filter: blur(4px);
             transition: opacity 0.9s var(--ease-out),
-                        transform 0.9s var(--ease-out),
-                        filter 0.9s var(--ease-out);
+                transform 0.9s var(--ease-out),
+                filter 0.9s var(--ease-out);
         }
 
         .reveal.visible {
@@ -2332,21 +2545,55 @@
         }
 
         /* Stagger: children animate one by one */
-        .reveal-stagger > * {
+        .reveal-stagger>* {
             opacity: 0;
             transform: translateY(22px);
             transition: opacity 0.7s var(--ease-out),
-                        transform 0.7s var(--ease-out);
+                transform 0.7s var(--ease-out);
         }
 
         /* nth-child delays for stagger */
-        .reveal-stagger.visible > *:nth-child(1)    { opacity: 1; transform: none; transition-delay: 0ms; }
-        .reveal-stagger.visible > *:nth-child(2)    { opacity: 1; transform: none; transition-delay: 70ms; }
-        .reveal-stagger.visible > *:nth-child(3)    { opacity: 1; transform: none; transition-delay: 140ms; }
-        .reveal-stagger.visible > *:nth-child(4)    { opacity: 1; transform: none; transition-delay: 210ms; }
-        .reveal-stagger.visible > *:nth-child(5)    { opacity: 1; transform: none; transition-delay: 280ms; }
-        .reveal-stagger.visible > *:nth-child(6)    { opacity: 1; transform: none; transition-delay: 350ms; }
-        .reveal-stagger.visible > *:nth-child(n+7)  { opacity: 1; transform: none; transition-delay: 420ms; }
+        .reveal-stagger.visible>*:nth-child(1) {
+            opacity: 1;
+            transform: none;
+            transition-delay: 0ms;
+        }
+
+        .reveal-stagger.visible>*:nth-child(2) {
+            opacity: 1;
+            transform: none;
+            transition-delay: 70ms;
+        }
+
+        .reveal-stagger.visible>*:nth-child(3) {
+            opacity: 1;
+            transform: none;
+            transition-delay: 140ms;
+        }
+
+        .reveal-stagger.visible>*:nth-child(4) {
+            opacity: 1;
+            transform: none;
+            transition-delay: 210ms;
+        }
+
+        .reveal-stagger.visible>*:nth-child(5) {
+            opacity: 1;
+            transform: none;
+            transition-delay: 280ms;
+        }
+
+        .reveal-stagger.visible>*:nth-child(6) {
+            opacity: 1;
+            transform: none;
+            transition-delay: 350ms;
+        }
+
+        .reveal-stagger.visible>*:nth-child(n+7) {
+            opacity: 1;
+            transform: none;
+            transition-delay: 420ms;
+        }
 
 
         /* ================================================================
@@ -2363,14 +2610,23 @@
            ================================================================ */
 
         @media (max-width: 900px) {
-            .projects-grid    { grid-template-columns: repeat(2, 1fr); }
-            .highlights-grid  { grid-template-columns: repeat(2, 1fr); }
+            .projects-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .highlights-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
         }
 
         @media (max-width: 768px) {
-            :root { --section-gap: 100px; }
+            :root {
+                --section-gap: 100px;
+            }
 
-            .container { padding: 0 20px; }
+            .container {
+                padding: 0 20px;
+            }
 
             .hero-grid {
                 grid-template-columns: 1fr;
@@ -2379,9 +2635,18 @@
                 text-align: center;
             }
 
-            .hero-left   { align-items: center; }
-            .hero-status { margin: 0 auto; }
-            .hero-tagline { text-align: center; max-width: 100%; }
+            .hero-left {
+                align-items: center;
+            }
+
+            .hero-status {
+                margin: 0 auto;
+            }
+
+            .hero-tagline {
+                text-align: center;
+                max-width: 100%;
+            }
 
             /* Standalone Education & Profile Actions Mobile Adjustments */
             .edu-card {
@@ -2391,29 +2656,46 @@
                 max-width: 440px;
                 margin: 0 auto;
             }
+
             .profile-actions-wrapper {
                 max-width: 440px;
                 margin: 0 auto;
                 justify-content: center;
             }
+
             .edu-header {
                 justify-content: center;
             }
+
             .social-actions-group {
                 justify-content: center;
             }
+
             .resume-placeholder {
                 margin: 0 auto;
             }
 
-            .hero-right  { width: 200px; height: 200px; margin: 0 auto; }
+            .hero-right {
+                width: 200px;
+                height: 200px;
+                margin: 0 auto;
+            }
 
-            .about-card { padding: 26px 24px; }
+            .about-card {
+                padding: 26px 24px;
+            }
 
-            .skills-grid  { grid-template-columns: 1fr; }
-            .courses-list { grid-template-columns: 1fr; }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
 
-            .connect-inner { padding: 36px 24px; }
+            .courses-list {
+                grid-template-columns: 1fr;
+            }
+
+            .connect-inner {
+                padding: 36px 24px;
+            }
 
             /* Position floating nav pill at the bottom center of viewport on mobile */
             #nav {
@@ -2421,32 +2703,48 @@
                 bottom: 24px;
                 padding: 0;
             }
+
             .nav-pill {
                 transform: translateY(20px) scale(0.94);
             }
+
             .nav-pill.visible {
                 transform: translateY(0) scale(1);
             }
 
             /* Hide horizontal carousel arrows on touch/mobile devices */
-            .proj-arrow, .course-arrow {
+            .proj-arrow,
+            .course-arrow {
                 display: none !important;
             }
 
             /* Hide custom cursor on touch/mobile */
-            #cursor-dot, #cursor-ring { display: none; }
-            body { cursor: auto; }
+            #cursor-dot,
+            #cursor-ring {
+                display: none;
+            }
+
+            body {
+                cursor: auto;
+            }
         }
 
         @media (max-width: 640px) {
-            .highlights-grid  { grid-template-columns: 1fr; }
-            .projects-grid    { grid-template-columns: 1fr; }
+            .highlights-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
         }
 
         @media (max-width: 460px) {
-            .nav-link { padding: 5px 9px; font-size: 0.76rem; }
+            .nav-link {
+                padding: 5px 9px;
+                font-size: 0.76rem;
+            }
         }
-
     </style>
 </head>
 
@@ -2456,7 +2754,7 @@
          CUSTOM CURSOR ELEMENTS
          Positioned by JavaScript in real time.
          ================================================================ -->
-    <div id="cursor-dot"  aria-hidden="true"></div>
+    <div id="cursor-dot" aria-hidden="true"></div>
     <div id="cursor-ring" aria-hidden="true"></div>
 
 
@@ -2479,8 +2777,8 @@
 
         <!-- SVG ring: track is always visible; fill increases as you scroll -->
         <svg class="brand-ring-svg" viewBox="0 0 56 56" fill="none" aria-hidden="true">
-            <circle class="brand-ring-track" cx="28" cy="28" r="23"/>
-            <circle class="brand-ring-fill"  id="brandRingFill" cx="28" cy="28" r="23"/>
+            <circle class="brand-ring-track" cx="28" cy="28" r="23" />
+            <circle class="brand-ring-fill" id="brandRingFill" cx="28" cy="28" r="23" />
         </svg>
 
         <!-- !! EDIT: Change this letter to your initial if needed !! -->
@@ -2498,13 +2796,13 @@
             <!-- Sliding indicator that moves behind active link -->
             <div class="nav-indicator" id="navIndicator" aria-hidden="true"></div>
 
-            <a href="#about"      class="nav-link" data-section="about">About</a>
+            <a href="#about" class="nav-link" data-section="about">About</a>
             <a href="#highlights" class="nav-link" data-section="highlights">Highlights</a>
             <a href="#experience" class="nav-link" data-section="experience">Experience</a>
-            <a href="#projects"   class="nav-link" data-section="projects">Projects</a>
-            <a href="#skills"     class="nav-link" data-section="skills">Skills</a>
-            <a href="#courses"    class="nav-link" data-section="courses">Courses</a>
-            <a href="#connect"    class="nav-link" data-section="connect">Connect</a>
+            <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+            <a href="#skills" class="nav-link" data-section="skills">Skills</a>
+            <a href="#courses" class="nav-link" data-section="courses">Courses</a>
+            <a href="#connect" class="nav-link" data-section="connect">Connect</a>
 
         </div>
     </nav>
@@ -2554,11 +2852,10 @@
                         <div class="edu-card glass reveal">
                             <div class="edu-header">
                                 <div class="edu-icon-box" aria-hidden="true">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5" />
                                     </svg>
                                 </div>
                                 <span class="eyebrow">Education</span>
@@ -2566,13 +2863,12 @@
                             <div class="edu-degree">B.E. Electronics &amp; Instrumentation Engg.</div>
                             <div class="edu-school">Madras Institute of Technology, Anna University</div>
                             <div class="edu-badge">
-                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
-                                    stroke="currentColor" stroke-width="2.5"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <rect width="18" height="18" x="3" y="4" rx="2"/>
-                                    <line x1="16" y1="2" x2="16" y2="6"/>
-                                    <line x1="8"  y1="2" x2="8"  y2="6"/>
-                                    <line x1="3"  y1="10" x2="21" y2="10"/>
+                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="18" height="18" x="3" y="4" rx="2" />
+                                    <line x1="16" y1="2" x2="16" y2="6" />
+                                    <line x1="8" y1="2" x2="8" y2="6" />
+                                    <line x1="3" y1="10" x2="21" y2="10" />
                                 </svg>
                                 Graduating 2028
                             </div>
@@ -2582,18 +2878,13 @@
                         <div class="profile-actions-wrapper reveal">
                             <!-- Static placeholder containing the Resume button by default -->
                             <div id="resume-placeholder" class="resume-placeholder">
-                                <a href="./resume/resume.pdf"
-                                   target="_blank"
-                                   download="Kayilainathan_J_Resume.pdf"
-                                   class="resume-btn"
-                                   id="resumeBtn"
-                                   aria-label="Download Resume">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-                                        <polyline points="7 10 12 15 17 10"/>
-                                        <line x1="12" y1="15" x2="12" y2="3"/>
+                                <a href="./resume/resume.pdf" target="_blank" download="Kayilainathan_J_Resume.pdf"
+                                    class="resume-btn" id="resumeBtn" aria-label="Download Resume">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                                        <polyline points="7 10 12 15 17 10" />
+                                        <line x1="12" y1="15" x2="12" y2="3" />
                                     </svg>
                                     Resume
                                 </a>
@@ -2601,24 +2892,22 @@
 
                             <div class="social-actions-group">
                                 <!-- LinkedIn -->
-                                <a href="https://linkedin.com/in/kayilainathan-j-170267305"
-                                   target="_blank"
-                                   rel="noopener"
-                                   class="action-icon-btn action-linkedin"
-                                   aria-label="LinkedIn Profile">
+                                <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank"
+                                    rel="noopener" class="action-icon-btn action-linkedin"
+                                    aria-label="LinkedIn Profile">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z"/>
+                                        <path
+                                            d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
                                     </svg>
                                 </a>
 
                                 <!-- Email -->
-                                <a href="mailto:kayilainathan19@gmail.com"
-                                   class="action-icon-btn action-email"
-                                   aria-label="Send Email">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect width="20" height="16" x="2" y="4" rx="2"/>
-                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                                <a href="mailto:kayilainathan19@gmail.com" class="action-icon-btn action-email"
+                                    aria-label="Send Email">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect width="20" height="16" x="2" y="4" rx="2" />
+                                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                                     </svg>
                                 </a>
                             </div>
@@ -2641,10 +2930,10 @@
                 <!-- Scroll nudge — disappears once user scrolls -->
                 <a href="#about" class="scroll-nudge" id="scrollNudge" aria-label="Scroll to About">
                     scroll
-                    <svg width="11" height="15" viewBox="0 0 11 15" fill="none"
-                        stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                        <line x1="5.5" y1="0" x2="5.5" y2="11"/>
-                        <path d="M1.5 7.5l4 5 4-5"/>
+                    <svg width="11" height="15" viewBox="0 0 11 15" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round">
+                        <line x1="5.5" y1="0" x2="5.5" y2="11" />
+                        <path d="M1.5 7.5l4 5 4-5" />
                     </svg>
                 </a>
 
@@ -2660,13 +2949,14 @@
 
                 <div class="glass about-card reveal">
                     <p class="about-text">
-                        I'm a second-year Electronics and Instrumentation Engineering undergraduate at
-                        MIT, Anna University — driven by a deep curiosity for how complex systems operate.
-                        For me, academic excellence is the baseline. To truly master a concept, I have to
-                        build it. Whether I'm drafting transistor-level analog topologies, validating digital
-                        logic in Xilinx Vivado, or soldering together a smart sensor network for a competition,
-                        I'm constantly exploring the intersection of hardware, software, and predictive
-                        algorithms. I build to learn, and I simulate to build better.
+                        I’m a third-year Electronics and Instrumentation Engineering student at MIT, Anna University.
+                        Over the past two years, my curiosity about how complex systems work has evolved into a hands-on
+                        obsession with building them. I don't just want to understand the theory; I want to wire it,
+                        code it, and make it run.
+
+                        From designing digital logic in Vivado and soldering IoT prototypes at hackathons to training
+                        predictive AI for functional safety, I love operating right where hardware meets software. My
+                        philosophy is simple: I build to learn, and I simulate to build better.
                     </p>
                 </div>
             </section>
@@ -2742,8 +3032,8 @@
                 <!-- !! EDIT: Add a <button class="hl-dot"> for each card you add !! -->
                 <div class="hl-dots" id="hlDots" aria-label="Highlight navigation">
                     <button class="hl-dot hl-dot-active" aria-label="Highlight 1"></button>
-                    <button class="hl-dot"               aria-label="Highlight 2"></button>
-                    <button class="hl-dot"               aria-label="Highlight 3"></button>
+                    <button class="hl-dot" aria-label="Highlight 2"></button>
+                    <button class="hl-dot" aria-label="Highlight 3"></button>
                 </div>
 
             </section>
@@ -2796,10 +3086,11 @@
                                 largest public-sector energy companies.
                             </p>
                             <!-- !! EDIT: Update href to your LinkedIn post / certificate !! -->
-                            <a href="https://linkedin.com/in/kayilainathan-j-170267305"
-                               target="_blank" rel="noopener" class="exp-link">
+                            <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener"
+                                class="exp-link">
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z"/>
+                                    <path
+                                        d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
                                 </svg>
                                 View on LinkedIn
                             </a>
@@ -2850,19 +3141,17 @@
 
                     <!-- LEFT arrow (hidden at start) -->
                     <button class="proj-arrow proj-arrow-left" id="projLeft" aria-label="Scroll left">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="15 18 9 12 15 6"/>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
                         </svg>
                     </button>
 
                     <!-- RIGHT arrow (visible at start) -->
                     <button class="proj-arrow proj-arrow-right visible" id="projRight" aria-label="Scroll right">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="9 18 15 12 9 6"/>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
                         </svg>
                     </button>
 
@@ -2916,11 +3205,11 @@
                                     <span class="tag">AI</span>
                                 </div>
                                 <!-- !! EDIT: GitHub link !! -->
-                                <a href="https://github.com/depthra-devs/depthra"
-                                   target="_blank" rel="noopener" class="project-link"
-                                   aria-label="View on GitHub">
+                                <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener"
+                                    class="project-link" aria-label="View on GitHub">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                                        <path
+                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                                     </svg>
                                 </a>
                             </div>
@@ -2965,11 +3254,11 @@
                                     <span class="tag">Verilog HDL</span>
                                     <span class="tag">Vivado</span>
                                 </div>
-                                <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU"
-                                   target="_blank" rel="noopener" class="project-link"
-                                   aria-label="View on GitHub">
+                                <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank"
+                                    rel="noopener" class="project-link" aria-label="View on GitHub">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                                        <path
+                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                                     </svg>
                                 </a>
                             </div>
@@ -3078,19 +3367,17 @@
 
                     <!-- LEFT arrow (hidden at start) -->
                     <button class="course-arrow course-arrow-left" id="courseLeft" aria-label="Scroll left">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="15 18 9 12 15 6"/>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="15 18 9 12 15 6" />
                         </svg>
                     </button>
 
                     <!-- RIGHT arrow (visible at start) -->
                     <button class="course-arrow course-arrow-right visible" id="courseRight" aria-label="Scroll right">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2.5"
-                            stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="9 18 15 12 9 6"/>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="9 18 15 12 9 6" />
                         </svg>
                     </button>
 
@@ -3098,11 +3385,12 @@
                         <!-- Course 1 -->
                         <div class="course-card tilt-card">
                             <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="20" x2="18" y2="10"/>
-                                    <line x1="12" y1="20" x2="12" y2="4"/>
-                                    <line x1="6" y1="20" x2="6" y2="14"/>
-                                    <path d="M2 20h20"/>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10" />
+                                    <line x1="12" y1="20" x2="12" y2="4" />
+                                    <line x1="6" y1="20" x2="6" y2="14" />
+                                    <path d="M2 20h20" />
                                 </svg>
                             </div>
                             <div class="course-date">Dec 2025</div>
@@ -3111,10 +3399,11 @@
                             <div class="course-bottom">
                                 <!-- !! EDIT: Replace href with your certificate URL !! -->
                                 <a href="https://www.kaggle.com/learn/certification/kayilainathanj/time-series"
-                                   target="_blank" rel="noopener" class="course-link-btn">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"/>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="8" r="7" />
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
                                     </svg>
                                     View Certificate
                                 </a>
@@ -3124,13 +3413,14 @@
                         <!-- Course 2 -->
                         <div class="course-card tilt-card">
                             <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="5" r="3"/>
-                                    <circle cx="5" cy="19" r="3"/>
-                                    <circle cx="19" cy="19" r="3"/>
-                                    <line x1="8.5" y1="8.5" x2="6.5" y2="16"/>
-                                    <line x1="15.5" y1="8.5" x2="17.5" y2="16"/>
-                                    <line x1="8" y1="19" x2="16" y2="19"/>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="5" r="3" />
+                                    <circle cx="5" cy="19" r="3" />
+                                    <circle cx="19" cy="19" r="3" />
+                                    <line x1="8.5" y1="8.5" x2="6.5" y2="16" />
+                                    <line x1="15.5" y1="8.5" x2="17.5" y2="16" />
+                                    <line x1="8" y1="19" x2="16" y2="19" />
                                 </svg>
                             </div>
                             <div class="course-date">Dec 2025</div>
@@ -3138,10 +3428,11 @@
                             <div class="course-platform">Kaggle</div>
                             <div class="course-bottom">
                                 <a href="https://www.kaggle.com/learn/certification/kayilainathanj/intermediate-machine-learning"
-                                   target="_blank" rel="noopener" class="course-link-btn">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"/>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="8" r="7" />
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
                                     </svg>
                                     View Certificate
                                 </a>
@@ -3151,12 +3442,13 @@
                         <!-- Course 3 -->
                         <div class="course-card tilt-card">
                             <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2"/>
-                                    <line x1="2" y1="8" x2="22" y2="8"/>
-                                    <line x1="6" y1="6" x2="6.01" y2="6"/>
-                                    <line x1="10" y1="6" x2="10.01" y2="6"/>
-                                    <line x1="14" y1="6" x2="14.01" y2="6"/>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2" />
+                                    <line x1="2" y1="8" x2="22" y2="8" />
+                                    <line x1="6" y1="6" x2="6.01" y2="6" />
+                                    <line x1="10" y1="6" x2="10.01" y2="6" />
+                                    <line x1="14" y1="6" x2="14.01" y2="6" />
                                 </svg>
                             </div>
                             <div class="course-date">Jan 2024</div>
@@ -3164,10 +3456,11 @@
                             <div class="course-platform">Coursera · Meta</div>
                             <div class="course-bottom">
                                 <a href="https://www.coursera.org/account/accomplishments/verify/QYD3R1YECXEH"
-                                   target="_blank" rel="noopener" class="course-link-btn">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"/>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="8" r="7" />
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
                                     </svg>
                                     View Certificate
                                 </a>
@@ -3177,9 +3470,10 @@
                         <!-- Course 4 — No certificate link -->
                         <div class="course-card tilt-card">
                             <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 3v18h18"/>
-                                    <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 3v18h18" />
+                                    <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
                                 </svg>
                             </div>
                             <div class="course-date">Nov 2024</div>
@@ -3190,17 +3484,18 @@
                         <!-- Course 5 -->
                         <div class="course-card tilt-card">
                             <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="4" y="4" width="16" height="16" rx="2"/>
-                                    <rect x="9" y="9" width="6" height="6"/>
-                                    <line x1="9" y1="1" x2="9" y2="4"/>
-                                    <line x1="15" y1="1" x2="15" y2="4"/>
-                                    <line x1="9" y1="20" x2="9" y2="23"/>
-                                    <line x1="15" y1="20" x2="15" y2="23"/>
-                                    <line x1="20" y1="9" x2="23" y2="9"/>
-                                    <line x1="20" y1="15" x2="23" y2="15"/>
-                                    <line x1="1" y1="9" x2="4" y2="9"/>
-                                    <line x1="1" y1="15" x2="4" y2="15"/>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="4" width="16" height="16" rx="2" />
+                                    <rect x="9" y="9" width="6" height="6" />
+                                    <line x1="9" y1="1" x2="9" y2="4" />
+                                    <line x1="15" y1="1" x2="15" y2="4" />
+                                    <line x1="9" y1="20" x2="9" y2="23" />
+                                    <line x1="15" y1="20" x2="15" y2="23" />
+                                    <line x1="20" y1="9" x2="23" y2="9" />
+                                    <line x1="20" y1="15" x2="23" y2="15" />
+                                    <line x1="1" y1="9" x2="4" y2="9" />
+                                    <line x1="1" y1="15" x2="4" y2="15" />
                                 </svg>
                             </div>
                             <div class="course-date">Jul 2024</div>
@@ -3208,10 +3503,11 @@
                             <div class="course-platform">Coursera · IBM</div>
                             <div class="course-bottom">
                                 <a href="https://www.coursera.org/account/accomplishments/verify/SRKBW27SV5KX"
-                                   target="_blank" rel="noopener" class="course-link-btn">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7"/>
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/>
+                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="8" r="7" />
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
                                     </svg>
                                     View Certificate
                                 </a>
@@ -3221,9 +3517,10 @@
                         <!-- Course 6 — No certificate link -->
                         <div class="course-card tilt-card">
                             <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                                 </svg>
                             </div>
                             <div class="course-date">Jul 2024</div>
@@ -3260,21 +3557,23 @@
                     <div class="connect-links">
 
                         <!-- LinkedIn -->
-                        <a href="https://linkedin.com/in/kayilainathan-j-170267305"
-                           target="_blank" rel="noopener" class="connect-btn connect-btn-linkedin">
+                        <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener"
+                            class="connect-btn connect-btn-linkedin">
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z"/>
+                                <path
+                                    d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
                             </svg>
                             LinkedIn
                         </a>
 
                         <!-- GitHub -->
-                        <a href="https://github.com/Kayilainathan"
-                           target="_blank" rel="noopener" class="connect-btn connect-btn-github">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"/>
-                                <path d="M9 18c-4.51 2-5-2-7-2"/>
+                        <a href="https://github.com/Kayilainathan" target="_blank" rel="noopener"
+                            class="connect-btn connect-btn-github">
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path
+                                    d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                                <path d="M9 18c-4.51 2-5-2-7-2" />
                             </svg>
                             GitHub
                         </a>
@@ -3282,10 +3581,10 @@
                         <!-- Email -->
                         <!-- !! EDIT: Replace with your email address !! -->
                         <a href="mailto:kayilainathan19@gmail.com" class="connect-btn connect-btn-email">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect width="20" height="16" x="2" y="4" rx="2"/>
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="20" height="16" x="2" y="4" rx="2" />
+                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                             </svg>
                             Email
                         </a>
@@ -3314,760 +3613,761 @@
          Each block is clearly labeled. Edit values marked with !! EDIT !!
          ================================================================ -->
     <script>
-    document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // ================================================================
-        // LENIS — Smooth scroll initialization
-        // Remove this block if you don't want smooth scrolling.
-        // ================================================================
-        let lenis = null;
-        if (typeof Lenis !== 'undefined') {
-            lenis = new Lenis({
-                duration: 1.2,
-                // !! EDIT: Change duration (seconds) for faster/slower scroll
-                easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-                smooth: true,
-                smoothTouch: false, // Disable on touch for native feel
-            });
+            // ================================================================
+            // LENIS — Smooth scroll initialization
+            // Remove this block if you don't want smooth scrolling.
+            // ================================================================
+            let lenis = null;
+            if (typeof Lenis !== 'undefined') {
+                lenis = new Lenis({
+                    duration: 1.2,
+                    // !! EDIT: Change duration (seconds) for faster/slower scroll
+                    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+                    smooth: true,
+                    smoothTouch: false, // Disable on touch for native feel
+                });
 
-            // Lenis requires being called every frame
-            (function lenisRaf(time) {
-                lenis.raf(time);
-                requestAnimationFrame(lenisRaf);
-            })(performance.now());
-        }
+                // Lenis requires being called every frame
+                (function lenisRaf(time) {
+                    lenis.raf(time);
+                    requestAnimationFrame(lenisRaf);
+                })(performance.now());
+            }
 
-        // Helper: smooth scroll to an element with Lenis or fallback
-        function scrollTo(el, offset = -80) {
-            if (lenis) lenis.scrollTo(el, { offset, duration: 1.2 });
-            else el.scrollIntoView({ behavior: 'smooth' });
-        }
-        // ================================================================
-        // FLOATING RESUME DOCKING SCROLL EFFECT
-        // ================================================================
-        const resumeBtn = document.getElementById('resumeBtn');
-        const resumePlaceholder = document.getElementById('resume-placeholder');
-        let resumeDocked = false;
-        let resumeAnimTimeout = null;
+            // Helper: smooth scroll to an element with Lenis or fallback
+            function scrollTo(el, offset = -80) {
+                if (lenis) lenis.scrollTo(el, { offset, duration: 1.2 });
+                else el.scrollIntoView({ behavior: 'smooth' });
+            }
+            // ================================================================
+            // FLOATING RESUME DOCKING SCROLL EFFECT
+            // ================================================================
+            const resumeBtn = document.getElementById('resumeBtn');
+            const resumePlaceholder = document.getElementById('resume-placeholder');
+            let resumeDocked = false;
+            let resumeAnimTimeout = null;
 
-        function updateResumeDockPosition() {
-            if (!resumeBtn || !resumePlaceholder) return;
+            function updateResumeDockPosition() {
+                if (!resumeBtn || !resumePlaceholder) return;
 
-            const sy = window.scrollY;
-            const aboutSec = document.getElementById('about');
-            const aboutTop = aboutSec ? aboutSec.offsetTop : 300;
-            const shouldDock = sy > Math.min(window.innerHeight * 0.4, aboutTop - 160);
+                const sy = window.scrollY;
+                const aboutSec = document.getElementById('about');
+                const aboutTop = aboutSec ? aboutSec.offsetTop : 300;
+                const shouldDock = sy > Math.min(window.innerHeight * 0.4, aboutTop - 160);
 
-            if (shouldDock === resumeDocked) {
-                // If already docked, update its left coordinate on resize to keep it on top-right
+                if (shouldDock === resumeDocked) {
+                    // If already docked, update its left coordinate on resize to keep it on top-right
+                    if (resumeDocked) {
+                        resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
+                    }
+                    return;
+                }
+
+                resumeDocked = shouldDock;
+
+                if (resumeAnimTimeout) clearTimeout(resumeAnimTimeout);
+
+                if (resumeDocked) {
+                    // Docking: transition from placeholder to top-right header
+                    const rect = resumeBtn.getBoundingClientRect();
+
+                    // Set initial fixed position at current placeholder position
+                    resumeBtn.style.position = 'fixed';
+                    resumeBtn.style.top = `${rect.top}px`;
+                    resumeBtn.style.left = `${rect.left}px`;
+                    resumeBtn.style.width = `${rect.width}px`;
+                    resumeBtn.style.height = `${rect.height}px`;
+
+                    // Move button to body to escape parent overflow/transforms
+                    document.body.appendChild(resumeBtn);
+
+                    // Force reflow
+                    resumeBtn.offsetHeight;
+
+                    // Start animation to docked state
+                    resumeBtn.classList.add('animating');
+                    resumeBtn.classList.add('docked');
+
+                    resumeBtn.style.top = '22px';
+                    resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
+                    resumeBtn.style.width = '100px';
+                    resumeBtn.style.height = '42px';
+
+                    resumeAnimTimeout = setTimeout(() => {
+                        resumeBtn.classList.remove('animating');
+                    }, 500);
+                } else {
+                    // Undocking: transition from top-right header back to placeholder using page-relative coordinates to prevent scroll-jump
+                    const placeholderRect = resumePlaceholder.getBoundingClientRect();
+                    const scrollY = window.scrollY;
+                    const scrollX = window.scrollX;
+
+                    // Move button to body and position it absolutely relative to the page starting from docked coordinates
+                    resumeBtn.style.position = 'absolute';
+                    resumeBtn.style.top = `${22 + scrollY}px`;
+                    resumeBtn.style.left = `${(window.innerWidth - 100 - 26) + scrollX}px`;
+                    resumeBtn.style.width = '100px';
+                    resumeBtn.style.height = '42px';
+                    document.body.appendChild(resumeBtn);
+
+                    // Force reflow
+                    resumeBtn.offsetHeight;
+
+                    resumeBtn.classList.add('animating');
+                    resumeBtn.classList.remove('docked');
+
+                    // Animate to placeholder's page-relative coordinates
+                    resumeBtn.style.top = `${placeholderRect.top + scrollY}px`;
+                    resumeBtn.style.left = `${placeholderRect.left + scrollX}px`;
+                    resumeBtn.style.width = `${placeholderRect.width}px`;
+                    resumeBtn.style.height = `${placeholderRect.height}px`;
+
+                    resumeAnimTimeout = setTimeout(() => {
+                        // Put back inside placeholder
+                        resumePlaceholder.appendChild(resumeBtn);
+                        resumeBtn.classList.remove('animating');
+
+                        // Clear styles to let CSS layout handle it natively
+                        resumeBtn.style.position = '';
+                        resumeBtn.style.top = '';
+                        resumeBtn.style.left = '';
+                        resumeBtn.style.width = '';
+                        resumeBtn.style.height = '';
+                    }, 500);
+                }
+            }
+
+            // Bind scroll and resize events
+            window.addEventListener('scroll', updateResumeDockPosition);
+            window.addEventListener('resize', () => {
                 if (resumeDocked) {
                     resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
                 }
-                return;
-            }
+            });
 
-            resumeDocked = shouldDock;
-
-            if (resumeAnimTimeout) clearTimeout(resumeAnimTimeout);
-
-            if (resumeDocked) {
-                // Docking: transition from placeholder to top-right header
-                const rect = resumeBtn.getBoundingClientRect();
-
-                // Set initial fixed position at current placeholder position
-                resumeBtn.style.position = 'fixed';
-                resumeBtn.style.top = `${rect.top}px`;
-                resumeBtn.style.left = `${rect.left}px`;
-                resumeBtn.style.width = `${rect.width}px`;
-                resumeBtn.style.height = `${rect.height}px`;
-
-                // Move button to body to escape parent overflow/transforms
-                document.body.appendChild(resumeBtn);
-
-                // Force reflow
-                resumeBtn.offsetHeight;
-
-                // Start animation to docked state
-                resumeBtn.classList.add('animating');
-                resumeBtn.classList.add('docked');
-                
-                resumeBtn.style.top = '22px';
-                resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
-                resumeBtn.style.width = '100px';
-                resumeBtn.style.height = '42px';
-
-                resumeAnimTimeout = setTimeout(() => {
-                    resumeBtn.classList.remove('animating');
-                }, 500);
-            } else {
-                // Undocking: transition from top-right header back to placeholder using page-relative coordinates to prevent scroll-jump
-                const placeholderRect = resumePlaceholder.getBoundingClientRect();
-                const scrollY = window.scrollY;
-                const scrollX = window.scrollX;
-
-                // Move button to body and position it absolutely relative to the page starting from docked coordinates
-                resumeBtn.style.position = 'absolute';
-                resumeBtn.style.top = `${22 + scrollY}px`;
-                resumeBtn.style.left = `${(window.innerWidth - 100 - 26) + scrollX}px`;
-                resumeBtn.style.width = '100px';
-                resumeBtn.style.height = '42px';
-                document.body.appendChild(resumeBtn);
-
-                // Force reflow
-                resumeBtn.offsetHeight;
-
-                resumeBtn.classList.add('animating');
-                resumeBtn.classList.remove('docked');
-
-                // Animate to placeholder's page-relative coordinates
-                resumeBtn.style.top = `${placeholderRect.top + scrollY}px`;
-                resumeBtn.style.left = `${placeholderRect.left + scrollX}px`;
-                resumeBtn.style.width = `${placeholderRect.width}px`;
-                resumeBtn.style.height = `${placeholderRect.height}px`;
-
-                resumeAnimTimeout = setTimeout(() => {
-                    // Put back inside placeholder
+            // Run immediately after layout settles
+            setTimeout(() => {
+                const sy = window.scrollY;
+                const aboutSec = document.getElementById('about');
+                const aboutTop = aboutSec ? aboutSec.offsetTop : 300;
+                const threshold = Math.min(window.innerHeight * 0.4, aboutTop - 160);
+                if (sy > threshold) {
+                    resumeDocked = true;
+                    document.body.appendChild(resumeBtn);
+                    resumeBtn.classList.add('docked');
+                    resumeBtn.style.position = 'fixed';
+                    resumeBtn.style.top = '22px';
+                    resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
+                    resumeBtn.style.width = '100px';
+                    resumeBtn.style.height = '42px';
+                } else {
+                    resumeDocked = false;
                     resumePlaceholder.appendChild(resumeBtn);
-                    resumeBtn.classList.remove('animating');
-                    
-                    // Clear styles to let CSS layout handle it natively
                     resumeBtn.style.position = '';
                     resumeBtn.style.top = '';
                     resumeBtn.style.left = '';
                     resumeBtn.style.width = '';
                     resumeBtn.style.height = '';
-                }, 500);
-            }
-        }
+                }
+            }, 150);
 
-        // Bind scroll and resize events
-        window.addEventListener('scroll', updateResumeDockPosition);
-        window.addEventListener('resize', () => {
-            if (resumeDocked) {
-                resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
-            }
-        });
+            // ================================================================
+            // CUSTOM CURSOR — Dot snaps; ring follows with smooth lag
+            // ================================================================
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorRing = document.getElementById('cursor-ring');
 
-        // Run immediately after layout settles
-        setTimeout(() => {
-            const sy = window.scrollY;
-            const aboutSec = document.getElementById('about');
-            const aboutTop = aboutSec ? aboutSec.offsetTop : 300;
-            const threshold = Math.min(window.innerHeight * 0.4, aboutTop - 160);
-            if (sy > threshold) {
-                resumeDocked = true;
-                document.body.appendChild(resumeBtn);
-                resumeBtn.classList.add('docked');
-                resumeBtn.style.position = 'fixed';
-                resumeBtn.style.top = '22px';
-                resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
-                resumeBtn.style.width = '100px';
-                resumeBtn.style.height = '42px';
-            } else {
-                resumeDocked = false;
-                resumePlaceholder.appendChild(resumeBtn);
-                resumeBtn.style.position = '';
-                resumeBtn.style.top = '';
-                resumeBtn.style.left = '';
-                resumeBtn.style.width = '';
-                resumeBtn.style.height = '';
-            }
-        }, 150);
+            // Current mouse position (dot snaps here)
+            let mx = window.innerWidth / 2;
+            let my = window.innerHeight / 2;
 
-        // ================================================================
-        // CUSTOM CURSOR — Dot snaps; ring follows with smooth lag
-        // ================================================================
-        const cursorDot  = document.getElementById('cursor-dot');
-        const cursorRing = document.getElementById('cursor-ring');
+            // Ring's current interpolated position
+            let rx = mx, ry = my;
 
-        // Current mouse position (dot snaps here)
-        let mx = window.innerWidth / 2;
-        let my = window.innerHeight / 2;
-
-        // Ring's current interpolated position
-        let rx = mx, ry = my;
-
-        // Update mouse position on every mouse move
-        document.addEventListener('mousemove', e => {
-            mx = e.clientX;
-            my = e.clientY;
-            // Dot follows instantly
-            cursorDot.style.left = mx + 'px';
-            cursorDot.style.top  = my + 'px';
-        });
-
-        // Animate ring with LERP each frame
-        (function ringLoop() {
-            // !! EDIT: Change 0.12 for faster (higher) or slower (lower) ring lag
-            rx += (mx - rx) * 0.12;
-            ry += (my - ry) * 0.12;
-            cursorRing.style.left = rx + 'px';
-            cursorRing.style.top  = ry + 'px';
-            requestAnimationFrame(ringLoop);
-        })();
-
-        // Expand ring when hovering interactive elements
-        const hoverEls = document.querySelectorAll(
-            'a, button, .tilt-card, .tag, .nav-link, [role="button"], .connect-btn'
-        );
-        hoverEls.forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-        });
-
-        // Fade cursor out when leaving/entering page
-        document.addEventListener('mouseleave', () => {
-            cursorDot.style.opacity  = '0';
-            cursorRing.style.opacity = '0';
-        });
-        document.addEventListener('mouseenter', () => {
-            cursorDot.style.opacity  = '1';
-            cursorRing.style.opacity = '1';
-        });
-
-
-        // ================================================================
-        // NAVIGATION — Show pill after scroll; track active section
-        // ================================================================
-        const navPill      = document.getElementById('navPill');
-        const navIndicator = document.getElementById('navIndicator');
-        const navLinks     = document.querySelectorAll('.nav-link');
-        const scrollNudge  = document.getElementById('scrollNudge');
-        const sections     = Array.from(document.querySelectorAll('.section[id]'));
-
-        // ---- Sliding indicator LERP physics ----
-        let indL = 0, indW = 0;          // Current position (animated)
-        let indTL = 0, indTW = 0;        // Target position
-        let indReady = false;
-
-        // Move indicator target to a specific link element
-        function setIndicatorTarget(link) {
-            indTL = link.offsetLeft;
-            indTW = link.offsetWidth;
-        }
-
-        // Animate indicator toward target each frame
-        (function indicatorLoop() {
-            if (!indReady && indTW > 0) {
-                // Snap on first run
-                indL = indTL; indW = indTW; indReady = true;
-            } else if (indReady) {
-                // !! EDIT: 0.16 = responsiveness of indicator slide
-                indL += (indTL - indL) * 0.16;
-                indW += (indTW - indW) * 0.16;
-            }
-            navIndicator.style.cssText = `left:${indL}px; width:${indW}px; height:32px; top:4px;`;
-            requestAnimationFrame(indicatorLoop);
-        })();
-
-        // Hover: temporarily move indicator to hovered link
-        navLinks.forEach(link => {
-            link.addEventListener('mouseenter', () => setIndicatorTarget(link));
-        });
-
-        // Mouse leaves pill: restore to active section
-        navPill.addEventListener('mouseleave', () => {
-            const active = navPill.querySelector('.nav-link.active');
-            if (active) setIndicatorTarget(active);
-        });
-
-        // Scroll event: show/hide pill, track active section
-        window.addEventListener('scroll', () => {
-            const sy = window.scrollY;
-
-            // Show nav pill after scrolling 80px
-            navPill.classList.toggle('visible', sy > 80);
-
-            // Hide scroll nudge once user scrolls
-            if (scrollNudge) scrollNudge.classList.toggle('hidden', sy > 60);
-
-            // Find the current active section
-            let current = '';
-            sections.forEach(sec => {
-                if (sy >= sec.offsetTop - 130) current = sec.id;
+            // Update mouse position on every mouse move
+            document.addEventListener('mousemove', e => {
+                mx = e.clientX;
+                my = e.clientY;
+                // Dot follows instantly
+                cursorDot.style.left = mx + 'px';
+                cursorDot.style.top = my + 'px';
             });
 
-            // Apply .active class and update indicator
+            // Animate ring with LERP each frame
+            (function ringLoop() {
+                // !! EDIT: Change 0.12 for faster (higher) or slower (lower) ring lag
+                rx += (mx - rx) * 0.12;
+                ry += (my - ry) * 0.12;
+                cursorRing.style.left = rx + 'px';
+                cursorRing.style.top = ry + 'px';
+                requestAnimationFrame(ringLoop);
+            })();
+
+            // Expand ring when hovering interactive elements
+            const hoverEls = document.querySelectorAll(
+                'a, button, .tilt-card, .tag, .nav-link, [role="button"], .connect-btn'
+            );
+            hoverEls.forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+            });
+
+            // Fade cursor out when leaving/entering page
+            document.addEventListener('mouseleave', () => {
+                cursorDot.style.opacity = '0';
+                cursorRing.style.opacity = '0';
+            });
+            document.addEventListener('mouseenter', () => {
+                cursorDot.style.opacity = '1';
+                cursorRing.style.opacity = '1';
+            });
+
+
+            // ================================================================
+            // NAVIGATION — Show pill after scroll; track active section
+            // ================================================================
+            const navPill = document.getElementById('navPill');
+            const navIndicator = document.getElementById('navIndicator');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const scrollNudge = document.getElementById('scrollNudge');
+            const sections = Array.from(document.querySelectorAll('.section[id]'));
+
+            // ---- Sliding indicator LERP physics ----
+            let indL = 0, indW = 0;          // Current position (animated)
+            let indTL = 0, indTW = 0;        // Target position
+            let indReady = false;
+
+            // Move indicator target to a specific link element
+            function setIndicatorTarget(link) {
+                indTL = link.offsetLeft;
+                indTW = link.offsetWidth;
+            }
+
+            // Animate indicator toward target each frame
+            (function indicatorLoop() {
+                if (!indReady && indTW > 0) {
+                    // Snap on first run
+                    indL = indTL; indW = indTW; indReady = true;
+                } else if (indReady) {
+                    // !! EDIT: 0.16 = responsiveness of indicator slide
+                    indL += (indTL - indL) * 0.16;
+                    indW += (indTW - indW) * 0.16;
+                }
+                navIndicator.style.cssText = `left:${indL}px; width:${indW}px; height:32px; top:4px;`;
+                requestAnimationFrame(indicatorLoop);
+            })();
+
+            // Hover: temporarily move indicator to hovered link
             navLinks.forEach(link => {
-                const isActive = link.dataset.section === current;
-                link.classList.toggle('active', isActive);
-                if (isActive) setIndicatorTarget(link);
-            });
-        });
-
-        // Smooth scroll when clicking nav links
-        navLinks.forEach(link => {
-            link.addEventListener('click', e => {
-                e.preventDefault();
-                const target = document.querySelector(link.getAttribute('href'));
-                if (target) scrollTo(target);
-            });
-        });
-
-        // Scroll nudge click
-        if (scrollNudge) {
-            scrollNudge.addEventListener('click', e => {
-                e.preventDefault();
-                const about = document.getElementById('about');
-                if (about) scrollTo(about);
-            });
-        }
-
-        // Trigger scroll once on load to set initial state
-        window.dispatchEvent(new Event('scroll'));
-
-
-        // ================================================================
-        // BRAND LOGO — Back to top + scroll progress ring
-        // ================================================================
-        const brand    = document.getElementById('brand');
-        const ringFill = document.getElementById('brandRingFill');
-
-        // Circumference = 2 * PI * r = 2 * 3.14159 * 23 ≈ 144.51
-        const CIRC = 2 * Math.PI * 23;
-
-        // Update ring fill offset based on scroll position
-        (function progressLoop() {
-            const scrolled = window.scrollY;
-            const total = document.documentElement.scrollHeight - window.innerHeight;
-            const pct = total > 0 ? scrolled / total : 0;
-            if (ringFill) ringFill.style.strokeDashoffset = CIRC * (1 - pct);
-            requestAnimationFrame(progressLoop);
-        })();
-
-        // Click K to scroll back to top
-        if (brand) {
-            brand.addEventListener('click', () => {
-                if (lenis) lenis.scrollTo(0, { duration: 1.2 });
-                else window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
-            brand.addEventListener('keydown', e => {
-                if (e.key === 'Enter' || e.key === ' ') brand.click();
-            });
-        }
-
-
-        // ================================================================
-        // 3D CARD TILT — Subtle perspective tilt on hover
-        // !! EDIT: Change MAX_TILT value (degrees) for more or less effect !!
-        // ================================================================
-        const MAX_TILT = 7; // degrees — keep below 12 for subtlety
-
-        document.querySelectorAll('.tilt-card').forEach(card => {
-            card.addEventListener('mousemove', e => {
-                const r = card.getBoundingClientRect();
-                const dx = (e.clientX - r.left  - r.width  / 2) / (r.width  / 2); // -1 to 1
-                const dy = (e.clientY - r.top   - r.height / 2) / (r.height / 2); // -1 to 1
-
-                card.style.transform   = `perspective(800px) rotateX(${-dy * MAX_TILT}deg) rotateY(${dx * MAX_TILT}deg) translateZ(4px)`;
-                card.style.transition  = 'transform 0.08s ease-out';
+                link.addEventListener('mouseenter', () => setIndicatorTarget(link));
             });
 
-            card.addEventListener('mouseleave', () => {
-                card.style.transform  = '';
-                card.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+            // Mouse leaves pill: restore to active section
+            navPill.addEventListener('mouseleave', () => {
+                const active = navPill.querySelector('.nav-link.active');
+                if (active) setIndicatorTarget(active);
             });
-        });
 
+            // Scroll event: show/hide pill, track active section
+            window.addEventListener('scroll', () => {
+                const sy = window.scrollY;
 
-        // ================================================================
-        // PROFILE PHOTO TILT — Slightly stronger tilt on the hero photo
-        // ================================================================
-        const photoFrame = document.getElementById('photoFrame');
-        if (photoFrame) {
-            const wrapper = photoFrame.closest('.hero-right');
-            wrapper?.addEventListener('mousemove', e => {
-                const r  = photoFrame.getBoundingClientRect();
-                const dx = (e.clientX - r.left - r.width  / 2) / (r.width  / 2);
-                const dy = (e.clientY - r.top  - r.height / 2) / (r.height / 2);
-                photoFrame.style.transform  = `perspective(700px) rotateX(${-dy * 11}deg) rotateY(${dx * 11}deg)`;
-                photoFrame.style.transition = 'transform 0.08s ease-out';
+                // Show nav pill after scrolling 80px
+                navPill.classList.toggle('visible', sy > 80);
+
+                // Hide scroll nudge once user scrolls
+                if (scrollNudge) scrollNudge.classList.toggle('hidden', sy > 60);
+
+                // Find the current active section
+                let current = '';
+                sections.forEach(sec => {
+                    if (sy >= sec.offsetTop - 130) current = sec.id;
+                });
+
+                // Apply .active class and update indicator
+                navLinks.forEach(link => {
+                    const isActive = link.dataset.section === current;
+                    link.classList.toggle('active', isActive);
+                    if (isActive) setIndicatorTarget(link);
+                });
             });
-            wrapper?.addEventListener('mouseleave', () => {
-                photoFrame.style.transform  = '';
-                photoFrame.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+
+            // Smooth scroll when clicking nav links
+            navLinks.forEach(link => {
+                link.addEventListener('click', e => {
+                    e.preventDefault();
+                    const target = document.querySelector(link.getAttribute('href'));
+                    if (target) scrollTo(target);
+                });
             });
-        }
+
+            // Scroll nudge click
+            if (scrollNudge) {
+                scrollNudge.addEventListener('click', e => {
+                    e.preventDefault();
+                    const about = document.getElementById('about');
+                    if (about) scrollTo(about);
+                });
+            }
+
+            // Trigger scroll once on load to set initial state
+            window.dispatchEvent(new Event('scroll'));
 
 
-        // ================================================================
-        // MAGNETIC HOVER — Connect buttons subtly follow the cursor
-        // !! EDIT: Change STRENGTH for more/less magnetic pull (0–1) !!
-        // ================================================================
-        const STRENGTH = 0.32;
+            // ================================================================
+            // BRAND LOGO — Back to top + scroll progress ring
+            // ================================================================
+            const brand = document.getElementById('brand');
+            const ringFill = document.getElementById('brandRingFill');
 
-        document.querySelectorAll('.connect-btn').forEach(btn => {
-            btn.addEventListener('mousemove', e => {
-                const r  = btn.getBoundingClientRect();
-                const dx = (e.clientX - r.left - r.width  / 2) * STRENGTH;
-                const dy = (e.clientY - r.top  - r.height / 2) * STRENGTH;
-                btn.style.transform  = `translate(${dx}px, ${dy}px) translateY(-3px)`;
-                btn.style.transition = 'transform 0.1s ease-out';
+            // Circumference = 2 * PI * r = 2 * 3.14159 * 23 ≈ 144.51
+            const CIRC = 2 * Math.PI * 23;
+
+            // Update ring fill offset based on scroll position
+            (function progressLoop() {
+                const scrolled = window.scrollY;
+                const total = document.documentElement.scrollHeight - window.innerHeight;
+                const pct = total > 0 ? scrolled / total : 0;
+                if (ringFill) ringFill.style.strokeDashoffset = CIRC * (1 - pct);
+                requestAnimationFrame(progressLoop);
+            })();
+
+            // Click K to scroll back to top
+            if (brand) {
+                brand.addEventListener('click', () => {
+                    if (lenis) lenis.scrollTo(0, { duration: 1.2 });
+                    else window.scrollTo({ top: 0, behavior: 'smooth' });
+                });
+                brand.addEventListener('keydown', e => {
+                    if (e.key === 'Enter' || e.key === ' ') brand.click();
+                });
+            }
+
+
+            // ================================================================
+            // 3D CARD TILT — Subtle perspective tilt on hover
+            // !! EDIT: Change MAX_TILT value (degrees) for more or less effect !!
+            // ================================================================
+            const MAX_TILT = 7; // degrees — keep below 12 for subtlety
+
+            document.querySelectorAll('.tilt-card').forEach(card => {
+                card.addEventListener('mousemove', e => {
+                    const r = card.getBoundingClientRect();
+                    const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2); // -1 to 1
+                    const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2); // -1 to 1
+
+                    card.style.transform = `perspective(800px) rotateX(${-dy * MAX_TILT}deg) rotateY(${dx * MAX_TILT}deg) translateZ(4px)`;
+                    card.style.transition = 'transform 0.08s ease-out';
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                    card.style.transition = 'transform 0.65s cubic-bezier(0.16, 1, 0.3, 1)';
+                });
             });
-            btn.addEventListener('mouseleave', () => {
-                btn.style.transform  = '';
-                btn.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+
+
+            // ================================================================
+            // PROFILE PHOTO TILT — Slightly stronger tilt on the hero photo
+            // ================================================================
+            const photoFrame = document.getElementById('photoFrame');
+            if (photoFrame) {
+                const wrapper = photoFrame.closest('.hero-right');
+                wrapper?.addEventListener('mousemove', e => {
+                    const r = photoFrame.getBoundingClientRect();
+                    const dx = (e.clientX - r.left - r.width / 2) / (r.width / 2);
+                    const dy = (e.clientY - r.top - r.height / 2) / (r.height / 2);
+                    photoFrame.style.transform = `perspective(700px) rotateX(${-dy * 11}deg) rotateY(${dx * 11}deg)`;
+                    photoFrame.style.transition = 'transform 0.08s ease-out';
+                });
+                wrapper?.addEventListener('mouseleave', () => {
+                    photoFrame.style.transform = '';
+                    photoFrame.style.transition = 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)';
+                });
+            }
+
+
+            // ================================================================
+            // MAGNETIC HOVER — Connect buttons subtly follow the cursor
+            // !! EDIT: Change STRENGTH for more/less magnetic pull (0–1) !!
+            // ================================================================
+            const STRENGTH = 0.32;
+
+            document.querySelectorAll('.connect-btn').forEach(btn => {
+                btn.addEventListener('mousemove', e => {
+                    const r = btn.getBoundingClientRect();
+                    const dx = (e.clientX - r.left - r.width / 2) * STRENGTH;
+                    const dy = (e.clientY - r.top - r.height / 2) * STRENGTH;
+                    btn.style.transform = `translate(${dx}px, ${dy}px) translateY(-3px)`;
+                    btn.style.transition = 'transform 0.1s ease-out';
+                });
+                btn.addEventListener('mouseleave', () => {
+                    btn.style.transform = '';
+                    btn.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+                });
             });
-        });
 
 
-        // ================================================================
-        // SCROLL REVEAL — Fade+blur elements in as they enter the viewport
-        // Any element with class="reveal" or "reveal-stagger" is watched.
-        // ================================================================
-        const revealObs = new IntersectionObserver(entries => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                } else {
-                    entry.target.classList.remove('visible');
-                }
+            // ================================================================
+            // SCROLL REVEAL — Fade+blur elements in as they enter the viewport
+            // Any element with class="reveal" or "reveal-stagger" is watched.
+            // ================================================================
+            const revealObs = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    } else {
+                        entry.target.classList.remove('visible');
+                    }
+                });
+            }, {
+                threshold: 0.07,
+                rootMargin: '0px 0px -30px 0px'
             });
-        }, {
-            threshold: 0.07,
-            rootMargin: '0px 0px -30px 0px'
-        });
 
-        document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
-            revealObs.observe(el);
-        });
+            document.querySelectorAll('.reveal, .reveal-stagger').forEach(el => {
+                revealObs.observe(el);
+            });
 
-        // Hero section reveals instantly (no scroll needed)
-        document.getElementById('hero')?.classList.add('visible');
+            // Hero section reveals instantly (no scroll needed)
+            document.getElementById('hero')?.classList.add('visible');
 
 
-        // ================================================================
-        // HIGHLIGHTS 3D CAROUSEL
-        // Auto-advances every 4s. Pauses on hover. Clickable side cards
-        // and dots let you jump to any card. Description reveals on hover.
-        // !! EDIT: Change INTERVAL_MS for slower/faster auto-advance !!
-        // ================================================================
-        const INTERVAL_MS = 4000; // milliseconds between auto-advances
+            // ================================================================
+            // HIGHLIGHTS 3D CAROUSEL
+            // Auto-advances every 4s. Pauses on hover. Clickable side cards
+            // and dots let you jump to any card. Description reveals on hover.
+            // !! EDIT: Change INTERVAL_MS for slower/faster auto-advance !!
+            // ================================================================
+            const INTERVAL_MS = 4000; // milliseconds between auto-advances
 
-        const hlCards = Array.from(document.querySelectorAll('.hl-card'));
-        const hlDots  = Array.from(document.querySelectorAll('.hl-dot'));
-        const hlStage = document.getElementById('hlStage');
-        const TOTAL   = hlCards.length;
-        let   hlIndex = 0; // currently active card index
-        let   hlTimer = null;
+            const hlCards = Array.from(document.querySelectorAll('.hl-card'));
+            const hlDots = Array.from(document.querySelectorAll('.hl-dot'));
+            const hlStage = document.getElementById('hlStage');
+            const TOTAL = hlCards.length;
+            let hlIndex = 0; // currently active card index
+            let hlTimer = null;
 
-        // Apply position classes based on current active index
-        function hlUpdate() {
+            // Apply position classes based on current active index
+            function hlUpdate() {
+                hlCards.forEach((card, i) => {
+                    // Remove all state classes
+                    card.classList.remove('hl-active', 'hl-prev', 'hl-next', 'hl-hidden');
+
+                    if (i === hlIndex) {
+                        card.classList.add('hl-active');
+                    } else if (i === (hlIndex - 1 + TOTAL) % TOTAL) {
+                        card.classList.add('hl-prev');   // Left side
+                    } else if (i === (hlIndex + 1) % TOTAL) {
+                        card.classList.add('hl-next');   // Right side
+                    } else {
+                        card.classList.add('hl-hidden'); // Far behind
+                    }
+                });
+
+                // Sync dot states
+                hlDots.forEach((dot, i) => {
+                    dot.classList.toggle('hl-dot-active', i === hlIndex);
+                });
+            }
+
+            // Advance to the next card
+            function hlNext() {
+                hlIndex = (hlIndex + 1) % TOTAL;
+                hlUpdate();
+            }
+
+            // Jump to a specific card index
+            function hlGoTo(i) {
+                hlIndex = i;
+                hlUpdate();
+            }
+
+            // Start auto-advance timer
+            function hlStart() {
+                if (hlTimer) clearInterval(hlTimer);
+                hlTimer = setInterval(hlNext, INTERVAL_MS);
+            }
+
+            // Stop auto-advance timer
+            function hlStop() {
+                clearInterval(hlTimer);
+                hlTimer = null;
+            }
+
+            // Clicking a side card brings it to the front
             hlCards.forEach((card, i) => {
-                // Remove all state classes
-                card.classList.remove('hl-active', 'hl-prev', 'hl-next', 'hl-hidden');
-
-                if (i === hlIndex) {
-                    card.classList.add('hl-active');
-                } else if (i === (hlIndex - 1 + TOTAL) % TOTAL) {
-                    card.classList.add('hl-prev');   // Left side
-                } else if (i === (hlIndex + 1) % TOTAL) {
-                    card.classList.add('hl-next');   // Right side
-                } else {
-                    card.classList.add('hl-hidden'); // Far behind
-                }
+                card.addEventListener('click', () => {
+                    if (i !== hlIndex) {
+                        hlGoTo(i);
+                        hlStop();
+                        hlStart(); // reset timer after manual click
+                    }
+                });
             });
 
-            // Sync dot states
+            // Clicking a dot jumps to that card
             hlDots.forEach((dot, i) => {
-                dot.classList.toggle('hl-dot-active', i === hlIndex);
-            });
-        }
-
-        // Advance to the next card
-        function hlNext() {
-            hlIndex = (hlIndex + 1) % TOTAL;
-            hlUpdate();
-        }
-
-        // Jump to a specific card index
-        function hlGoTo(i) {
-            hlIndex = i;
-            hlUpdate();
-        }
-
-        // Start auto-advance timer
-        function hlStart() {
-            if (hlTimer) clearInterval(hlTimer);
-            hlTimer = setInterval(hlNext, INTERVAL_MS);
-        }
-
-        // Stop auto-advance timer
-        function hlStop() {
-            clearInterval(hlTimer);
-            hlTimer = null;
-        }
-
-        // Clicking a side card brings it to the front
-        hlCards.forEach((card, i) => {
-            card.addEventListener('click', () => {
-                if (i !== hlIndex) {
+                dot.addEventListener('click', () => {
                     hlGoTo(i);
                     hlStop();
-                    hlStart(); // reset timer after manual click
-                }
+                    hlStart();
+                });
             });
-        });
 
-        // Clicking a dot jumps to that card
-        hlDots.forEach((dot, i) => {
-            dot.addEventListener('click', () => {
-                hlGoTo(i);
-                hlStop();
-                hlStart();
+            // Pause on hover, resume on leave
+            if (hlStage) {
+                hlStage.addEventListener('mouseenter', hlStop);
+                hlStage.addEventListener('mouseleave', hlStart);
+                // Touch equivalents for mobile
+                hlStage.addEventListener('touchstart', hlStop, { passive: true });
+                hlStage.addEventListener('touchend', hlStart, { passive: true });
+            }
+
+            // Initialize the carousel
+            hlUpdate();
+            hlStart();
+
+
+            // ================================================================
+            // PROJECTS HORIZONTAL CAROUSEL
+            // Syncs slider thumb and arrow visibility to scroll position.
+            // Supports: arrow click, slider drag, mouse drag-scroll.
+            // !! EDIT: Change SCROLL_STEP for how far each arrow click moves !!
+            // ================================================================
+            const SCROLL_STEP = 340; // px scrolled per arrow click
+
+            const projGrid = document.getElementById('projGrid');
+            const projLeft = document.getElementById('projLeft');
+            const projRight = document.getElementById('projRight');
+            const projTrack = document.getElementById('projSliderTrack');
+            const projThumb = document.getElementById('projSliderThumb');
+
+            // -- Slider thumb sizing and positioning --
+            function projUpdateSlider() {
+                if (!projGrid || !projThumb) return;
+                const { scrollLeft, scrollWidth, clientWidth } = projGrid;
+                const ratio = clientWidth / scrollWidth;
+                const thumbW = Math.max(ratio * 100, 8);         // percent width, min 8%
+                const thumbPos = (scrollLeft / (scrollWidth - clientWidth)) * (100 - thumbW);
+                projThumb.style.width = thumbW + '%';
+                projThumb.style.left = (isNaN(thumbPos) ? 0 : thumbPos) + '%';
+            }
+
+            // -- Arrow visibility based on scroll position --
+            function projUpdateArrows() {
+                if (!projGrid) return;
+                const { scrollLeft, scrollWidth, clientWidth } = projGrid;
+                const atLeft = scrollLeft < 10;
+                const atRight = scrollLeft > scrollWidth - clientWidth - 10;
+                projLeft?.classList.toggle('visible', !atLeft);
+                projRight?.classList.toggle('visible', !atRight);
+            }
+
+            // -- Combined update --
+            function projUpdate() {
+                projUpdateSlider();
+                projUpdateArrows();
+            }
+
+            // Arrow click handlers
+            projRight?.addEventListener('click', () => {
+                projGrid.scrollBy({ left: SCROLL_STEP, behavior: 'smooth' });
             });
-        });
+            projLeft?.addEventListener('click', () => {
+                projGrid.scrollBy({ left: -SCROLL_STEP, behavior: 'smooth' });
+            });
 
-        // Pause on hover, resume on leave
-        if (hlStage) {
-            hlStage.addEventListener('mouseenter', hlStop);
-            hlStage.addEventListener('mouseleave', hlStart);
-            // Touch equivalents for mobile
-            hlStage.addEventListener('touchstart', hlStop,  { passive: true });
-            hlStage.addEventListener('touchend',   hlStart, { passive: true });
-        }
+            // Sync on scroll
+            projGrid?.addEventListener('scroll', projUpdate, { passive: true });
 
-        // Initialize the carousel
-        hlUpdate();
-        hlStart();
+            // -- Slider drag --
+            let sliderDragging = false;
+            let sliderStartX = 0;
+            let sliderScrollAt = 0;
 
+            projThumb?.addEventListener('mousedown', e => {
+                sliderDragging = true;
+                sliderStartX = e.clientX;
+                sliderScrollAt = projGrid.scrollLeft;
+                projThumb.classList.add('dragging');
+                e.preventDefault();
+            });
 
-        // ================================================================
-        // PROJECTS HORIZONTAL CAROUSEL
-        // Syncs slider thumb and arrow visibility to scroll position.
-        // Supports: arrow click, slider drag, mouse drag-scroll.
-        // !! EDIT: Change SCROLL_STEP for how far each arrow click moves !!
-        // ================================================================
-        const SCROLL_STEP = 340; // px scrolled per arrow click
+            document.addEventListener('mousemove', e => {
+                if (!sliderDragging) return;
+                const trackW = projTrack.clientWidth;
+                const thumbW = projThumb.offsetWidth;
+                const available = trackW - thumbW;
+                const dx = e.clientX - sliderStartX;
+                const ratio = dx / available;
+                const maxScroll = projGrid.scrollWidth - projGrid.clientWidth;
+                projGrid.scrollLeft = Math.max(0, Math.min(maxScroll, sliderScrollAt + ratio * maxScroll));
+            });
 
-        const projGrid  = document.getElementById('projGrid');
-        const projLeft  = document.getElementById('projLeft');
-        const projRight = document.getElementById('projRight');
-        const projTrack = document.getElementById('projSliderTrack');
-        const projThumb = document.getElementById('projSliderThumb');
+            document.addEventListener('mouseup', () => {
+                if (!sliderDragging) return;
+                sliderDragging = false;
+                projThumb?.classList.remove('dragging');
+            });
 
-        // -- Slider thumb sizing and positioning --
-        function projUpdateSlider() {
-            if (!projGrid || !projThumb) return;
-            const { scrollLeft, scrollWidth, clientWidth } = projGrid;
-            const ratio    = clientWidth / scrollWidth;
-            const thumbW   = Math.max(ratio * 100, 8);         // percent width, min 8%
-            const thumbPos = (scrollLeft / (scrollWidth - clientWidth)) * (100 - thumbW);
-            projThumb.style.width = thumbW + '%';
-            projThumb.style.left  = (isNaN(thumbPos) ? 0 : thumbPos) + '%';
-        }
+            // Click on track to jump
+            projTrack?.addEventListener('click', e => {
+                if (e.target === projThumb) return; // ignore thumb clicks
+                const rect = projTrack.getBoundingClientRect();
+                const clickPos = (e.clientX - rect.left) / rect.width;
+                const maxScroll = projGrid.scrollWidth - projGrid.clientWidth;
+                projGrid.scrollTo({ left: clickPos * maxScroll, behavior: 'smooth' });
+            });
 
-        // -- Arrow visibility based on scroll position --
-        function projUpdateArrows() {
-            if (!projGrid) return;
-            const { scrollLeft, scrollWidth, clientWidth } = projGrid;
-            const atLeft  = scrollLeft < 10;
-            const atRight = scrollLeft > scrollWidth - clientWidth - 10;
-            projLeft?.classList.toggle('visible', !atLeft);
-            projRight?.classList.toggle('visible', !atRight);
-        }
+            // -- Mouse drag-to-scroll on card row --
+            let isDragging = false;
+            let dragStartX = 0;
+            let scrollAtDrag = 0;
 
-        // -- Combined update --
-        function projUpdate() {
-            projUpdateSlider();
-            projUpdateArrows();
-        }
+            projGrid?.addEventListener('mousedown', e => {
+                isDragging = true;
+                dragStartX = e.clientX;
+                scrollAtDrag = projGrid.scrollLeft;
+                projGrid.classList.add('dragging');
+            });
 
-        // Arrow click handlers
-        projRight?.addEventListener('click', () => {
-            projGrid.scrollBy({ left: SCROLL_STEP, behavior: 'smooth' });
-        });
-        projLeft?.addEventListener('click', () => {
-            projGrid.scrollBy({ left: -SCROLL_STEP, behavior: 'smooth' });
-        });
+            document.addEventListener('mousemove', e => {
+                if (!isDragging) return;
+                projGrid.scrollLeft = scrollAtDrag - (e.clientX - dragStartX);
+            });
 
-        // Sync on scroll
-        projGrid?.addEventListener('scroll', projUpdate, { passive: true });
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+                projGrid?.classList.remove('dragging');
+            });
 
-        // -- Slider drag --
-        let sliderDragging = false;
-        let sliderStartX   = 0;
-        let sliderScrollAt = 0;
-
-        projThumb?.addEventListener('mousedown', e => {
-            sliderDragging = true;
-            sliderStartX   = e.clientX;
-            sliderScrollAt = projGrid.scrollLeft;
-            projThumb.classList.add('dragging');
-            e.preventDefault();
-        });
-
-        document.addEventListener('mousemove', e => {
-            if (!sliderDragging) return;
-            const trackW    = projTrack.clientWidth;
-            const thumbW    = projThumb.offsetWidth;
-            const available = trackW - thumbW;
-            const dx        = e.clientX - sliderStartX;
-            const ratio     = dx / available;
-            const maxScroll = projGrid.scrollWidth - projGrid.clientWidth;
-            projGrid.scrollLeft = Math.max(0, Math.min(maxScroll, sliderScrollAt + ratio * maxScroll));
-        });
-
-        document.addEventListener('mouseup', () => {
-            if (!sliderDragging) return;
-            sliderDragging = false;
-            projThumb?.classList.remove('dragging');
-        });
-
-        // Click on track to jump
-        projTrack?.addEventListener('click', e => {
-            if (e.target === projThumb) return; // ignore thumb clicks
-            const rect      = projTrack.getBoundingClientRect();
-            const clickPos  = (e.clientX - rect.left) / rect.width;
-            const maxScroll = projGrid.scrollWidth - projGrid.clientWidth;
-            projGrid.scrollTo({ left: clickPos * maxScroll, behavior: 'smooth' });
-        });
-
-        // -- Mouse drag-to-scroll on card row --
-        let isDragging  = false;
-        let dragStartX  = 0;
-        let scrollAtDrag= 0;
-
-        projGrid?.addEventListener('mousedown', e => {
-            isDragging  = true;
-            dragStartX  = e.clientX;
-            scrollAtDrag= projGrid.scrollLeft;
-            projGrid.classList.add('dragging');
-        });
-
-        document.addEventListener('mousemove', e => {
-            if (!isDragging) return;
-            projGrid.scrollLeft = scrollAtDrag - (e.clientX - dragStartX);
-        });
-
-        document.addEventListener('mouseup', () => {
-            isDragging = false;
-            projGrid?.classList.remove('dragging');
-        });
-
-        // Initial render
-        projUpdate();
-        window.addEventListener('resize', projUpdate);
+            // Initial render
+            projUpdate();
+            window.addEventListener('resize', projUpdate);
 
 
-        // ================================================================
-        // COURSES HORIZONTAL CAROUSEL
-        // Syncs slider thumb and arrow visibility to scroll position.
-        // Supports: arrow click, slider drag, mouse drag-scroll.
-        // ================================================================
-        const COURSE_SCROLL_STEP = 340; // px scrolled per arrow click
+            // ================================================================
+            // COURSES HORIZONTAL CAROUSEL
+            // Syncs slider thumb and arrow visibility to scroll position.
+            // Supports: arrow click, slider drag, mouse drag-scroll.
+            // ================================================================
+            const COURSE_SCROLL_STEP = 340; // px scrolled per arrow click
 
-        const courseGrid  = document.getElementById('courseGrid');
-        const courseLeft  = document.getElementById('courseLeft');
-        const courseRight = document.getElementById('courseRight');
-        const courseTrack = document.getElementById('courseSliderTrack');
-        const courseThumb = document.getElementById('courseSliderThumb');
+            const courseGrid = document.getElementById('courseGrid');
+            const courseLeft = document.getElementById('courseLeft');
+            const courseRight = document.getElementById('courseRight');
+            const courseTrack = document.getElementById('courseSliderTrack');
+            const courseThumb = document.getElementById('courseSliderThumb');
 
-        // -- Slider thumb sizing and positioning --
-        function courseUpdateSlider() {
-            if (!courseGrid || !courseThumb) return;
-            const { scrollLeft, scrollWidth, clientWidth } = courseGrid;
-            const ratio    = clientWidth / scrollWidth;
-            const thumbW   = Math.max(ratio * 100, 8);         // percent width, min 8%
-            const thumbPos = (scrollLeft / (scrollWidth - clientWidth)) * (100 - thumbW);
-            courseThumb.style.width = thumbW + '%';
-            courseThumb.style.left  = (isNaN(thumbPos) ? 0 : thumbPos) + '%';
-        }
+            // -- Slider thumb sizing and positioning --
+            function courseUpdateSlider() {
+                if (!courseGrid || !courseThumb) return;
+                const { scrollLeft, scrollWidth, clientWidth } = courseGrid;
+                const ratio = clientWidth / scrollWidth;
+                const thumbW = Math.max(ratio * 100, 8);         // percent width, min 8%
+                const thumbPos = (scrollLeft / (scrollWidth - clientWidth)) * (100 - thumbW);
+                courseThumb.style.width = thumbW + '%';
+                courseThumb.style.left = (isNaN(thumbPos) ? 0 : thumbPos) + '%';
+            }
 
-        // -- Arrow visibility based on scroll position --
-        function courseUpdateArrows() {
-            if (!courseGrid) return;
-            const { scrollLeft, scrollWidth, clientWidth } = courseGrid;
-            const atLeft  = scrollLeft < 10;
-            const atRight = scrollLeft > scrollWidth - clientWidth - 10;
-            courseLeft?.classList.toggle('visible', !atLeft);
-            courseRight?.classList.toggle('visible', !atRight);
-        }
+            // -- Arrow visibility based on scroll position --
+            function courseUpdateArrows() {
+                if (!courseGrid) return;
+                const { scrollLeft, scrollWidth, clientWidth } = courseGrid;
+                const atLeft = scrollLeft < 10;
+                const atRight = scrollLeft > scrollWidth - clientWidth - 10;
+                courseLeft?.classList.toggle('visible', !atLeft);
+                courseRight?.classList.toggle('visible', !atRight);
+            }
 
-        // -- Combined update --
-        function courseUpdate() {
-            courseUpdateSlider();
-            courseUpdateArrows();
-        }
+            // -- Combined update --
+            function courseUpdate() {
+                courseUpdateSlider();
+                courseUpdateArrows();
+            }
 
-        // Arrow click handlers
-        courseRight?.addEventListener('click', () => {
-            courseGrid.scrollBy({ left: COURSE_SCROLL_STEP, behavior: 'smooth' });
-        });
-        courseLeft?.addEventListener('click', () => {
-            courseGrid.scrollBy({ left: -COURSE_SCROLL_STEP, behavior: 'smooth' });
-        });
+            // Arrow click handlers
+            courseRight?.addEventListener('click', () => {
+                courseGrid.scrollBy({ left: COURSE_SCROLL_STEP, behavior: 'smooth' });
+            });
+            courseLeft?.addEventListener('click', () => {
+                courseGrid.scrollBy({ left: -COURSE_SCROLL_STEP, behavior: 'smooth' });
+            });
 
-        // Sync on scroll
-        courseGrid?.addEventListener('scroll', courseUpdate, { passive: true });
+            // Sync on scroll
+            courseGrid?.addEventListener('scroll', courseUpdate, { passive: true });
 
-        // -- Slider drag --
-        let courseSliderDragging = false;
-        let courseSliderStartX   = 0;
-        let courseSliderScrollAt = 0;
+            // -- Slider drag --
+            let courseSliderDragging = false;
+            let courseSliderStartX = 0;
+            let courseSliderScrollAt = 0;
 
-        courseThumb?.addEventListener('mousedown', e => {
-            courseSliderDragging = true;
-            courseSliderStartX   = e.clientX;
-            courseSliderScrollAt = courseGrid.scrollLeft;
-            courseThumb.classList.add('dragging');
-            e.preventDefault();
-        });
+            courseThumb?.addEventListener('mousedown', e => {
+                courseSliderDragging = true;
+                courseSliderStartX = e.clientX;
+                courseSliderScrollAt = courseGrid.scrollLeft;
+                courseThumb.classList.add('dragging');
+                e.preventDefault();
+            });
 
-        document.addEventListener('mousemove', e => {
-            if (!courseSliderDragging) return;
-            const trackW    = courseTrack.clientWidth;
-            const thumbW    = courseThumb.offsetWidth;
-            const available = trackW - thumbW;
-            const dx        = e.clientX - courseSliderStartX;
-            const ratio     = dx / available;
-            const maxScroll = courseGrid.scrollWidth - courseGrid.clientWidth;
-            courseGrid.scrollLeft = Math.max(0, Math.min(maxScroll, courseSliderScrollAt + ratio * maxScroll));
-        });
+            document.addEventListener('mousemove', e => {
+                if (!courseSliderDragging) return;
+                const trackW = courseTrack.clientWidth;
+                const thumbW = courseThumb.offsetWidth;
+                const available = trackW - thumbW;
+                const dx = e.clientX - courseSliderStartX;
+                const ratio = dx / available;
+                const maxScroll = courseGrid.scrollWidth - courseGrid.clientWidth;
+                courseGrid.scrollLeft = Math.max(0, Math.min(maxScroll, courseSliderScrollAt + ratio * maxScroll));
+            });
 
-        document.addEventListener('mouseup', () => {
-            if (!courseSliderDragging) return;
-            courseSliderDragging = false;
-            courseThumb?.classList.remove('dragging');
-        });
+            document.addEventListener('mouseup', () => {
+                if (!courseSliderDragging) return;
+                courseSliderDragging = false;
+                courseThumb?.classList.remove('dragging');
+            });
 
-        // Click on track to jump
-        courseTrack?.addEventListener('click', e => {
-            if (e.target === courseThumb) return; // ignore thumb clicks
-            const rect      = courseTrack.getBoundingClientRect();
-            const clickPos  = (e.clientX - rect.left) / rect.width;
-            const maxScroll = courseGrid.scrollWidth - courseGrid.clientWidth;
-            courseGrid.scrollTo({ left: clickPos * maxScroll, behavior: 'smooth' });
-        });
+            // Click on track to jump
+            courseTrack?.addEventListener('click', e => {
+                if (e.target === courseThumb) return; // ignore thumb clicks
+                const rect = courseTrack.getBoundingClientRect();
+                const clickPos = (e.clientX - rect.left) / rect.width;
+                const maxScroll = courseGrid.scrollWidth - courseGrid.clientWidth;
+                courseGrid.scrollTo({ left: clickPos * maxScroll, behavior: 'smooth' });
+            });
 
-        // -- Mouse drag-to-scroll on card row --
-        let courseIsDragging  = false;
-        let courseDragStartX  = 0;
-        let courseScrollAtDrag= 0;
+            // -- Mouse drag-to-scroll on card row --
+            let courseIsDragging = false;
+            let courseDragStartX = 0;
+            let courseScrollAtDrag = 0;
 
-        courseGrid?.addEventListener('mousedown', e => {
-            courseIsDragging  = true;
-            courseDragStartX  = e.clientX;
-            courseScrollAtDrag= courseGrid.scrollLeft;
-            courseGrid.classList.add('dragging');
-        });
+            courseGrid?.addEventListener('mousedown', e => {
+                courseIsDragging = true;
+                courseDragStartX = e.clientX;
+                courseScrollAtDrag = courseGrid.scrollLeft;
+                courseGrid.classList.add('dragging');
+            });
 
-        document.addEventListener('mousemove', e => {
-            if (!courseIsDragging) return;
-            courseGrid.scrollLeft = courseScrollAtDrag - (e.clientX - courseDragStartX);
-        });
+            document.addEventListener('mousemove', e => {
+                if (!courseIsDragging) return;
+                courseGrid.scrollLeft = courseScrollAtDrag - (e.clientX - courseDragStartX);
+            });
 
-        document.addEventListener('mouseup', () => {
-            courseIsDragging = false;
-            courseGrid?.classList.remove('dragging');
-        });
+            document.addEventListener('mouseup', () => {
+                courseIsDragging = false;
+                courseGrid?.classList.remove('dragging');
+            });
 
-        // Initial render
-        courseUpdate();
-        window.addEventListener('resize', courseUpdate);
+            // Initial render
+            courseUpdate();
+            window.addEventListener('resize', courseUpdate);
 
-    }); // end DOMContentLoaded
+        }); // end DOMContentLoaded
     </script>
 
 </body>
+
 </html>
