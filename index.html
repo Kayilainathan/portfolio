@@ -2745,6 +2745,70 @@
                 font-size: 0.76rem;
             }
         }
+
+        /* ============================================================
+   ABOUT SECTION TOGGLE (Builder vs Human)
+   ============================================================ */
+
+        .about-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            /* Aligns tabs to the left on desktop; we will center them on mobile below */
+            justify-content: flex-start;
+        }
+
+        .tab-btn {
+            /* Uses a glass-like semi-transparent background */
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-color, #ffffff);
+            /* Fallback to white if var isn't set */
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .tab-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .tab-btn.active {
+            /* Highlight the active tab */
+            background: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-content {
+            transition: opacity 0.4s ease;
+        }
+
+        .hidden-bio {
+            display: none;
+            opacity: 0;
+        }
+
+        .active-bio {
+            display: block;
+            opacity: 1;
+            animation: fadeInBio 0.4s ease forwards;
+        }
+
+        @keyframes fadeInBio {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
     </style>
 </head>
 
@@ -2784,6 +2848,7 @@
         <!-- !! EDIT: Change this letter to your initial if needed !! -->
         <span class="brand-letter">K</span>
     </div>
+
 
 
     <!-- ================================================================
@@ -2942,22 +3007,57 @@
 
             <!-- ============================================================
                  ABOUT SECTION
-                 !! EDIT: Replace the bio text below !!
-                 ============================================================ -->
+============================================================ -->
             <section id="about" class="section">
                 <h2 class="section-title reveal">About</h2>
 
                 <div class="glass about-card reveal">
-                    <p class="about-text">
-                        I’m a third-year Electronics and Instrumentation Engineering student at MIT, Anna University.
-                        Over the past two years, my curiosity about how complex systems work has evolved into a hands-on
-                        obsession with building them. I don't just want to understand the theory; I want to wire it,
-                        code it, and make it run.
 
-                        From designing digital logic in Vivado and soldering IoT prototypes at hackathons to training
-                        predictive AI for functional safety, I love operating right where hardware meets software. My
-                        philosophy is simple: I build to learn, and I simulate to build better.
-                    </p>
+                    <!-- Toggle Buttons -->
+                    <div class="about-tabs">
+                        <button class="tab-btn active" onclick="toggleAbout('builder')">🛠️ The Builder</button>
+                        <button class="tab-btn" onclick="toggleAbout('human')">☕ The Human</button>
+                    </div>
+
+                    <!-- The Builder Content -->
+                    <div id="bio-builder" class="about-content active-bio">
+                        <p class="about-text">
+                            I’m a third-year Electronics and Instrumentation Engineering student at MIT, Anna
+                            University.
+                            Over the past two years, my curiosity about how complex systems work has evolved into a
+                            hands-on
+                            obsession with building them. I don't just want to understand the theory; I want to wire it,
+                            code it, and make it run.
+                        </p>
+                        <br>
+                        <p class="about-text">
+                            From designing digital logic in Vivado and soldering IoT prototypes at hackathons to
+                            training
+                            predictive AI for functional safety, I love operating right where hardware meets software.
+                            My
+                            philosophy is simple: <strong>I build to learn, and I simulate to build better.</strong>
+                        </p>
+                    </div>
+
+                    <!-- The Human Content -->
+                    <div id="bio-human" class="about-content hidden-bio">
+                        <p class="about-text">
+                            When I’m not buried in hardware data sheets or debugging code, you can usually find me
+                            touching grass—literally and figuratively—with my hackathon crew,
+                            <strong>TouchGrass.Devs</strong>. We thrive on the chaos of 24-hour sprints, whether we're
+                            debugging web interfaces under pressure or racing against the clock to hunt down IoT
+                            components.
+                        </p>
+                        <br>
+                        <p class="about-text">
+                            Off the clock, I'm a massive film freak. I treat my Letterboxd diary like a second
+                            portfolio, tracking, rating, and overanalyzing cinematography. To unwind, I usually step
+                            away from the screens entirely to play the musical keyboard, or log onto Chess.com for a
+                            quick mental reset. I'm fueled by great storytelling, collaborative chaos, and a good
+                            Spotify playlist.
+                        </p>
+                    </div>
+
                 </div>
             </section>
 
@@ -3077,7 +3177,7 @@
                         <!-- Content card -->
                         <div class="exp-content">
                             <!-- !! EDIT: Role and org !! -->
-                            <div class="exp-role">Industrial Internship</div>
+                            <div class="exp-role">Internship</div>
                             <div class="exp-org">NLC India Limited</div>
                             <!-- !! EDIT: Description !! -->
                             <p class="exp-desc">
@@ -3086,8 +3186,8 @@
                                 largest public-sector energy companies.
                             </p>
                             <!-- !! EDIT: Update href to your LinkedIn post / certificate !! -->
-                            <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener"
-                                class="exp-link">
+                            <a href="https://www.linkedin.com/posts/kayilainathan-j-170267305_nlcindia-internship-psu-ugcPost-7467236949762752512-Bb-l/?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAE3QfiQBvMkzwfUcFA71i80zo2g_dSie6Sk"
+                                target="_blank" rel="noopener" class="exp-link">
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                                     <path
                                         d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
@@ -4365,7 +4465,35 @@
             courseUpdate();
             window.addEventListener('resize', courseUpdate);
 
-        }); // end DOMContentLoaded
+        });
+        /* ============================================================
+   ABOUT SECTION TOGGLE
+   Switches between 'The Builder' and 'The Human' bios
+============================================================ */
+
+        function toggleAbout(section) {
+            // Select the buttons and the content blocks
+            const buttons = document.querySelectorAll('.tab-btn');
+            const builderContent = document.getElementById('bio-builder');
+            const humanContent = document.getElementById('bio-human');
+
+            // Safety check to ensure the elements exist on the current page
+            if (!builderContent || !humanContent || buttons.length === 0) return;
+
+            // Reset all buttons to inactive
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Handle the switching logic
+            if (section === 'builder') {
+                buttons[0].classList.add('active');
+                humanContent.classList.replace('active-bio', 'hidden-bio');
+                builderContent.classList.replace('hidden-bio', 'active-bio');
+            } else if (section === 'human') {
+                buttons[1].classList.add('active');
+                builderContent.classList.replace('active-bio', 'hidden-bio');
+                humanContent.classList.replace('hidden-bio', 'active-bio');
+            }
+        }// end DOMContentLoaded
     </script>
 
 </body>
