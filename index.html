@@ -621,15 +621,21 @@
             }
         }
 
-        /* ---- Hero name — single line, J styled as an initial ---- */
+        /* ---- Hero name — large display heading ---- */
         .hero-name {
             font-size: clamp(3.2rem, 7vw, 5.2rem);
             font-weight: 800;
             letter-spacing: -0.04em;
             line-height: 1.0;
             color: var(--text);
-            white-space: nowrap;
-            /* Keep on one line */
+            word-break: break-word; /* graceful wrap on mobile */
+        }
+
+        /* On desktop keep it on one line */
+        @media (min-width: 769px) {
+            .hero-name {
+                white-space: nowrap;
+            }
         }
 
         /* The "J" initial — gradient + separator dot */
@@ -1040,44 +1046,181 @@
             z-index: 2;
         }
 
-        /* Scroll nudge — fades down and hides after user scrolls */
+        /* ================================================================
+           SCROLL NUDGE — Premium glowing pill with animated chevron
+           ================================================================ */
         .scroll-nudge {
             position: absolute;
-            bottom: 34px;
+            bottom: 36px;
             left: 50%;
-            transform: translateX(-50%);
+            /* Start invisible — JS adds .appeared to fade in */
+            opacity: 0;
+            transform: translateX(-50%) translateY(16px);
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 7px;
-            color: var(--text-muted);
-            font-size: 0.74rem;
-            font-weight: 500;
-            letter-spacing: 0.06em;
-            text-transform: uppercase;
+            gap: 0;
             text-decoration: none;
             cursor: pointer;
-            animation: nudge 2.5s ease infinite;
-            transition: opacity 0.4s ease;
+            z-index: 10;
+            pointer-events: none; /* enabled by .appeared */
+            transition: opacity 0.6s var(--ease-out),
+                        transform 0.6s var(--ease-out);
         }
 
-        .scroll-nudge.hidden {
+        /* Entry state — JS adds this after 1.2s delay */
+        .scroll-nudge.appeared {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            pointer-events: auto;
+        }
+
+        /* Hidden on scroll */
+        .scroll-nudge.appeared.hidden {
             opacity: 0;
             pointer-events: none;
+            transform: translateX(-50%) translateY(12px);
         }
 
-        @keyframes nudge {
+        /* The pill container */
+        .scroll-nudge-pill {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px 22px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            /* Subtle glow aura that pulses */
+            box-shadow:
+                0 0 0 0 rgba(34, 211, 238, 0),
+                0 4px 20px rgba(0, 0, 0, 0.35),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+            animation: scrollPillPulse 3s ease-in-out infinite;
+        }
 
-            0%,
-            100% {
-                opacity: 0.45;
-                transform: translateX(-50%) translateY(0);
-            }
+        /* Running border glow on the pill */
+        .scroll-nudge-pill::before {
+            content: '';
+            position: absolute;
+            inset: -1px;
+            border-radius: inherit;
+            background: conic-gradient(
+                from var(--scroll-angle, 0deg),
+                transparent 0deg,
+                rgba(34, 211, 238, 0.7) 60deg,
+                rgba(167, 139, 250, 0.5) 120deg,
+                transparent 180deg
+            );
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            padding: 1px;
+            opacity: 0.7;
+            animation: scrollBorderSpin 3s linear infinite;
+        }
 
-            50% {
-                opacity: 0.9;
-                transform: translateX(-50%) translateY(5px);
-            }
+        /* Outer glow pulse ring */
+        .scroll-nudge-pill::after {
+            content: '';
+            position: absolute;
+            inset: -5px;
+            border-radius: inherit;
+            border: 1px solid rgba(34, 211, 238, 0.12);
+            animation: scrollRingExpand 2.5s ease-in-out infinite;
+        }
+
+        .scroll-nudge:hover .scroll-nudge-pill {
+            background: rgba(34, 211, 238, 0.07);
+            border-color: rgba(34, 211, 238, 0.30);
+            color: var(--accent);
+            box-shadow:
+                0 0 18px rgba(34, 211, 238, 0.18),
+                0 4px 24px rgba(0, 0, 0, 0.4),
+                inset 0 1px 0 rgba(34, 211, 238, 0.10);
+        }
+
+        /* The scroll label text */
+        .scroll-nudge-label {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* The chevron icon box */
+        .scroll-nudge-chevron {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: rgba(34, 211, 238, 0.10);
+            border: 1px solid rgba(34, 211, 238, 0.20);
+            transition: background 0.3s ease, border-color 0.3s ease;
+        }
+
+        .scroll-nudge:hover .scroll-nudge-chevron {
+            background: rgba(34, 211, 238, 0.18);
+            border-color: rgba(34, 211, 238, 0.45);
+        }
+
+        /* Bouncing chevron SVG */
+        .scroll-nudge-chevron svg {
+            animation: chevronBounce 1.8s ease-in-out infinite;
+        }
+
+        /* Vertical connector line below pill */
+        .scroll-nudge-line {
+            width: 1px;
+            height: 0px;
+            background: linear-gradient(to bottom, rgba(34, 211, 238, 0.35), transparent);
+            margin-top: 0;
+            animation: scrollLineGrow 3s ease-in-out infinite;
+        }
+
+        /* ---- Keyframes ---- */
+        /* scrollNudgeAppear keyframe removed — appearance is now class-driven */
+
+        @keyframes scrollBorderSpin {
+            to { --scroll-angle: 360deg; }
+        }
+
+        @keyframes scrollPillPulse {
+            0%, 100% { transform: translateY(0); }
+            50%       { transform: translateY(6px); }
+        }
+
+        @keyframes scrollRingExpand {
+            0%, 100% { inset: -4px; opacity: 0.4; }
+            50%       { inset: -9px; opacity: 0; }
+        }
+
+        @keyframes chevronBounce {
+            0%, 100% { transform: translateY(-1px); opacity: 0.6; }
+            50%       { transform: translateY(2px);  opacity: 1; }
+        }
+
+        @keyframes scrollLineGrow {
+            0%, 100% { height: 0px;  opacity: 0; }
+            40%, 60% { height: 20px; opacity: 1; }
+        }
+
+        @property --scroll-angle {
+            syntax: '<angle>';
+            inherits: false;
+            initial-value: 0deg;
         }
 
 
@@ -2606,119 +2749,193 @@
 
 
         /* ================================================================
-           RESPONSIVE — Adjustments for mobile screens
+           RESPONSIVE — Full mobile-first system
+           Breakpoints: 900 → 768 → 640 → 480 → 390
            ================================================================ */
 
+        /* ---- 900px: tablet landscape ---- */
         @media (max-width: 900px) {
-            .projects-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .highlights-grid {
+            .skills-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
         }
 
+        /* ---- 768px: tablet portrait / large phone ---- */
         @media (max-width: 768px) {
             :root {
-                --section-gap: 100px;
+                --section-gap: 90px;
             }
 
             .container {
-                padding: 0 20px;
+                padding: 0 18px;
             }
 
+            /* Hero: single column, centered */
             .hero-grid {
                 grid-template-columns: 1fr;
-                gap: 44px;
+                gap: 36px;
                 padding: 80px 0 60px;
                 text-align: center;
             }
 
             .hero-left {
                 align-items: center;
+                order: 2;
             }
 
-            .hero-status {
+            .hero-right {
+                order: 1;
+                width: 180px;
+                height: 180px;
                 margin: 0 auto;
+            }
+
+            /* Allow hero name to wrap instead of overflow */
+            .hero-name {
+                white-space: normal;
+                word-break: break-word;
+                font-size: clamp(2.6rem, 10vw, 4rem);
+            }
+
+            .hero-status-row {
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .hero-status,
+            .hero-semester {
+                margin: 0;
             }
 
             .hero-tagline {
                 text-align: center;
                 max-width: 100%;
+                font-size: clamp(1rem, 3.5vw, 1.2rem);
             }
 
-            /* Standalone Education & Profile Actions Mobile Adjustments */
+            /* Education card */
             .edu-card {
                 text-align: center;
                 align-items: center;
-                padding: 20px;
-                max-width: 440px;
+                padding: 18px 20px;
+                max-width: 100%;
                 margin: 0 auto;
-            }
-
-            .profile-actions-wrapper {
-                max-width: 440px;
-                margin: 0 auto;
-                justify-content: center;
             }
 
             .edu-header {
                 justify-content: center;
             }
 
+            /* Profile actions row */
+            .profile-actions-wrapper {
+                max-width: 100%;
+                margin: 0 auto;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 12px;
+            }
+
+            .resume-placeholder {
+                margin: 0;
+            }
+
             .social-actions-group {
                 justify-content: center;
             }
 
-            .resume-placeholder {
-                margin: 0 auto;
-            }
-
-            .hero-right {
-                width: 200px;
-                height: 200px;
-                margin: 0 auto;
-            }
-
+            /* About card */
             .about-card {
-                padding: 26px 24px;
+                padding: 24px 20px;
             }
 
+            /* About tabs: allow wrapping on very small screens */
+            .about-tabs {
+                flex-wrap: wrap;
+                border-radius: 14px;
+            }
+
+            /* Highlights stage shorter on mobile */
+            .highlights-stage {
+                height: 280px;
+            }
+
+            /* Skills */
             .skills-grid {
                 grid-template-columns: 1fr;
             }
 
-            .courses-list {
-                grid-template-columns: 1fr;
-            }
-
+            /* Connect */
             .connect-inner {
-                padding: 36px 24px;
+                padding: 32px 20px;
             }
 
-            /* Position floating nav pill at the bottom center of viewport on mobile */
+            .connect-links {
+                gap: 8px;
+            }
+
+            .connect-btn {
+                padding: 10px 20px;
+                font-size: 0.86rem;
+            }
+
+            /* Section title smaller */
+            .section-title {
+                font-size: clamp(1.6rem, 5vw, 2rem);
+                margin-bottom: 32px;
+            }
+
+            /* Nav: move to bottom, make it scrollable overflow-x */
             #nav {
                 top: auto;
-                bottom: 24px;
-                padding: 0;
+                bottom: 16px;
+                padding: 0 16px;
+                pointer-events: none;
             }
 
             .nav-pill {
-                transform: translateY(20px) scale(0.94);
+                overflow-x: auto;
+                overflow-y: hidden;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+                max-width: calc(100vw - 32px);
+                flex-wrap: nowrap;
+                transform: translateY(20px) scale(0.96);
+                /* tighter initial state */
+                pointer-events: auto;
+                gap: 1px;
+            }
+
+            .nav-pill::-webkit-scrollbar {
+                display: none;
             }
 
             .nav-pill.visible {
                 transform: translateY(0) scale(1);
             }
 
-            /* Hide horizontal carousel arrows on touch/mobile devices */
+            .nav-link {
+                padding: 6px 11px;
+                font-size: 0.78rem;
+                flex-shrink: 0;
+                /* prevent nav links from shrinking */
+            }
+
+            /* Scroll nudge: anchor to viewport on mobile so it's always visible
+               regardless of how tall the stacked hero content is */
+            .scroll-nudge {
+                position: fixed;
+                bottom: 90px; /* sit above the bottom nav pill */
+                left: 50%;
+            }
+
+            /* Hide desktop-only arrows on touch devices */
             .proj-arrow,
             .course-arrow {
                 display: none !important;
             }
 
-            /* Hide custom cursor on touch/mobile */
+            /* Custom cursor: disable on touch */
             #cursor-dot,
             #cursor-ring {
                 display: none;
@@ -2729,60 +2946,372 @@
             }
         }
 
+        /* ---- 640px: standard phone ---- */
         @media (max-width: 640px) {
-            .highlights-grid {
-                grid-template-columns: 1fr;
+            :root {
+                --section-gap: 72px;
             }
 
-            .projects-grid {
+            .container {
+                padding: 0 16px;
+            }
+
+            .hero-right {
+                width: 155px;
+                height: 155px;
+            }
+
+            .hero-name {
+                font-size: clamp(2.2rem, 12vw, 3.2rem);
+            }
+
+            /* Highlights: shrink stage */
+            .highlights-stage {
+                height: 300px; /* taller to fit more text */
+            }
+
+            .hl-card {
+                width: min(300px, 88vw);
+                padding: 20px 22px;
+            }
+
+            /* Skills: single column */
+            .skills-grid {
                 grid-template-columns: 1fr;
+                gap: 10px;
+            }
+
+            .skill-group {
+                padding: 18px 18px;
+            }
+
+            /* Experience single-col already handled via its own media query */
+
+            /* Project + course cards: fill more of viewport */
+            .proj-card,
+            .course-card {
+                flex: 0 0 min(300px, 88vw);
+            }
+
+            /* Connect */
+            .connect-links {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .connect-btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+
+            /* Footer */
+            footer {
+                padding: 24px 16px 80px; /* bottom clearance for nav pill */
+            }
+
+            /* Nav even tighter */
+            .nav-link {
+                padding: 5px 9px;
+                font-size: 0.74rem;
+            }
+
+            #nav {
+                bottom: 12px;
+                padding: 0 12px;
+            }
+
+            .nav-pill {
+                max-width: calc(100vw - 24px);
+                gap: 0;
             }
         }
 
-        @media (max-width: 460px) {
+        /* ---- 480px: small phones (iPhone SE, older Android) ---- */
+        @media (max-width: 480px) {
+            :root {
+                --section-gap: 60px;
+            }
+
+            .container {
+                padding: 0 14px;
+            }
+
+            .hero-grid {
+                gap: 28px;
+                padding: 72px 0 48px;
+            }
+
+            .hero-right {
+                width: 140px;
+                height: 140px;
+            }
+
+            .hero-name {
+                font-size: clamp(2rem, 13vw, 2.8rem);
+            }
+
+            .hero-tagline {
+                font-size: 0.96rem;
+            }
+
+            /* Badge pills may need to shrink */
+            .hero-status,
+            .hero-semester {
+                font-size: 0.74rem;
+                padding: 4px 10px;
+            }
+
+            /* About tabs: stack vertically if needed */
+            .about-tabs {
+                border-radius: 12px;
+                width: 100%;
+            }
+
+            .tab-btn {
+                flex: 1;
+                justify-content: center;
+                padding: 8px 12px;
+                font-size: 0.80rem;
+            }
+
+            .tab-btn-icon {
+                width: 18px;
+                height: 18px;
+            }
+
+            .about-card {
+                padding: 20px 16px;
+            }
+
+            .about-text {
+                font-size: 0.97rem;
+            }
+
+            /* Experience */
+            .exp-content {
+                padding: 18px 18px;
+            }
+
+            .exp-role {
+                font-size: 0.97rem;
+            }
+
+            .exp-desc {
+                font-size: 0.87rem;
+            }
+
+            /* Project / course cards */
+            .proj-card,
+            .course-card {
+                flex: 0 0 min(280px, 90vw);
+            }
+
+            .proj-card {
+                height: 290px;
+            }
+
+            .course-card {
+                height: 220px;
+            }
+
+            /* Skills */
+            .skill-tags .tag {
+                font-size: 0.78rem;
+                padding: 5px 10px;
+            }
+
+            /* Scroll nudge: smaller pill on very small screens */
+            .scroll-nudge-pill {
+                padding: 8px 16px;
+                font-size: 0.66rem;
+            }
+
+            /* Section title */
+            .section-title {
+                font-size: clamp(1.45rem, 6vw, 1.8rem);
+                margin-bottom: 24px;
+            }
+        }
+
+        /* ---- 390px: iPhone 12/13/14 Pro & similar ---- */
+        @media (max-width: 390px) {
+            .container {
+                padding: 0 12px;
+            }
+
+            .hero-name {
+                font-size: clamp(1.85rem, 13.5vw, 2.4rem);
+            }
+
+            .hero-right {
+                width: 125px;
+                height: 125px;
+            }
+
+            /* Nav pill: shrink font even more */
             .nav-link {
-                padding: 5px 9px;
-                font-size: 0.76rem;
+                padding: 5px 7px;
+                font-size: 0.68rem;
+                letter-spacing: 0;
+            }
+
+            /* About tabs: hide icon on very narrow */
+            .tab-btn-icon {
+                display: none;
+            }
+
+            .tab-btn {
+                padding: 8px 14px;
+                font-size: 0.78rem;
+            }
+
+            /* hero-semester hidden on very small to avoid overflow */
+            .hero-semester {
+                display: none;
+            }
+
+            /* Connect buttons */
+            .connect-btn {
+                font-size: 0.82rem;
+                padding: 9px 16px;
             }
         }
 
         /* ============================================================
-   ABOUT SECTION TOGGLE (Builder vs Human)
-   ============================================================ */
+           ABOUT SECTION TOGGLE — Segmented pill control
+           ============================================================ */
 
+        /* Outer track — frosted glass pill container */
         .about-tabs {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            /* Aligns tabs to the left on desktop; we will center them on mobile below */
-            justify-content: flex-start;
+            position: relative;
+            display: inline-flex;
+            gap: 0;
+            margin-bottom: 2rem;
+            padding: 4px;
+            border-radius: 100px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.25);
+            overflow: hidden; /* clip the indicator so it never escapes the pill */
         }
 
+        /* Gliding active indicator — moved by JS */
+        .tab-indicator {
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            height: calc(100% - 8px);
+            border-radius: 100px;
+            background: linear-gradient(135deg, rgba(34,211,238,0.18) 0%, rgba(34,211,238,0.08) 100%);
+            border: 1px solid rgba(34,211,238,0.28);
+            box-shadow: 0 0 16px rgba(34,211,238,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+            pointer-events: none;
+            z-index: 0;
+            transition: left 0.4s var(--ease-smooth), width 0.4s var(--ease-smooth);
+        }
+
+        /* Individual tab buttons */
         .tab-btn {
-            /* Uses a glass-like semi-transparent background */
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: var(--text-color, #ffffff);
-            /* Fallback to white if var isn't set */
-            padding: 0.6rem 1.2rem;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 9px 20px;
+            border-radius: 100px;
+            border: none;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.86rem;
             font-weight: 500;
-            transition: all 0.3s ease;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
 
+        /* Icon wrapper inside the button */
+        .tab-btn-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.08);
+            transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .tab-btn-icon svg {
+            transition: transform 0.3s var(--ease-spring);
+        }
+
+        /* Label text */
+        .tab-btn-label {
+            transition: color 0.3s ease;
+        }
+
+        /* Hover state — subtle lift */
         .tab-btn:hover {
-            background: rgba(255, 255, 255, 0.15);
+            color: var(--text);
         }
 
+        .tab-btn:hover .tab-btn-icon {
+            background: rgba(255,255,255,0.10);
+            border-color: rgba(255,255,255,0.16);
+            transform: scale(1.08);
+        }
+
+        /* Active — Builder (cyan) */
         .tab-btn.active {
-            /* Highlight the active tab */
-            background: rgba(255, 255, 255, 0.2);
-            border-color: rgba(255, 255, 255, 0.4);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            color: var(--accent);
         }
 
+        .tab-btn.active .tab-btn-icon {
+            background: rgba(34,211,238,0.14);
+            border-color: rgba(34,211,238,0.35);
+            box-shadow: 0 0 10px rgba(34,211,238,0.20);
+        }
+
+        .tab-btn.active .tab-btn-icon svg {
+            transform: scale(1.15);
+        }
+
+        /* Special hover for "The Human" button — purple accent */
+        .tab-btn-human:hover {
+            color: var(--purple);
+        }
+
+        .tab-btn-human:hover .tab-btn-icon {
+            background: rgba(167,139,250,0.12);
+            border-color: rgba(167,139,250,0.30);
+        }
+
+        .tab-btn-human.active {
+            color: var(--purple);
+        }
+
+        .tab-btn-human.active .tab-btn-icon {
+            background: rgba(167,139,250,0.15);
+            border-color: rgba(167,139,250,0.38);
+            box-shadow: 0 0 10px rgba(167,139,250,0.22);
+        }
+
+        /* When human is active, change indicator to purple tint */
+        .about-tabs.human-active .tab-indicator {
+            background: linear-gradient(135deg, rgba(167,139,250,0.18) 0%, rgba(167,139,250,0.08) 100%);
+            border-color: rgba(167,139,250,0.28);
+            box-shadow: 0 0 16px rgba(167,139,250,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+        }
+
+        /* Bio content transitions */
         .about-content {
             transition: opacity 0.4s ease;
         }
@@ -2795,19 +3324,56 @@
         .active-bio {
             display: block;
             opacity: 1;
-            animation: fadeInBio 0.4s ease forwards;
+            animation: fadeInBio 0.42s var(--ease-out) forwards;
         }
 
         @keyframes fadeInBio {
-            from {
-                opacity: 0;
-                transform: translateY(5px);
-            }
+            from { opacity: 0; transform: translateY(7px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        /* ============================================================
+           HERO STATUS ROW — dual badge group
+           ============================================================ */
+        .hero-status-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Semester badge — purple accent variant */
+        .hero-semester {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 5px 13px;
+            background: var(--purple-dim);
+            border: 1px solid rgba(167,139,250,0.22);
+            border-radius: 999px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--purple);
+            width: fit-content;
+            cursor: default;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .hero-semester:hover {
+            background: rgba(167,139,250,0.16);
+            border-color: rgba(167,139,250,0.38);
+            box-shadow: 0 0 14px rgba(167,139,250,0.14);
+        }
+
+        .hero-status:hover {
+            background: rgba(34,211,238,0.16);
+            border-color: rgba(34,211,238,0.38);
+            box-shadow: 0 0 14px rgba(34,211,238,0.14);
+        }
+
+        .hero-status {
+            cursor: default;
+            transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
         }
     </style>
 </head>
@@ -2888,11 +3454,23 @@
 
                     <div class="hero-left">
 
-                        <!-- Availability / status badge -->
-                        <!-- !! EDIT: Change the text to your current status !! -->
-                        <div class="hero-status">
-                            <span class="status-dot" aria-hidden="true"></span>
-                            Open to Internships · 2026
+                        <!-- Availability / status badges -->
+                        <div class="hero-status-row">
+                            <!-- Internship availability badge -->
+                            <div class="hero-status">
+                                <span class="status-dot" aria-hidden="true"></span>
+                                Open to Internships · 2026
+                            </div>
+
+                            <!-- Academic semester badge -->
+                            <div class="hero-semester" aria-label="Currently in 5th Semester">
+                                <!-- Book-open SVG -->
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                </svg>
+                                Year 3 · Sem 5
+                            </div>
                         </div>
 
                         <!-- Your name — single line, J is your initial -->
@@ -2992,14 +3570,17 @@
 
                 </div><!-- /.hero-grid -->
 
-                <!-- Scroll nudge — disappears once user scrolls -->
+                <!-- Scroll nudge — premium glowing pill, hides after scroll -->
                 <a href="#about" class="scroll-nudge" id="scrollNudge" aria-label="Scroll to About">
-                    scroll
-                    <svg width="11" height="15" viewBox="0 0 11 15" fill="none" stroke="currentColor" stroke-width="1.5"
-                        stroke-linecap="round">
-                        <line x1="5.5" y1="0" x2="5.5" y2="11" />
-                        <path d="M1.5 7.5l4 5 4-5" />
-                    </svg>
+                    <div class="scroll-nudge-pill">
+                        <span class="scroll-nudge-label">Scroll</span>
+                        <span class="scroll-nudge-chevron">
+                            <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="2,4 6,8 10,4" />
+                            </svg>
+                        </span>
+                    </div>
+                    <div class="scroll-nudge-line"></div>
                 </a>
 
             </section>
@@ -3013,10 +3594,34 @@
 
                 <div class="glass about-card reveal">
 
-                    <!-- Toggle Buttons -->
-                    <div class="about-tabs">
-                        <button class="tab-btn active" onclick="toggleAbout('builder')">🛠️ The Builder</button>
-                        <button class="tab-btn" onclick="toggleAbout('human')">☕ The Human</button>
+                    <!-- Toggle Buttons — segmented pill control -->
+                    <div class="about-tabs" id="aboutTabs">
+                        <!-- Gliding active indicator (JS positions it) -->
+                        <div class="tab-indicator" id="tabIndicator" aria-hidden="true"></div>
+
+                        <button class="tab-btn tab-btn-builder active" id="tabBuilder" onclick="toggleAbout('builder')" aria-pressed="true">
+                            <span class="tab-btn-icon" aria-hidden="true">
+                                <!-- Wrench / builder icon -->
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                </svg>
+                            </span>
+                            <span class="tab-btn-label">The Builder</span>
+                        </button>
+
+                        <button class="tab-btn tab-btn-human" id="tabHuman" onclick="toggleAbout('human')" aria-pressed="false">
+                            <span class="tab-btn-icon" aria-hidden="true">
+                                <!-- Coffee cup / human icon -->
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
+                                    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
+                                    <line x1="6" y1="2" x2="6" y2="4"/>
+                                    <line x1="10" y1="2" x2="10" y2="4"/>
+                                    <line x1="14" y1="2" x2="14" y2="4"/>
+                                </svg>
+                            </span>
+                            <span class="tab-btn-label">The Human</span>
+                        </button>
                     </div>
 
                     <!-- The Builder Content -->
@@ -3977,14 +4582,31 @@
                 // Show nav pill after scrolling 80px
                 navPill.classList.toggle('visible', sy > 80);
 
-                // Hide scroll nudge once user scrolls
-                if (scrollNudge) scrollNudge.classList.toggle('hidden', sy > 60);
+                // Hide scroll nudge once user scrolls past hero
+                // Only toggle hidden AFTER appeared is set, so the element is
+                // properly interactive before hiding is ever considered.
+                if (scrollNudge && scrollNudge.classList.contains('appeared')) {
+                    scrollNudge.classList.toggle('hidden', sy > 60);
+                }
 
-                // Find the current active section
+                // Active section: pick the last section whose top is within the
+                // top 40% of the viewport. For the last section we also check
+                // if the user is within 80px of the page bottom so connect
+                // always activates when reached.
+                const viewH   = window.innerHeight;
+                const pageH   = document.documentElement.scrollHeight;
+                const atBottom = sy + viewH >= pageH - 80;
+
                 let current = '';
                 sections.forEach(sec => {
-                    if (sy >= sec.offsetTop - 130) current = sec.id;
+                    const top = sec.getBoundingClientRect().top;
+                    if (top <= viewH * 0.45) current = sec.id;
                 });
+
+                // Force the last section active when at the page bottom
+                if (atBottom && sections.length) {
+                    current = sections[sections.length - 1].id;
+                }
 
                 // Apply .active class and update indicator
                 navLinks.forEach(link => {
@@ -3999,16 +4621,26 @@
                 link.addEventListener('click', e => {
                     e.preventDefault();
                     const target = document.querySelector(link.getAttribute('href'));
-                    if (target) scrollTo(target);
+                    if (!target) return;
+
+                    // For the last section (connect) use offset 0 so Lenis
+                    // doesn't try to scroll past the document bottom.
+                    const isLast = target === sections[sections.length - 1];
+                    scrollTo(target, isLast ? 0 : -80);
                 });
             });
 
-            // Scroll nudge click
+            // Scroll nudge — class-driven appear + click
             if (scrollNudge) {
+                // Trigger the entry transition after the page settles (1.2s)
+                setTimeout(() => {
+                    scrollNudge.classList.add('appeared');
+                }, 1200);
+
                 scrollNudge.addEventListener('click', e => {
                     e.preventDefault();
                     const about = document.getElementById('about');
-                    if (about) scrollTo(about);
+                    if (about) scrollTo(about, -80);
                 });
             }
 
@@ -4472,28 +5104,66 @@
 ============================================================ */
 
         function toggleAbout(section) {
-            // Select the buttons and the content blocks
-            const buttons = document.querySelectorAll('.tab-btn');
+            const tabsWrapper  = document.getElementById('aboutTabs');
+            const indicator    = document.getElementById('tabIndicator');
+            const builderBtn   = document.getElementById('tabBuilder');
+            const humanBtn     = document.getElementById('tabHuman');
             const builderContent = document.getElementById('bio-builder');
-            const humanContent = document.getElementById('bio-human');
+            const humanContent   = document.getElementById('bio-human');
 
-            // Safety check to ensure the elements exist on the current page
-            if (!builderContent || !humanContent || buttons.length === 0) return;
+            if (!builderContent || !humanContent || !builderBtn || !humanBtn) return;
 
-            // Reset all buttons to inactive
-            buttons.forEach(btn => btn.classList.remove('active'));
+            // Remove active from all, then add to the selected
+            [builderBtn, humanBtn].forEach(btn => {
+                btn.classList.remove('active');
+                btn.setAttribute('aria-pressed', 'false');
+            });
 
-            // Handle the switching logic
+            const activeBtn = section === 'builder' ? builderBtn : humanBtn;
+            activeBtn.classList.add('active');
+            activeBtn.setAttribute('aria-pressed', 'true');
+
+            // Slide indicator using layout-relative offsetLeft/offsetWidth so scroll
+            // position never skews the calculation.
+            if (indicator && tabsWrapper) {
+                const PADDING = 4; // tabs container padding
+                const maxLeft = tabsWrapper.clientWidth - PADDING - activeBtn.offsetWidth;
+                const targetLeft = Math.max(PADDING, Math.min(maxLeft, activeBtn.offsetLeft));
+                indicator.style.left  = targetLeft + 'px';
+                indicator.style.width = activeBtn.offsetWidth + 'px';
+            }
+
+            // Toggle purple tint on the indicator when "human" is active
+            tabsWrapper?.classList.toggle('human-active', section === 'human');
+
+            // Swap content
             if (section === 'builder') {
-                buttons[0].classList.add('active');
                 humanContent.classList.replace('active-bio', 'hidden-bio');
                 builderContent.classList.replace('hidden-bio', 'active-bio');
-            } else if (section === 'human') {
-                buttons[1].classList.add('active');
+            } else {
                 builderContent.classList.replace('active-bio', 'hidden-bio');
                 humanContent.classList.replace('hidden-bio', 'active-bio');
             }
-        }// end DOMContentLoaded
+        }
+
+        // Initialise indicator position on load (no transition on first paint)
+        (function initTabIndicator() {
+            const tabs   = document.getElementById('aboutTabs');
+            const ind    = document.getElementById('tabIndicator');
+            const active = document.querySelector('.tab-btn.active');
+            if (!tabs || !ind || !active) return;
+
+            requestAnimationFrame(() => {
+                // Suppress transition on first placement so it snaps instantly
+                ind.style.transition = 'none';
+                const PADDING = 4;
+                const maxLeft = tabs.clientWidth - PADDING - active.offsetWidth;
+                ind.style.left  = Math.max(PADDING, Math.min(maxLeft, active.offsetLeft)) + 'px';
+                ind.style.width = active.offsetWidth + 'px';
+                // Re-enable transition after the first frame is committed
+                requestAnimationFrame(() => { ind.style.transition = ''; });
+            });
+        })();// end DOMContentLoaded
     </script>
 
 </body>
