@@ -436,6 +436,11 @@
             color: var(--text);
         }
 
+        /* Hide mobile navigation toggle on desktop */
+        .mobile-nav-toggle {
+            display: none;
+        }
+
 
         /* ================================================================
            GLASS CARD — Core reusable component
@@ -814,20 +819,6 @@
                 box-shadow 0.35s ease;
         }
 
-        /* Animated transition class applied by JS ONLY during dock/undock */
-        .resume-btn.animating {
-            transition:
-                top 0.5s var(--ease-spring),
-                left 0.5s var(--ease-spring),
-                width 0.5s var(--ease-spring),
-                height 0.5s var(--ease-spring),
-                padding 0.5s var(--ease-spring),
-                border-radius 0.5s var(--ease-spring),
-                background-color 0.35s ease,
-                border-color 0.35s ease,
-                color 0.35s ease,
-                box-shadow 0.35s ease;
-        }
 
         /* Running border effect on the resume button on hover */
         .resume-btn::before {
@@ -875,29 +866,6 @@
             transform: translateY(2px) scale(1.1);
         }
 
-        /* Docked styling at the top-right header */
-        .resume-btn.docked {
-            background: rgba(10, 10, 18, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
-            border-color: var(--border);
-            border-radius: 999px;
-            font-size: 0.84rem;
-        }
-
-        .resume-btn.docked:hover {
-            border-color: transparent;
-            background: rgba(34, 211, 238, 0.1);
-            color: var(--accent);
-            box-shadow: 0 4px 20px rgba(34, 211, 238, 0.25);
-            transform: none;
-            /* keep position locked */
-        }
-
-        .resume-btn.docked:hover svg {
-            transform: translateY(1px);
-        }
 
         /* Social buttons container */
         .social-actions-group {
@@ -2048,188 +2016,330 @@
             overflow: visible;
         }
 
-        /* The actual scrollable row — loose padding so glows breathe */
+        /* Stacked Carousel Container */
         .projects-grid {
-            display: flex;
-            flex-direction: row;
-            gap: 36px;
-            overflow-x: auto;
-            overflow-y: visible;
-            /* let glow blobs escape vertically */
-            scroll-behavior: smooth;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-            padding: 48px 28px 56px;
-            /* increased horizontal padding to 28px to prevent glow clipping */
-            cursor: grab;
-            align-items: flex-start;
+            position: relative;
+            width: 100%;
+            height: 400px; /* Breathing room for wrapper shadow/hover translateY */
+            display: block;
+            overflow: visible;
+            margin: 0 auto;
+            padding: 0;
+            max-width: 960px;
+            perspective: 1200px;
+            transform-style: preserve-3d;
         }
 
-        .projects-grid::-webkit-scrollbar {
+        /* ================================================================
+           PROJECTS REDESIGN — Wide Split-Screen Telemetry Cards
+           ================================================================ */
+        
+        /* Projects Header Container (moves title left, pagination right above card) */
+        .proj-header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: min(820px, 92vw);
+            margin: 0 auto 20px;
+            padding: 0 4px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Pagination indicator styled as a premium glassmorphic container/tab */
+        .proj-pagination {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Kanit', system-ui, sans-serif;
+            font-size: 0.88rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.45);
+            letter-spacing: 0.05em;
+            z-index: 5;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 255, 255, 0.08);
+            border-radius: 99px;
+            padding: 8px 18px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+        }
+
+        .proj-pagination:hover {
+            border-color: rgba(255, 255, 255, 0.22);
+        }
+
+        .proj-pagination-num-active {
+            color: #ffffff;
+            font-size: 1.1rem;
+            min-width: 18px;
+            text-align: right;
+            transition: color 0.35s ease, text-shadow 0.35s ease;
+        }
+
+        .proj-pagination-bar {
+            width: 60px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 99px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .proj-pagination-bar-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 16.67%; /* 1 of 6 projects */
+            border-radius: 99px;
+            transition: width 0.35s cubic-bezier(0.16, 1, 0.3, 1), background 0.35s ease;
+        }
+
+        /* Card Wrapper - Static positioning with smooth vertical lift on hover */
+        .proj-card-wrap {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: min(820px, 92vw);
+            height: 380px;
+            overflow: visible;
+            background: var(--card-gradient);
+            border-radius: 38px;
+            padding: 4px; /* Border thickness */
+            
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translate3d(-50%, 0, 0); /* Locked static in-place */
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1),
+                        transform 0.4s cubic-bezier(0.25, 1, 0.5, 1), /* For lift on hover only */
+                        visibility 0.6s;
+            z-index: 1;
+        }
+
+        /* Active card wrapper fades in */
+        .proj-card-wrap.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transform: translate3d(-50%, 0, 0);
+            z-index: 5;
+        }
+
+        /* Active card lifts up slightly on hover to keep the top border fully visible */
+        .proj-card-wrap.active:hover {
+            transform: translate3d(-50%, -6px, 0);
+        }
+
+        /* Wrapper states during 3D carousel transitions: keep statically centered and fade to 0 */
+        .proj-card-wrap.exit-next,
+        .proj-card-wrap.exit-prev,
+        .proj-card-wrap.enter-next,
+        .proj-card-wrap.enter-prev {
+            opacity: 0 !important;
+            visibility: visible !important;
+            pointer-events: none !important;
+            transform: translate3d(-50%, 0, 0) !important; /* Keep static at center */
+            transition: opacity 0.4s ease;
+        }
+
+        /* Neon Halo glowing behind the card wrapper — DISABLED for minimal aesthetic */
+        .proj-glow {
             display: none;
         }
 
-        .projects-grid.dragging {
-            cursor: grabbing;
-            scroll-behavior: auto;
-        }
-
-        /* ================================================================
-           CARD WRAPPER — IS the gradient border.
-           The wrapper's background IS the gradient; its 4px padding
-           reveals it as a coloured border ring around the black card.
-        ================================================================ */
-        .proj-card-wrap {
-            position: relative;
-            flex: 0 0 min(290px, 85vw);
-            overflow: visible;
-
-            /* The gradient lives HERE — shows as the 4px border gap */
-            background: var(--card-gradient);
-            border-radius: 38px;
-            padding: 4px;
-            /* this is the border thickness */
-
-            transition: transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
-        }
-
-        .proj-card-wrap:hover {
-            transform: translateY(-10px) scale(1.018);
-        }
-
-        /* ================================================================
-           NEON HALO — soft glow from the border ring onto the background.
-           Sits behind the wrapper via z-index: -1.
-        ================================================================ */
-        .proj-glow {
-            position: absolute;
-            inset: 0px;
-            border-radius: 38px;
-            opacity: 0.65;
-            pointer-events: none;
-            filter: blur(12px);
-            z-index: -1;
-            /* strictly behind the wrapper */
-            background: var(--card-gradient);
-            transition: opacity 0.45s ease, filter 0.45s ease;
-        }
-
-        .proj-card-wrap:hover .proj-glow {
-            opacity: 0.90;
-            filter: blur(8px);
-        }
-
-        /* ================================================================
-           CARD BODY — pure black, sits inside the 4px gradient padding.
-           The wrapper IS the border. This card is just content.
-        ================================================================ */
+        /* Split-screen card interior: remains static, masks the transitions of inner panels */
         .proj-card {
             position: relative;
             width: 100%;
-            height: 320px;
-            padding: 26px 28px;
+            height: 372px; /* 380 wrapper - 8 padding */
             display: flex;
-            flex-direction: column;
-            gap: 0;
+            flex-direction: row;
             overflow: hidden;
             border-radius: 34px;
-            /* = wrapper(38) - padding(4) */
-            background: #0A0A0C;
-            /* PURE BLACK — absolutely no colour */
+            background: #0A0A0C !important; /* Pure black interior */
             border: none;
             box-shadow: none;
         }
 
-        /* Both pseudo-elements off — the wrapper handles the border */
+        /* Active card's interior pops in */
+        .proj-card-wrap.active .proj-card {
+            opacity: 1;
+        }
+
+        /* Micro-hover effect: interior container gets a subtle scale and shadow */
+        .proj-card-wrap.active:hover .proj-card {
+            transform: scale(1.006);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
         .proj-card::before,
         .proj-card::after {
             display: none;
         }
 
-        /* Project number — plain low-opacity white watermark, no gradient text */
+        /* Left side: Telemetry schematic container */
+        .proj-left-panel {
+            width: 42%;
+            height: 100%;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.005);
+            position: relative;
+            overflow: hidden;
+            
+            /* Enable 3D transitions on content panels */
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1) rotateY(0deg);
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1),
+                        opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Right side: Project text description details */
+        .proj-right-panel {
+            width: 58%;
+            height: 100%;
+            padding: 36px 36px 36px 32px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            position: relative;
+            z-index: 2;
+            
+            /* Enable 3D transitions on content panels */
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            opacity: 1;
+            transform: translate3d(0, 0, 0) scale(1) rotateY(0deg);
+            transition: transform 0.35s cubic-bezier(0.25, 1, 0.5, 1),
+                        opacity 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        /* Transition states for content panels (.proj-left-panel and .proj-right-panel)
+           Provides a parallax 3D effect (text slides further than the SVG) */
+
+        /* Next slide: current card exits to left */
+        .proj-card-wrap.exit-next .proj-left-panel {
+            opacity: 0 !important;
+            transform: translate3d(-60px, 0, 0) scale(0.9) rotateY(-10deg) !important;
+        }
+        .proj-card-wrap.exit-next .proj-right-panel {
+            opacity: 0 !important;
+            transform: translate3d(-25px, 0, 0) !important;
+        }
+
+        /* Next slide: new card enters from right */
+        .proj-card-wrap.enter-next .proj-left-panel {
+            opacity: 0 !important;
+            transform: translate3d(60px, 0, 0) scale(0.9) rotateY(10deg) !important;
+            transition: none !important; /* Position instantly */
+        }
+        .proj-card-wrap.enter-next .proj-right-panel {
+            opacity: 0 !important;
+            transform: translate3d(20px, 0, 0) !important;
+            transition: none !important; /* Position instantly */
+        }
+
+        /* Prev slide: current card exits to right */
+        .proj-card-wrap.exit-prev .proj-left-panel {
+            opacity: 0 !important;
+            transform: translate3d(60px, 0, 0) scale(0.9) rotateY(10deg) !important;
+        }
+        .proj-card-wrap.exit-prev .proj-right-panel {
+            opacity: 0 !important;
+            transform: translate3d(20px, 0, 0) !important;
+        }
+
+        /* Prev slide: new card enters from left */
+        .proj-card-wrap.enter-prev .proj-left-panel {
+            opacity: 0 !important;
+            transform: translate3d(-60px, 0, 0) scale(0.9) rotateY(-10deg) !important;
+            transition: none !important; /* Position instantly */
+        }
+        .proj-card-wrap.enter-prev .proj-right-panel {
+            opacity: 0 !important;
+            transform: translate3d(-25px, 0, 0) !important;
+            transition: none !important; /* Position instantly */
+        }
+
+        /* Project number indicator */
         .proj-num {
             position: absolute;
-            top: 16px;
-            right: 22px;
-            font-size: 4.4rem;
-            font-weight: 900;
-            letter-spacing: -0.05em;
+            top: 32px;
+            right: 36px;
+            font-size: 3rem;
+            font-weight: 800;
+            font-family: 'Kanit', sans-serif;
+            color: rgba(255, 255, 255, 0.05);
+            line-height: 1;
             user-select: none;
             pointer-events: none;
-            z-index: 3;
-            color: rgba(255, 255, 255, 0.10);
-            /* plain white, always visible */
+            z-index: 1;
             transition: color 0.45s ease, transform 0.45s var(--ease-spring);
         }
 
-        /* On hover: number gets slightly brighter */
         .proj-card-wrap:hover .proj-num {
-            color: rgba(255, 255, 255, 0.22);
-            transform: scale(1.08) translateY(-4px);
+            color: rgba(255, 255, 255, 0.15);
+            transform: scale(1.06) translateY(-2px);
         }
 
-        /* Running border light loop animation on hover */
-        .tag::before,
-        .project-link::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
-            background-size: 200% auto;
-            -webkit-mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 2;
+        /* Category pill badge */
+        .proj-category-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 5px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            border-radius: 99px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            width: fit-content;
+            margin-bottom: 18px;
+            font-family: 'Kanit', sans-serif;
         }
 
-        .tag:hover::before,
-        .project-link:hover::before {
-            opacity: 1;
-            animation: borderRun 1.5s linear infinite;
+        .proj-card-wrap:hover .proj-category-badge {
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
         }
 
-        @keyframes borderRun {
-            to {
-                background-position: 200% center;
-            }
-        }
-
-        /* ================================================================
-           TEXT — always solid and legible. Zero gradient-text tricks.
-           Colour only lives on the border ring and interactive chrome.
-           ================================================================ */
-
-        /* Title: solid white, brightens on hover — NEVER transparent */
-        /* Title: solid white, brightens on hover */
+        /* Project Title (Kanit font, solid white) */
         .project-title {
-            font-size: 1.22rem;
+            font-size: 1.45rem;
             font-weight: 700;
-            color: rgba(245, 245, 250, 0.82);
-            line-height: 1.3;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.25;
             margin-bottom: 12px;
             position: relative;
             z-index: 3;
             transition: color 0.3s ease;
+            font-family: 'Kanit', sans-serif !important;
         }
 
         .proj-card-wrap:hover .project-title {
             color: #ffffff;
         }
 
-        /* Description: always at default top flow, dim at rest, clear on hover */
+        /* Project Description */
         .project-desc {
             font-size: 0.92rem;
             color: rgba(185, 185, 205, 0.50);
-            line-height: 1.68;
+            line-height: 1.62;
             position: relative;
             z-index: 3;
+            margin-bottom: 24px;
             transition: color 0.4s ease;
         }
 
@@ -2237,30 +2347,20 @@
             color: rgba(215, 215, 230, 0.85);
         }
 
-        /* Bottom hover zone — tags + button, rises from bottom on hover */
+        /* Bottom tags + action button bar */
         .proj-bottom {
-            position: absolute;
-            bottom: 26px;
-            left: 28px;
-            right: 28px;
+            margin-top: auto; /* Push to bottom of flex panel container */
             display: flex;
-            flex-direction: row;
-            align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            align-items: center;
+            width: 100%;
             z-index: 3;
-            opacity: 0;
-            transform: translateY(15px);
-            pointer-events: none;
-            transition:
-                opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0.85;
+            transition: opacity 0.35s ease;
         }
 
         .proj-card-wrap:hover .proj-bottom {
             opacity: 1;
-            transform: translateY(0);
-            pointer-events: auto;
         }
 
         /* Tech tags inside card */
@@ -2268,15 +2368,16 @@
             display: flex;
             flex-wrap: wrap;
             gap: 6px;
+            align-items: center;
         }
 
-        /* GitHub button — dark circle, gradient BORDER RING on hover (not a fill) */
+        /* GitHub button next to skills tag */
         .project-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 34px;
-            height: 34px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             color: rgba(255, 255, 255, 0.55);
             text-decoration: none;
@@ -2288,31 +2389,16 @@
             transition:
                 border-color 0.3s ease,
                 color 0.3s ease,
+                box-shadow 0.3s ease,
                 transform 0.4s var(--ease-spring);
         }
 
-        /* Gradient border ring injected behind button on hover */
-        .project-link::after {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            /* sits outside the button boundary */
-            border-radius: inherit;
-            background: var(--card-gradient);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
         .project-link:hover {
-            border-color: transparent;
-            color: #ffffff;
-            /* SVG stays white — always legible */
-            transform: translateY(-2px) scale(1.1);
-        }
-
-        .project-link:hover::after {
-            opacity: 1;
+            color: var(--card-accent);
+            border-color: var(--card-accent);
+            box-shadow: 0 0 8px var(--card-accent); /* Clean outer line glow */
+            background: rgba(255, 255, 255, 0.06);
+            transform: translateY(-2px) scale(1.06);
         }
 
         /* GitHub SVG */
@@ -2328,42 +2414,22 @@
             transform: scale(1.12) rotate(-6deg);
         }
 
-        /* Tags inside project cards — gradient BORDER on hover, text stays white */
+        /* Tags inside project cards */
         .proj-card-wrap .project-tags .tag {
             background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.10);
             color: rgba(210, 210, 226, 0.60);
             font-size: 0.77rem;
-            position: relative;
-            overflow: hidden;
             transition: color 0.3s ease, border-color 0.3s ease,
-                transform 0.35s var(--ease-spring);
-        }
-
-        /* Gradient ring behind tag on hover */
-        .proj-card-wrap .project-tags .tag::before {
-            content: '';
-            position: absolute;
-            inset: -1.5px;
-            border-radius: inherit;
-            background: var(--card-gradient);
-            z-index: -1;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+                box-shadow 0.3s ease, transform 0.35s var(--ease-spring);
         }
 
         .proj-card-wrap .project-tags .tag:hover {
             color: #ffffff;
-            /* always solid white — never invisible */
-            border-color: transparent;
+            border-color: var(--card-accent);
+            box-shadow: 0 0 6px var(--card-accent);
             background: rgba(255, 255, 255, 0.05);
             transform: translateY(-2px) scale(1.04);
-            box-shadow: none;
-        }
-
-        .proj-card-wrap .project-tags .tag:hover::before {
-            opacity: 1;
         }
 
         /* ================================================================
@@ -2375,82 +2441,91 @@
         /* 01 — Hot Pink → Amber  (warm, energetic) */
         .proj-card-wrap:nth-child(1) {
             --card-gradient: linear-gradient(137deg, #FF2D78 0%, #FF9500 100%);
+            --card-accent: #FF2D78;
         }
 
         /* 02 — Electric Cyan → Sky Blue  (cool, focused) */
         .proj-card-wrap:nth-child(2) {
             --card-gradient: linear-gradient(137deg, #00E5FF 0%, #0077FF 100%);
+            --card-accent: #00E5FF;
         }
 
         /* 03 — Indigo → Soft Violet  (deep, calm) */
         .proj-card-wrap:nth-child(3) {
             --card-gradient: linear-gradient(137deg, #7B2FFF 0%, #BF9AFF 100%);
+            --card-accent: #7B2FFF;
         }
 
         /* 04 — Royal Blue → Vivid Magenta  (bold contrast) */
         .proj-card-wrap:nth-child(4) {
             --card-gradient: linear-gradient(137deg, #3B82F6 0%, #EC4899 100%);
+            --card-accent: #3B82F6;
         }
 
         /* 05 — Emerald → Aqua  (fresh, techy) */
         .proj-card-wrap:nth-child(5) {
             --card-gradient: linear-gradient(137deg, #00C9A7 0%, #00A3FF 100%);
+            --card-accent: #00C9A7;
         }
 
         /* 06 — Gold → Coral  (warm earth) */
         .proj-card-wrap:nth-child(6) {
             --card-gradient: linear-gradient(137deg, #FFD60A 0%, #FF6B35 100%);
+            --card-accent: #FFD60A;
         }
 
         /* ---- SCROLL ARROWS ---- */
-        .proj-arrow {
-            position: absolute;
-            top: 50%;
-            transform: translateY(calc(-50% - 12px));
-            /* shift up half the slider space */
-            width: 40px;
-            height: 40px;
+        /* ---- SCROLL ARROWS INSIDE CARDS ---- */
+        .proj-controls {
+            display: flex;
+            gap: 12px;
+            margin-top: 10px; /* Stack naturally below tags */
+            padding-top: 4px;
+            z-index: 10;
+            position: relative;
+        }
+
+        .proj-arrow-btn {
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: rgba(10, 10, 18, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
             display: flex;
             align-items: center;
             justify-content: center;
             color: rgba(255, 255, 255, 0.55);
             cursor: pointer;
-            z-index: 4;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s ease, background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease, color 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            outline: none;
         }
 
-        .proj-arrow.visible {
-            opacity: 1;
-            pointer-events: auto;
+        .proj-arrow-btn:hover {
+            color: var(--active-accent, var(--card-accent));
+            border-color: var(--active-accent, var(--card-accent));
+            box-shadow: 0 0 8px var(--active-accent, var(--card-accent)); /* Clean outer line glow */
+            background: rgba(255, 255, 255, 0.06);
+            transform: scale(1.06);
         }
 
-        .proj-arrow:hover {
-            background: rgba(34, 211, 238, 0.12);
-            border-color: rgba(34, 211, 238, 0.35);
-            color: var(--accent);
-            box-shadow: 0 0 18px rgba(34, 211, 238, 0.25);
+        .proj-arrow-btn:active {
+            transform: scale(0.95);
+            box-shadow: 0 0 8px var(--active-accent, var(--card-accent));
         }
 
-        .proj-arrow-left {
-            left: 4px;
+        .proj-arrow-btn:focus,
+        .project-link:focus {
+            outline: none;
         }
 
-        .proj-arrow-right {
-            right: 4px;
+        .project-link:active {
+            transform: translateY(-2px) scale(0.95);
+            box-shadow: 0 0 8px var(--card-accent);
         }
 
         /* ---- CUSTOM SLIDER ---- */
         .proj-slider-wrap {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
+            display: none !important; /* hidden in stacked carousel mode */
         }
 
         .proj-slider-track {
@@ -2494,6 +2569,165 @@
         .proj-slider-thumb.dragging {
             cursor: grabbing;
             box-shadow: 0 0 16px rgba(34, 211, 238, 0.9), 0 0 28px rgba(34, 211, 238, 0.7);
+        }
+
+        /* ---- SVG TELEMETRY SCHEMATIC ANIMATIONS & STYLES ---- */
+        
+        /* Ping pulse animation for HUD console status lights */
+        @keyframes hudPing {
+            0% {
+                r: 3.5px;
+                stroke-opacity: 0.9;
+                stroke-width: 1.2px;
+            }
+            100% {
+                r: 11px;
+                stroke-opacity: 0;
+                stroke-width: 0.5px;
+            }
+        }
+        
+        .ping-circle, 
+        .depth-ping-circle, 
+        .drainage-ping-circle, 
+        .alu-ping-circle, 
+        .spectral-ping-circle, 
+        .power-ping-circle {
+            animation: hudPing 2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+            transform-origin: 14px 12px;
+        }
+
+        /* 01 — SIS failure predictor transducer leg height oscillations */
+        @keyframes legOscillateA {
+            0%, 100% { height: 46px; y: 72px; }
+            50% { height: 55px; y: 63px; }
+        }
+        @keyframes legOscillateB {
+            0%, 100% { height: 54px; y: 64px; }
+            50% { height: 40px; y: 78px; }
+        }
+        @keyframes legOscillateC {
+            0%, 100% { height: 35px; y: 83px; }
+            50% { height: 48px; y: 70px; }
+        }
+        .sis-leg-group[data-leg="A"] .sis-leg-bar {
+            animation: legOscillateA 4.2s ease-in-out infinite;
+        }
+        .sis-leg-group[data-leg="B"] .sis-leg-bar {
+            animation: legOscillateB 4.8s ease-in-out infinite;
+        }
+        .sis-leg-group[data-leg="C"] .sis-leg-bar {
+            animation: legOscillateC 3.6s ease-in-out infinite;
+        }
+
+        /* 02 — Depthra radar sweep scanner & target node pulsing */
+        @keyframes radarSweep {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .depth-scan-line {
+            animation: radarSweep 4s linear infinite;
+        }
+
+        @keyframes nodePulse {
+            0%, 100% { transform: scale(1); opacity: 0.85; }
+            50% { transform: scale(1.28); opacity: 1; filter: drop-shadow(0 0 3px currentColor); }
+        }
+        .depth-node-group {
+            animation: nodePulse 3.2s ease-in-out infinite;
+        }
+        .depth-node-group[data-node="Alpha"] {
+            transform-origin: 75px 65px;
+        }
+        .depth-node-group[data-node="Beta"] {
+            transform-origin: 125px 98px;
+            animation-delay: 1.6s;
+        }
+
+        /* 03 — Smart Drainage System wave ripples & aquifer flows */
+        @keyframes pipeFlow {
+            0% { transform: translateX(-35px); }
+            100% { transform: translateX(145px); }
+        }
+        .flowing-dot {
+            animation: pipeFlow 2.8s linear infinite;
+        }
+
+        @keyframes drainageWaveBob {
+            0%, 100% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(1.8px) scaleY(0.92); }
+        }
+        .drainage-wave-path {
+            animation: drainageWaveBob 3s ease-in-out infinite;
+            transform-origin: center bottom;
+        }
+
+        /* 04 — 4-Bit ALU data flows & logic core pulses */
+        @keyframes aluBitInput {
+            0% { transform: translateX(-15px); opacity: 0; }
+            15% { opacity: 1; }
+            85% { opacity: 1; }
+            100% { transform: translateX(35px); opacity: 0; }
+        }
+        .alu-bit-dot {
+            animation: aluBitInput 2.4s linear infinite;
+        }
+        .alu-bit-dot-delayed {
+            animation: aluBitInput 2.4s linear infinite;
+            animation-delay: 1.2s;
+        }
+
+        @keyframes corePulse {
+            0%, 100% { stroke-opacity: 0.3; fill-opacity: 0; }
+            50% { stroke-opacity: 0.85; fill-opacity: 0.05; }
+        }
+        .alu-logic-core {
+            animation: corePulse 3s ease-in-out infinite;
+        }
+
+        /* 05 — Spectral Analyzer wave oscillograph jitter */
+        @keyframes waveOscillate {
+            0% { transform: translateY(0) scaleY(1); }
+            50% { transform: translateY(-1.5px) scaleY(0.9); }
+            100% { transform: translateY(0) scaleY(1); }
+        }
+        .spectral-wave-path {
+            animation: waveOscillate 2.5s ease-in-out infinite;
+            transform-origin: 100px 84px;
+            transition: d 0.4s cubic-bezier(0.16, 1, 0.3, 1), stroke-width 0.3s ease;
+        }
+
+        /* 06 — AC to DC Converter signal converter & DC current travels */
+        @keyframes acSignalFlow {
+            0% { stroke-dashoffset: 0; }
+            100% { stroke-dashoffset: -18; }
+        }
+        .ac-wave-path {
+            stroke-dasharray: 6 3;
+            animation: acSignalFlow 1.6s linear infinite;
+        }
+
+        @keyframes dcPulseFlow {
+            0% { stroke-dashoffset: 24; }
+            100% { stroke-dashoffset: 0; }
+        }
+        .power-signal-group[data-wave="DC"] line:nth-child(2) {
+            stroke-dasharray: 8 12;
+            animation: dcPulseFlow 1.5s linear infinite;
+        }
+
+        /* Interactive styling overrides for SVGs */
+        .sis-leg-case {
+            transition: stroke 0.3s ease, fill 0.3s ease, stroke-width 0.3s ease;
+        }
+        .depth-node {
+            transition: r 0.3s var(--ease-spring), fill 0.3s ease;
+        }
+        .alu-path-group line {
+            transition: stroke 0.3s ease, stroke-width 0.3s ease;
+        }
+        .power-signal-group rect {
+            transition: stroke 0.3s ease, stroke-width 0.3s ease;
         }
 
 
@@ -3492,53 +3726,211 @@
                 margin-bottom: 32px;
             }
 
-            /* Nav: move to bottom, make it scrollable overflow-x */
+            /* Mobile Navigation Header Dropdown */
             #nav {
-                top: auto;
-                bottom: 16px;
-                padding: 0 16px;
+                position: fixed;
+                top: 76px;
+                right: 26px;
+                left: auto;
+                bottom: auto;
+                z-index: 1001;
+                padding: 0;
+                width: auto;
                 pointer-events: none;
             }
 
             .nav-pill {
-                overflow-x: auto;
-                overflow-y: hidden;
-                scrollbar-width: none;
-                -ms-overflow-style: none;
-                max-width: calc(100vw - 32px);
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                gap: 4px;
+                padding: 12px 8px;
+                background: rgba(10, 10, 18, 0.88);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                backdrop-filter: blur(var(--blur));
+                -webkit-backdrop-filter: blur(var(--blur));
+                box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65),
+                            inset 0 1px 0 rgba(255, 255, 255, 0.08);
+                pointer-events: none;
+                
+                /* Hidden state by default on mobile */
+                opacity: 0 !important;
+                transform: translateY(-12px) scale(0.92) !important;
+                transform-origin: top right;
+                transition: opacity 0.4s var(--ease-out),
+                            transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+                overflow: visible;
+                max-width: none;
                 flex-wrap: nowrap;
-                transform: translateY(20px) scale(0.96);
-                /* tighter initial state */
-                pointer-events: auto;
-                gap: 1px;
+            }
+
+            .nav-pill.open {
+                opacity: 1 !important;
+                transform: translateY(0) scale(1) !important;
+                pointer-events: auto !important;
+            }
+
+            .nav-link {
+                width: 100%;
+                text-align: right;
+                padding: 8px 16px;
+                font-size: 0.90rem;
+                font-weight: 500;
+                color: var(--text-muted);
+                transition: color 0.3s ease, transform 0.3s ease, opacity 0.4s ease;
+                opacity: 0;
+                transform: translateX(10px);
+                user-select: none;
+                cursor: pointer;
+                flex-shrink: 0;
+            }
+
+            .nav-pill.open .nav-link {
+                opacity: 1;
+                transform: translateX(0);
+            }
+
+            /* Staggered entry transitions for links inside open pill */
+            .nav-pill.open .nav-link:nth-child(2) { transition-delay: 0.04s; }
+            .nav-pill.open .nav-link:nth-child(3) { transition-delay: 0.08s; }
+            .nav-pill.open .nav-link:nth-child(4) { transition-delay: 0.12s; }
+            .nav-pill.open .nav-link:nth-child(5) { transition-delay: 0.16s; }
+            .nav-pill.open .nav-link:nth-child(6) { transition-delay: 0.20s; }
+            .nav-pill.open .nav-link:nth-child(7) { transition-delay: 0.24s; }
+            .nav-pill.open .nav-link:nth-child(8) { transition-delay: 0.28s; }
+
+            .nav-link:hover,
+            .nav-link.active {
+                color: var(--accent);
+                transform: translateX(-4px);
+                background: transparent;
+            }
+
+            /* Hide horizontal indicator & scrollbars on mobile */
+            .nav-indicator {
+                display: none !important;
             }
 
             .nav-pill::-webkit-scrollbar {
                 display: none;
             }
 
-            .nav-pill.visible {
-                transform: translateY(0) scale(1);
-            }
-
-            .nav-link {
-                padding: 6px 11px;
-                font-size: 0.78rem;
-                flex-shrink: 0;
-                /* prevent nav links from shrinking */
-            }
-
-            /* Scroll nudge: anchor to viewport on mobile so it's always visible
-               regardless of how tall the stacked hero content is */
-            .scroll-nudge {
+            /* Mobile Nav Toggle Button Styles */
+            .mobile-nav-toggle {
+                display: block !important;
                 position: fixed;
-                bottom: 90px;
-                /* sit above the bottom nav pill */
+                top: 22px;
+                right: 26px;
+                width: 42px;
+                height: 42px;
+                z-index: 1002;
+                background: transparent;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                padding: 0;
+                user-select: none;
+            }
+
+            .toggle-bg {
+                position: absolute;
+                inset: 0;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.03);
+                border: 1px solid var(--border);
+                backdrop-filter: blur(12px);
+                -webkit-backdrop-filter: blur(12px);
+                transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s var(--ease-spring);
+            }
+
+            .mobile-nav-toggle:hover .toggle-bg,
+            .mobile-nav-toggle.active .toggle-bg {
+                background: var(--accent-dim);
+                border-color: var(--accent-border);
+                transform: scale(1.05);
+            }
+
+            .toggle-svg {
+                position: absolute;
+                inset: 0;
+                width: 100%;
+                height: 100%;
+                overflow: visible;
+            }
+
+            /* 3D Liquid blob animations */
+            .blob {
+                transform-origin: 25px 25px;
+                transform-box: view-box;
+                transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            }
+
+            .blob-main {
+                animation: blobPulse 5s ease-in-out infinite alternate;
+            }
+
+            .blob-sub-1 {
+                animation: blobOrbit1 7s linear infinite;
+            }
+
+            .blob-sub-2 {
+                animation: blobOrbit2 10s linear infinite;
+            }
+
+            @keyframes blobPulse {
+                0% { transform: scale(1); }
+                100% { transform: scale(1.06); }
+            }
+
+            @keyframes blobOrbit1 {
+                0% { transform: rotate(0deg) translate(2.5px) rotate(0deg); }
+                100% { transform: rotate(360deg) translate(2.5px) rotate(-360deg); }
+            }
+
+            @keyframes blobOrbit2 {
+                0% { transform: rotate(360deg) translate(-3px) rotate(-360deg); }
+                100% { transform: rotate(0deg) translate(-3px) rotate(0deg); }
+            }
+
+            /* Hamburger morph lines */
+            .line {
+                stroke: var(--text-muted);
+                transition: stroke 0.4s ease, transform 0.4s var(--ease-spring), opacity 0.3s ease;
+                transform-origin: 25px 25px;
+                transform-box: view-box;
+            }
+
+            .mobile-nav-toggle:hover .line {
+                stroke: var(--text);
+            }
+
+            .mobile-nav-toggle.active .line {
+                stroke: var(--accent);
+            }
+
+            .mobile-nav-toggle.active .top-line {
+                transform: translateY(7px) rotate(45deg);
+            }
+
+            .mobile-nav-toggle.active .mid-line {
+                transform: scaleX(0);
+                opacity: 0;
+            }
+
+            .mobile-nav-toggle.active .bot-line {
+                transform: translateY(-7px) rotate(-45deg);
+            }
+
+            /* Scroll nudge: position absolutely at the bottom of the hero section on mobile
+               so it scrolls out of view naturally and does not overlap cards */
+            .scroll-nudge {
+                position: absolute;
+                bottom: 16px;
                 left: 50%;
             }
 
             /* Hide desktop-only arrows on touch devices */
-            .proj-arrow,
             .course-arrow {
                 display: none !important;
             }
@@ -3596,9 +3988,53 @@
 
             /* Experience single-col already handled via its own media query */
 
-            /* Project + course cards: fill more of viewport */
+            /* Project split-screen cards stacking for mobile viewports */
+            .projects-grid {
+                height: 540px !important;
+            }
             .proj-card-wrap {
-                flex: 0 0 min(300px, 88vw);
+                width: min(330px, 90vw) !important;
+                height: 520px !important;
+                transform: translate3d(-50%, 6px, 0) scale(0.97) !important;
+            }
+            .proj-card-wrap.active {
+                transform: translate3d(-50%, 0, 0) scale(1) !important;
+            }
+            .proj-card-wrap.active:hover {
+                transform: translate3d(-50%, -4px, 0) scale(1.012) !important;
+            }
+            .proj-card {
+                flex-direction: column !important;
+                height: 512px !important;
+            }
+            .proj-left-panel {
+                width: 100% !important;
+                height: 190px !important;
+                border-right: none !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+                padding: 16px !important;
+            }
+            .proj-right-panel {
+                width: 100% !important;
+                height: 322px !important;
+                padding: 20px 24px 20px 24px !important;
+            }
+            .project-title {
+                font-size: 1.18rem !important;
+                margin-bottom: 8px !important;
+            }
+            .project-desc {
+                font-size: 0.85rem !important;
+                margin-bottom: 16px !important;
+                line-height: 1.5 !important;
+            }
+            .proj-num {
+                top: 20px !important;
+                right: 24px !important;
+                font-size: 2.2rem !important;
+            }
+            .proj-category-badge {
+                margin-bottom: 10px !important;
             }
 
             .course-card {
@@ -3716,11 +4152,12 @@
 
             /* Project / course cards */
             .proj-card-wrap {
-                flex: 0 0 min(280px, 90vw);
+                flex: 0 0 min(290px, 90vw);
+                height: 500px;
             }
 
             .proj-card {
-                height: 300px;
+                height: 492px !important;
             }
 
             .course-card {
@@ -4041,6 +4478,62 @@
          NAVIGATION — Floating pill, hidden until scroll
          !! EDIT: Add/remove <a> tags here to match your sections !!
          ================================================================ -->
+    <!-- ================================================================
+         MOBILE NAVIGATION TOGGLE — Smooth 3D liquid animated SVG button
+         Only displayed on mobile screens (max-width: 768px).
+         ================================================================ -->
+    <button id="mobileNavToggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <div class="toggle-bg"></div>
+        <svg class="toggle-svg" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <!-- Gooey filter to give a liquid blend to the blobs -->
+                <filter id="gooey-toggle">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="3.2" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8" result="goo" />
+                    <feBlend in="SourceGraphic" in2="goo" />
+                </filter>
+                <!-- Redesigned 3D lighting radial gradient for liquid blobs -->
+                <radialGradient id="grad3d" cx="30%" cy="30%" r="70%">
+                    <stop offset="0%" stop-color="#a78bfa" /> <!-- Soft purple highlight -->
+                    <stop offset="35%" stop-color="#22d3ee" /> <!-- Vibrant cyan accent -->
+                    <stop offset="70%" stop-color="#0891b2" /> <!-- Deep teal shading -->
+                    <stop offset="100%" stop-color="#020617" /> <!-- Dark slate shadow -->
+                </radialGradient>
+                <!-- Border gradient for the glass outer circle -->
+                <linearGradient id="gradBorder" x1="0" y1="0" x2="50" y2="50">
+                    <stop offset="0%" stop-color="rgba(255, 255, 255, 0.45)" />
+                    <stop offset="100%" stop-color="rgba(34, 211, 238, 0.12)" />
+                </linearGradient>
+                <!-- Sheen gradient for realistic 3D glass reflection -->
+                <linearGradient id="glassSheen" x1="0" y1="0" x2="50" y2="50">
+                    <stop offset="0%" stop-color="rgba(255, 255, 255, 0.4)" />
+                    <stop offset="40%" stop-color="rgba(255, 255, 255, 0.05)" />
+                    <stop offset="100%" stop-color="transparent" />
+                </linearGradient>
+            </defs>
+            
+            <!-- Gooey liquid layers -->
+            <g filter="url(#gooey-toggle)">
+                <circle class="blob blob-main" cx="25" cy="25" r="14" fill="url(#grad3d)" />
+                <circle class="blob blob-sub-1" cx="25" cy="25" r="9" fill="url(#grad3d)" />
+                <circle class="blob blob-sub-2" cx="25" cy="25" r="7.5" fill="url(#grad3d)" />
+            </g>
+            
+            <!-- Outer glass reflection highlight layer -->
+            <circle cx="25" cy="25" r="19" fill="url(#glassSheen)" style="mix-blend-mode: overlay; pointer-events: none;" />
+            
+            <!-- Outer premium 3D glass border ring -->
+            <circle cx="25" cy="25" r="21" stroke="url(#gradBorder)" stroke-width="1.2" style="mix-blend-mode: overlay;" />
+            
+            <!-- Hamburger menu lines morphing into 'X' when active -->
+            <g class="hamburger-lines" stroke="#f0f0f0" stroke-width="2.2" stroke-linecap="round">
+                <path class="line top-line" d="M16 18H34" />
+                <path class="line mid-line" d="M16 25H34" />
+                <path class="line bot-line" d="M16 32H34" />
+            </g>
+        </svg>
+    </button>
+
     <nav id="nav" aria-label="Main navigation">
         <div class="nav-pill" id="navPill">
 
@@ -4478,168 +4971,378 @@
                  Also copy a .proj-dot if you want an extra dot indicator.
                  ============================================================ -->
             <section id="projects" class="section">
-                <h2 class="section-title reveal">Projects</h2>
+                <!-- Header with Dynamic Scroll Pagination -->
+                <div class="proj-header-container reveal">
+                    <h2 class="section-title skills-title-3d" style="font-family: 'Kanit', sans-serif !important; margin: 0;">Projects</h2>
+                    <div style="display: flex; align-items: center; gap: 20px;">
+                        <div class="proj-pagination" aria-label="Project carousel progress" style="padding-bottom: 0;">
+                            <span id="projActiveNum" class="proj-pagination-num-active">1</span> of <span id="projTotalNum">6</span>
+                            <div class="proj-pagination-bar">
+                                <div class="proj-pagination-bar-fill" id="projBarFill"></div>
+                            </div>
+                        </div>
+                        <div class="proj-header-controls" style="display: flex; gap: 8px;">
+                            <button class="proj-arrow-btn proj-left-arrow" id="projLeft" aria-label="Previous Project">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6" />
+                                </svg>
+                            </button>
+                            <button class="proj-arrow-btn proj-right-arrow" id="projRight" aria-label="Next Project">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
 
-                <!-- Outer: positions arrows + fade edges -->
+                <!-- Outer: positions fade edges -->
                 <div class="proj-outer reveal" id="projOuter">
-
-                    <!-- LEFT arrow (hidden at start) -->
-                    <button class="proj-arrow proj-arrow-left" id="projLeft" aria-label="Scroll left">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="15 18 9 12 15 6" />
-                        </svg>
-                    </button>
-
-                    <!-- RIGHT arrow (visible at start) -->
-                    <button class="proj-arrow proj-arrow-right visible" id="projRight" aria-label="Scroll right">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="9 18 15 12 9 6" />
-                        </svg>
-                    </button>
 
                     <!-- Scrollable card row -->
                     <div class="projects-grid" id="projGrid">
 
-                        <!-- ============================================
-                             PROJECT CARD WRAP — copy this whole block to add.
-                             Each wrap gets gradient colours automatically
-                             via nth-child CSS tokens.
-                             !! EDIT: title, desc, tags, link per project !!
-                             ============================================ -->
-
-                        <!-- Project 1 -->
+                        <!-- Project 1: SIS Failure Predictor -->
                         <div class="proj-card-wrap">
-                            <!-- Ambient glow blob behind card -->
                             <div class="proj-glow"></div>
                             <div class="proj-card">
-                                <span class="proj-num" aria-hidden="true">01</span>
-                                <div class="project-title">SIS Failure Predictor</div>
-                                <p class="project-desc">
-                                    Hackathon project integrating hardware monitoring and predictive
-                                    algorithms on a real-world TRICONEX safety system by Schneider Electric.
-                                </p>
-                                <div class="proj-bottom">
-                                    <div class="project-tags">
-                                        <span class="tag">Python</span>
-                                        <span class="tag">Data Science</span>
-                                        <span class="tag">ML</span>
+                                <div class="proj-left-panel">
+                                    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(34, 211, 238, 0.05) 1.5px, transparent 1.5px); background-size: 16px 16px; opacity: 0.8; z-index: 0; pointer-events: none;"></div>
+                                    <svg viewBox="0 0 200 200" style="width: 100%; max-width: 220px; height: auto; user-select: none; z-index: 1;">
+                                        <text x="100" y="24" fill="#ffffff" font-size="6.5" font-family="monospace" letter-spacing="0.05em" text-anchor="middle" font-weight="bold">SIS TELEMETRY MONITOR</text>
+                                        <rect x="15" y="32" width="170" height="136" rx="12" fill="rgba(34, 211, 238, 0.01)" stroke="rgba(34, 211, 238, 0.15)" stroke-width="1" />
+                                        <text x="24" y="24" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold">[SYS_ALIGN]</text>
+                                        <text x="176" y="180" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold" text-anchor="end">[TRX_LIVE]</text>
+
+                                        <g class="cursor-pointer sis-leg-group" data-leg="A">
+                                            <rect x="25" y="40" width="30" height="85" fill="transparent" pointer-events="all" />
+                                            <text x="40" y="50" fill="#ffffff" font-size="6.5" font-family="monospace" text-anchor="middle" font-weight="bold">LEG A</text>
+                                            <rect class="sis-leg-case" x="27.5" y="58" width="25" height="64" rx="4" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(34, 211, 238, 0.2)" stroke-width="1" style="transition: all 0.3s ease;" />
+                                            <rect class="sis-leg-bar" x="29.5" y="62" width="21" height="56" rx="2" fill="url(#cyanGlow)" />
+                                        </g>
+
+                                        <g class="cursor-pointer sis-leg-group" data-leg="B">
+                                            <rect x="85" y="40" width="30" height="85" fill="transparent" pointer-events="all" />
+                                            <text x="100" y="50" fill="#ffffff" font-size="6.5" font-family="monospace" text-anchor="middle" font-weight="bold">LEG B</text>
+                                            <rect class="sis-leg-case" x="87.5" y="58" width="25" height="64" rx="4" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(34, 211, 238, 0.2)" stroke-width="1" style="transition: all 0.3s ease;" />
+                                            <rect class="sis-leg-bar" x="89.5" y="62" width="21" height="56" rx="2" fill="url(#cyanGlow)" />
+                                        </g>
+
+                                        <g class="cursor-pointer sis-leg-group" data-leg="C">
+                                            <rect x="145" y="40" width="30" height="85" fill="transparent" pointer-events="all" />
+                                            <text x="160" y="50" fill="#ffffff" font-size="6.5" font-family="monospace" text-anchor="middle" font-weight="bold">LEG C</text>
+                                            <rect class="sis-leg-case" x="147.5" y="58" width="25" height="64" rx="4" fill="rgba(255, 255, 255, 0.02)" stroke="rgba(244, 63, 94, 0.2)" stroke-width="1" style="transition: all 0.3s ease;" />
+                                            <rect class="sis-leg-bar" x="149.5" y="62" width="21" height="56" rx="2" fill="url(#pinkGlow)" />
+                                        </g>
+
+                                        <g transform="translate(25, 134)">
+                                            <rect class="sis-hud-console" width="150" height="24" rx="6" fill="rgba(3, 3, 3, 0.9)" stroke="rgba(244, 63, 94, 0.15)" stroke-width="1.2" style="transition: all 0.3s ease;" />
+                                            <circle cx="14" cy="12" r="3.5" fill="#f43f5e" />
+                                            <circle class="ping-circle" cx="14" cy="12" r="3.5" fill="none" stroke="#f43f5e" stroke-width="1" />
+                                            <text class="sis-hud-text" x="28" y="15" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold" style="transition: all 0.3s ease;">ALERT: DEV_RATE > 10%</text>
+                                        </g>
+
+                                        <defs>
+                                            <linearGradient id="cyanGlow" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#22d3ee" stop-opacity="0.8" />
+                                                <stop offset="100%" stop-color="#22d3ee" stop-opacity="0.05" />
+                                            </linearGradient>
+                                            <linearGradient id="pinkGlow" x1="0" y1="0" x2="0" y2="1">
+                                                <stop offset="0%" stop-color="#f43f5e" stop-opacity="0.8" />
+                                                <stop offset="100%" stop-color="#f43f5e" stop-opacity="0.05" />
+                                            </linearGradient>
+                                        </defs>
+                                    </svg>
+                                </div>
+                                <div class="proj-right-panel">
+                                    <span class="proj-num" aria-hidden="true">01</span>
+                                    <div class="proj-category-badge">AI &amp; ML</div>
+                                    <div class="project-title">SIS Failure Predictor</div>
+                                    <p class="project-desc">
+                                        Hackathon project integrating hardware monitoring and predictive
+                                        algorithms on a real-world TRICONEX safety system by Schneider Electric.
+                                    </p>
+                                    <div class="proj-bottom">
+                                        <div class="project-tags">
+                                            <span class="tag">Python</span>
+                                            <span class="tag">Data Science</span>
+                                            <span class="tag">ML</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Project 2 -->
+                        <!-- Project 2: Depthra -->
                         <div class="proj-card-wrap">
                             <div class="proj-glow"></div>
                             <div class="proj-card">
-                                <span class="proj-num" aria-hidden="true">02</span>
-                                <div class="project-title">Depthra</div>
-                                <p class="project-desc">
-                                    AI-powered groundwater monitoring app analyzing DWLR station data
-                                    from across India using machine learning data processing models.
-                                </p>
-                                <div class="proj-bottom">
-                                    <div class="project-tags">
-                                        <span class="tag">HTML / CSS</span>
-                                        <span class="tag">AI</span>
-                                    </div>
-                                    <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener"
-                                        class="project-link" aria-label="View on GitHub">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
+                                <div class="proj-left-panel">
+                                    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(0, 229, 255, 0.05) 1.5px, transparent 1.5px); background-size: 16px 16px; opacity: 0.8; z-index: 0; pointer-events: none;"></div>
+                                    <svg viewBox="0 0 200 200" style="width: 100%; max-width: 220px; height: auto; user-select: none; z-index: 1;">
+                                        <text x="100" y="24" fill="#ffffff" font-size="6.5" font-family="monospace" letter-spacing="0.05em" text-anchor="middle" font-weight="bold">DEPTH MATRIX RECEIVER</text>
+                                        <rect x="15" y="32" width="170" height="136" rx="12" fill="rgba(0, 229, 255, 0.01)" stroke="rgba(0, 229, 255, 0.15)" stroke-width="1" />
+                                        
+                                        <circle cx="100" cy="85" r="42" fill="none" stroke="rgba(0, 229, 255, 0.1)" stroke-width="1" stroke-dasharray="3 3" />
+                                        <circle cx="100" cy="85" r="28" fill="none" stroke="rgba(0, 229, 255, 0.15)" stroke-width="1" />
+                                        <circle cx="100" cy="85" r="14" fill="none" stroke="rgba(0, 229, 255, 0.2)" stroke-width="1" />
+                                        
+                                        <line class="depth-scan-line" x1="100" y1="85" x2="100" y2="43" stroke="rgba(0, 229, 255, 0.6)" stroke-width="1.5" style="transform-origin: 100px 85px;" />
+                                        
+                                        <g class="cursor-pointer depth-node-group" data-node="Alpha" transform="translate(0,0)">
+                                            <circle cx="75" cy="65" r="20" fill="transparent" pointer-events="all" />
+                                            <circle class="depth-node" cx="75" cy="65" r="3.5" fill="#00E5FF" />
+                                            <circle cx="75" cy="65" r="7" fill="none" stroke="#00E5FF" stroke-width="0.7" stroke-dasharray="2 2" />
+                                        </g>
+                                        <g class="cursor-pointer depth-node-group" data-node="Beta" transform="translate(0,0)">
+                                            <circle cx="125" cy="98" r="20" fill="transparent" pointer-events="all" />
+                                            <circle class="depth-node" cx="125" cy="98" r="3.5" fill="#0077FF" />
+                                            <circle cx="125" cy="98" r="7" fill="none" stroke="#0077FF" stroke-width="0.7" stroke-dasharray="2 2" />
+                                        </g>
 
-                        <!-- Project 3 -->
-                        <div class="proj-card-wrap">
-                            <div class="proj-glow"></div>
-                            <div class="proj-card">
-                                <span class="proj-num" aria-hidden="true">03</span>
-                                <div class="project-title">Smart Drainage System</div>
-                                <p class="project-desc">
-                                    ESP32-based real-time drainage monitoring using ultrasonic and flow
-                                    sensors for automated blockage detection and smart alerts.
-                                </p>
-                                <div class="proj-bottom">
-                                    <div class="project-tags">
-                                        <span class="tag">Embedded C</span>
-                                        <span class="tag">ESP32</span>
-                                        <span class="tag">Sensors</span>
-                                    </div>
+                                        <g transform="translate(25, 134)">
+                                            <rect class="depth-hud-console" width="150" height="24" rx="6" fill="rgba(3, 3, 3, 0.9)" stroke="rgba(0, 229, 255, 0.15)" stroke-width="1.2" style="transition: all 0.3s ease;" />
+                                            <circle cx="14" cy="12" r="3.5" fill="#00E5FF" />
+                                            <circle class="depth-ping-circle" cx="14" cy="12" r="3.5" fill="none" stroke="#00E5FF" stroke-width="1" />
+                                            <text class="depth-hud-text" x="28" y="15" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold">SCANNING DEPTH AQUIFERS...</text>
+                                        </g>
+                                    </svg>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 4 -->
-                        <div class="proj-card-wrap">
-                            <div class="proj-glow"></div>
-                            <div class="proj-card">
-                                <span class="proj-num" aria-hidden="true">04</span>
-                                <div class="project-title">4-Bit ALU in Verilog</div>
-                                <p class="project-desc">
-                                    Simulated a 4-Bit ALU in Xilinx Vivado with 8+ logical operations.
-                                    Functionality verified with a comprehensive testbench.
-                                </p>
-                                <div class="proj-bottom">
-                                    <div class="project-tags">
-                                        <span class="tag">Verilog HDL</span>
-                                        <span class="tag">Vivado</span>
-                                    </div>
-                                    <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank"
-                                        rel="noopener" class="project-link" aria-label="View on GitHub">
-                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                            <path
-                                                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Project 5 -->
-                        <div class="proj-card-wrap">
-                            <div class="proj-glow"></div>
-                            <div class="proj-card">
-                                <span class="proj-num" aria-hidden="true">05</span>
-                                <div class="project-title">Spectral Analyzer</div>
-                                <p class="project-desc">
-                                    ESP32-based digital spectral analyzer using FFT processing to display
-                                    frequency spectrum and Total Harmonic Distortion (THD) in real time.
-                                </p>
-                                <div class="proj-bottom">
-                                    <div class="project-tags">
-                                        <span class="tag">ESP32</span>
-                                        <span class="tag">Arduino IDE</span>
+                                <div class="proj-right-panel">
+                                    <span class="proj-num" aria-hidden="true">02</span>
+                                    <div class="proj-category-badge">Machine Learning</div>
+                                    <div class="project-title">Depthra</div>
+                                    <p class="project-desc">
+                                        AI-powered groundwater monitoring app analyzing DWLR station data
+                                        from across India using machine learning data processing models.
+                                    </p>
+                                    <div class="proj-bottom">
+                                        <div class="project-tags">
+                                            <span class="tag">HTML / CSS</span>
+                                            <span class="tag">AI</span>
+                                        </div>
+                                        <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener"
+                                            class="project-link" aria-label="View on GitHub">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                            </svg>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Project 6 -->
+                        <!-- Project 3: Smart Drainage System -->
                         <div class="proj-card-wrap">
                             <div class="proj-glow"></div>
                             <div class="proj-card">
-                                <span class="proj-num" aria-hidden="true">06</span>
-                                <div class="project-title">AC to 5V DC Converter</div>
-                                <p class="project-desc">
-                                    Bridge rectifier with PN junction diodes and an LM7805 linear regulator
-                                    producing a stable 5V regulated DC output from AC mains.
-                                </p>
-                                <div class="proj-bottom">
-                                    <div class="project-tags">
-                                        <span class="tag">Analog Electronics</span>
+                                <div class="proj-left-panel">
+                                    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(0, 201, 167, 0.05) 1.5px, transparent 1.5px); background-size: 16px 16px; opacity: 0.8; z-index: 0; pointer-events: none;"></div>
+                                    <svg viewBox="0 0 200 200" style="width: 100%; max-width: 220px; height: auto; user-select: none; z-index: 1;">
+                                        <text x="100" y="24" fill="#ffffff" font-size="6.5" font-family="monospace" letter-spacing="0.05em" text-anchor="middle" font-weight="bold">HYDRAULIC FLOW SYSTEM</text>
+                                        <rect x="15" y="32" width="170" height="136" rx="12" fill="rgba(0, 201, 167, 0.01)" stroke="rgba(0, 201, 167, 0.15)" stroke-width="1" />
+                                        
+                                        <rect x="30" y="55" width="140" height="52" rx="6" fill="none" stroke="rgba(0, 201, 167, 0.2)" stroke-width="1.5" />
+                                        <clipPath id="drainagePipeClip">
+                                            <rect x="31.5" y="56.5" width="137" height="49" rx="5" />
+                                        </clipPath>
+                                        
+                                        <g clip-path="url(#drainagePipeClip)" class="cursor-pointer drainage-wave-group">
+                                            <rect x="30" y="55" width="140" height="52" fill="transparent" pointer-events="all" />
+                                            <path class="drainage-wave-path" fill="rgba(0, 201, 167, 0.15)" stroke="rgba(0, 201, 167, 0.5)" stroke-width="1" d="M 20 85 Q 55 70, 90 85 T 180 85 L 180 120 L 20 120 Z" />
+                                            <circle cx="55" cy="80" r="2" fill="#00C9A7" class="flowing-dot" />
+                                            <circle cx="115" cy="82" r="1.5" fill="#00C9A7" class="flowing-dot" style="animation-delay: 1.5s;" />
+                                        </g>
+
+                                        <g transform="translate(25, 134)">
+                                            <rect class="drainage-hud-console" width="150" height="24" rx="6" fill="rgba(3, 3, 3, 0.9)" stroke="rgba(0, 201, 167, 0.15)" stroke-width="1.2" style="transition: all 0.3s ease;" />
+                                            <circle cx="14" cy="12" r="3.5" fill="#00C9A7" />
+                                            <circle class="drainage-ping-circle" cx="14" cy="12" r="3.5" fill="none" stroke="#00C9A7" stroke-width="1" />
+                                            <text class="drainage-hud-text" x="28" y="15" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold">FLOW LEVEL: NOMINAL</text>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="proj-right-panel">
+                                    <span class="proj-num" aria-hidden="true">03</span>
+                                    <div class="proj-category-badge">Embedded Systems</div>
+                                    <div class="project-title">Smart Drainage System</div>
+                                    <p class="project-desc">
+                                        ESP32-based real-time drainage monitoring using ultrasonic and flow
+                                        sensors for automated blockage detection and smart alerts.
+                                    </p>
+                                    <div class="proj-bottom">
+                                        <div class="project-tags">
+                                            <span class="tag">Embedded C</span>
+                                            <span class="tag">ESP32</span>
+                                            <span class="tag">Sensors</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- !! ADD NEW PROJECT CARDS HERE — copy a .proj-card-wrap block above !! -->
+                        <!-- Project 4: 4-Bit ALU in Verilog -->
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <div class="proj-left-panel">
+                                    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(123, 47, 255, 0.05) 1.5px, transparent 1.5px); background-size: 16px 16px; opacity: 0.8; z-index: 0; pointer-events: none;"></div>
+                                    <svg viewBox="0 0 200 200" style="width: 100%; max-width: 220px; height: auto; user-select: none; z-index: 1;">
+                                        <text x="100" y="24" fill="#ffffff" font-size="6.5" font-family="monospace" letter-spacing="0.05em" text-anchor="middle" font-weight="bold">4-BIT ALU LOGIC BLUEPRINT</text>
+                                        <rect x="15" y="32" width="170" height="136" rx="12" fill="rgba(123, 47, 255, 0.01)" stroke="rgba(123, 47, 255, 0.15)" stroke-width="1" />
+                                        
+                                        <polygon points="70,55 130,55 140,75 130,95 70,95 80,75" fill="none" stroke="rgba(123, 47, 255, 0.3)" stroke-width="1.5" class="alu-logic-core" style="transition: all 0.3s ease;" />
+                                        <text x="100" y="79" fill="#ffffff" font-size="8" font-family="monospace" text-anchor="middle" font-weight="bold">ALU</text>
+
+                                        <g class="cursor-pointer alu-path-group" data-input="A">
+                                            <rect x="10" y="58" width="65" height="15" fill="transparent" pointer-events="all" />
+                                            <line x1="38" y1="65" x2="72" y2="65" stroke="rgba(123, 47, 255, 0.2)" stroke-width="1" />
+                                            <circle cx="48" cy="65" r="1.5" fill="#BF9AFF" class="alu-bit-dot" />
+                                            <text x="34" y="67" fill="#ffffff" font-size="6.5" font-family="monospace" text-anchor="end">A: 0101</text>
+                                        </g>
+                                        <g class="cursor-pointer alu-path-group" data-input="B">
+                                            <rect x="10" y="78" width="65" height="15" fill="transparent" pointer-events="all" />
+                                            <line x1="38" y1="85" x2="72" y2="85" stroke="rgba(123, 47, 255, 0.2)" stroke-width="1" />
+                                            <circle cx="58" cy="85" r="1.5" fill="#BF9AFF" class="alu-bit-dot-delayed" />
+                                            <text x="34" y="87" fill="#ffffff" font-size="6.5" font-family="monospace" text-anchor="end">B: 1010</text>
+                                        </g>
+
+                                        <g class="cursor-pointer alu-path-group" data-output="Y">
+                                            <rect x="128" y="68" width="65" height="15" fill="transparent" pointer-events="all" />
+                                            <line x1="128" y1="75" x2="162" y2="75" stroke="rgba(123, 47, 255, 0.2)" stroke-width="1" />
+                                            <circle cx="138" cy="75" r="1.5" fill="#7B2FFF" class="alu-bit-dot" />
+                                            <text x="166" y="77" fill="#ffffff" font-size="6.5" font-family="monospace">Y: 1111</text>
+                                        </g>
+
+                                        <g transform="translate(25, 134)">
+                                            <rect class="alu-hud-console" width="150" height="24" rx="6" fill="rgba(3, 3, 3, 0.9)" stroke="rgba(123, 47, 255, 0.15)" stroke-width="1.2" style="transition: all 0.3s ease;" />
+                                            <circle cx="14" cy="12" r="3.5" fill="#7B2FFF" />
+                                            <circle class="alu-ping-circle" cx="14" cy="12" r="3.5" fill="none" stroke="#7B2FFF" stroke-width="1" />
+                                            <text class="alu-hud-text" x="28" y="15" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold">ALU EXECUTION RUNNING...</text>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="proj-right-panel">
+                                    <span class="proj-num" aria-hidden="true">04</span>
+                                    <div class="proj-category-badge">Digital Logic</div>
+                                    <div class="project-title">4-Bit ALU in Verilog</div>
+                                    <p class="project-desc">
+                                        Simulated a 4-Bit ALU in Xilinx Vivado with 8+ logical operations.
+                                        Functionality verified with a comprehensive testbench.
+                                    </p>
+                                    <div class="proj-bottom">
+                                        <div class="project-tags">
+                                            <span class="tag">Verilog HDL</span>
+                                            <span class="tag">Vivado</span>
+                                        </div>
+                                        <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank"
+                                            rel="noopener" class="project-link" aria-label="View on GitHub">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                            </svg>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 5: Spectral Analyzer -->
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <div class="proj-left-panel">
+                                    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(34, 211, 238, 0.05) 1.5px, transparent 1.5px); background-size: 16px 16px; opacity: 0.8; z-index: 0; pointer-events: none;"></div>
+                                    <svg viewBox="0 0 200 200" style="width: 100%; max-width: 220px; height: auto; user-select: none; z-index: 1;">
+                                        <text x="100" y="24" fill="#ffffff" font-size="6.5" font-family="monospace" letter-spacing="0.05em" text-anchor="middle" font-weight="bold">FFT SPECTRAL TELEMETRY</text>
+                                        <rect x="15" y="32" width="170" height="136" rx="12" fill="rgba(34, 211, 238, 0.01)" stroke="rgba(34, 211, 238, 0.15)" stroke-width="1" />
+                                        
+                                        <rect x="30" y="48" width="140" height="72" rx="4" fill="rgba(0, 0, 0, 0.4)" stroke="rgba(34, 211, 238, 0.1)" stroke-width="1" />
+                                        <line x1="100" y1="48" x2="100" y2="120" stroke="rgba(34, 211, 238, 0.08)" stroke-width="0.5" stroke-dasharray="2 2" />
+                                        <line x1="30" y1="84" x2="170" y2="84" stroke="rgba(34, 211, 238, 0.08)" stroke-width="0.5" stroke-dasharray="2 2" />
+
+                                        <g class="cursor-pointer spectral-wave-group">
+                                            <rect x="30" y="48" width="140" height="72" fill="transparent" pointer-events="all" />
+                                            <path class="spectral-wave-path" fill="none" stroke="#22d3ee" stroke-width="1.5" d="M 30 84 Q 47.5 48, 65 84 T 100 84 T 135 84 T 170 84" />
+                                        </g>
+
+                                        <g transform="translate(25, 134)">
+                                            <rect class="spectral-hud-console" width="150" height="24" rx="6" fill="rgba(3, 3, 3, 0.9)" stroke="rgba(34, 211, 238, 0.15)" stroke-width="1.2" style="transition: all 0.3s ease;" />
+                                            <circle cx="14" cy="12" r="3.5" fill="#22d3ee" />
+                                            <circle class="spectral-ping-circle" cx="14" cy="12" r="3.5" fill="none" stroke="#22d3ee" stroke-width="1" />
+                                            <text class="spectral-hud-text" x="28" y="15" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold">SPECTRUM TELEMETRY ACTIVE</text>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="proj-right-panel">
+                                    <span class="proj-num" aria-hidden="true">05</span>
+                                    <div class="proj-category-badge">Signal Processing</div>
+                                    <div class="project-title">Spectral Analyzer</div>
+                                    <p class="project-desc">
+                                        ESP32-based digital spectral analyzer using FFT processing to display
+                                        frequency spectrum and Total Harmonic Distortion (THD) in real time.
+                                    </p>
+                                    <div class="proj-bottom">
+                                        <div class="project-tags">
+                                            <span class="tag">ESP32</span>
+                                            <span class="tag">Arduino IDE</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Project 6: AC to 5V DC Converter -->
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <div class="proj-left-panel">
+                                    <div style="position: absolute; inset: 0; background-image: radial-gradient(rgba(244, 63, 94, 0.05) 1.5px, transparent 1.5px); background-size: 16px 16px; opacity: 0.8; z-index: 0; pointer-events: none;"></div>
+                                    <svg viewBox="0 0 200 200" style="width: 100%; max-width: 220px; height: auto; user-select: none; z-index: 1;">
+                                        <text x="100" y="24" fill="#ffffff" font-size="6.5" font-family="monospace" letter-spacing="0.05em" text-anchor="middle" font-weight="bold">POWER SIGNAL CONVERTER</text>
+                                        <rect x="15" y="32" width="170" height="136" rx="12" fill="rgba(244, 63, 94, 0.01)" stroke="rgba(244, 63, 94, 0.15)" stroke-width="1" />
+                                        
+                                        <g class="cursor-pointer power-signal-group" data-wave="AC">
+                                            <rect x="25" y="40" width="56" height="71" fill="transparent" pointer-events="all" />
+                                            <rect x="25" y="55" width="56" height="56" rx="4" fill="none" stroke="rgba(244, 63, 94, 0.15)" stroke-width="1" />
+                                            <path class="ac-wave-path" fill="none" stroke="#f43f5e" stroke-width="1.5" d="M 25 83 Q 39 58, 53 83 T 81 83" />
+                                            <text x="53" y="48" fill="#ffffff" font-size="6" font-family="monospace" text-anchor="middle">230V AC</text>
+                                        </g>
+
+                                        <rect x="87" y="68" width="16" height="30" rx="3" fill="rgba(3, 3, 3, 0.8)" stroke="rgba(255, 255, 255, 0.1)" stroke-width="1" />
+                                        <text x="95" y="86" fill="#ffffff" font-size="6" font-family="monospace" text-anchor="middle" font-weight="bold">V / I</text>
+
+                                        <g class="cursor-pointer power-signal-group" data-wave="DC">
+                                            <rect x="109" y="40" width="56" height="71" fill="transparent" pointer-events="all" />
+                                            <rect x="109" y="55" width="56" height="56" rx="4" fill="none" stroke="rgba(244, 63, 94, 0.15)" stroke-width="1" />
+                                            <line x1="109" y1="73" x2="165" y2="73" stroke="#00E5FF" stroke-width="1.5" />
+                                            <line x1="109" y1="73" x2="165" y2="73" stroke="rgba(0, 229, 255, 0.2)" stroke-width="4" stroke-linecap="round" />
+                                            <text x="137" y="48" fill="#ffffff" font-size="6" font-family="monospace" text-anchor="middle">5V DC</text>
+                                        </g>
+
+                                        <g transform="translate(25, 134)">
+                                            <rect class="power-hud-console" width="150" height="24" rx="6" fill="rgba(3, 3, 3, 0.9)" stroke="rgba(244, 63, 94, 0.15)" stroke-width="1.2" style="transition: all 0.3s ease;" />
+                                            <circle cx="14" cy="12" r="3.5" fill="#f43f5e" />
+                                            <circle class="power-ping-circle" cx="14" cy="12" r="3.5" fill="none" stroke="#f43f5e" stroke-width="1" />
+                                            <text class="power-hud-text" x="28" y="15" fill="#ffffff" font-size="6.5" font-family="monospace" font-weight="bold">CONVERSION RATIO: 46:1</text>
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="proj-right-panel">
+                                    <span class="proj-num" aria-hidden="true">06</span>
+                                    <div class="proj-category-badge">Analog Hardware</div>
+                                    <div class="project-title">AC to 5V DC Converter</div>
+                                    <p class="project-desc">
+                                        Bridge rectifier with PN junction diodes and an LM7805 linear regulator
+                                        producing a stable 5V regulated DC output from AC mains.
+                                    </p>
+                                    <div class="proj-bottom">
+                                        <div class="project-tags">
+                                            <span class="tag">Analog Electronics</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                     </div><!-- /.projects-grid -->
 
@@ -5079,137 +5782,7 @@
                 if (lenis) lenis.scrollTo(el, { offset, duration: 1.2 });
                 else el.scrollIntoView({ behavior: 'smooth' });
             }
-            // ================================================================
-            // FLOATING RESUME DOCKING SCROLL EFFECT
-            // ================================================================
-            const resumeBtn = document.getElementById('resumeBtn');
-            const resumePlaceholder = document.getElementById('resume-placeholder');
-            let resumeDocked = false;
-            let resumeAnimTimeout = null;
 
-            function updateResumeDockPosition() {
-                if (!resumeBtn || !resumePlaceholder) return;
-
-                const sy = window.scrollY;
-                const aboutSec = document.getElementById('about');
-                const aboutTop = aboutSec ? aboutSec.offsetTop : 300;
-                const shouldDock = sy > Math.min(window.innerHeight * 0.4, aboutTop - 160);
-
-                if (shouldDock === resumeDocked) {
-                    // If already docked, update its left coordinate on resize to keep it on top-right
-                    if (resumeDocked) {
-                        resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
-                    }
-                    return;
-                }
-
-                resumeDocked = shouldDock;
-
-                if (resumeAnimTimeout) clearTimeout(resumeAnimTimeout);
-
-                if (resumeDocked) {
-                    // Docking: transition from placeholder to top-right header
-                    const rect = resumeBtn.getBoundingClientRect();
-
-                    // Set initial fixed position at current placeholder position
-                    resumeBtn.style.position = 'fixed';
-                    resumeBtn.style.top = `${rect.top}px`;
-                    resumeBtn.style.left = `${rect.left}px`;
-                    resumeBtn.style.width = `${rect.width}px`;
-                    resumeBtn.style.height = `${rect.height}px`;
-
-                    // Move button to body to escape parent overflow/transforms
-                    document.body.appendChild(resumeBtn);
-
-                    // Force reflow
-                    resumeBtn.offsetHeight;
-
-                    // Start animation to docked state
-                    resumeBtn.classList.add('animating');
-                    resumeBtn.classList.add('docked');
-
-                    resumeBtn.style.top = '22px';
-                    resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
-                    resumeBtn.style.width = '100px';
-                    resumeBtn.style.height = '42px';
-
-                    resumeAnimTimeout = setTimeout(() => {
-                        resumeBtn.classList.remove('animating');
-                    }, 500);
-                } else {
-                    // Undocking: transition from top-right header back to placeholder using page-relative coordinates to prevent scroll-jump
-                    const placeholderRect = resumePlaceholder.getBoundingClientRect();
-                    const scrollY = window.scrollY;
-                    const scrollX = window.scrollX;
-
-                    // Move button to body and position it absolutely relative to the page starting from docked coordinates
-                    resumeBtn.style.position = 'absolute';
-                    resumeBtn.style.top = `${22 + scrollY}px`;
-                    resumeBtn.style.left = `${(window.innerWidth - 100 - 26) + scrollX}px`;
-                    resumeBtn.style.width = '100px';
-                    resumeBtn.style.height = '42px';
-                    document.body.appendChild(resumeBtn);
-
-                    // Force reflow
-                    resumeBtn.offsetHeight;
-
-                    resumeBtn.classList.add('animating');
-                    resumeBtn.classList.remove('docked');
-
-                    // Animate to placeholder's page-relative coordinates
-                    resumeBtn.style.top = `${placeholderRect.top + scrollY}px`;
-                    resumeBtn.style.left = `${placeholderRect.left + scrollX}px`;
-                    resumeBtn.style.width = `${placeholderRect.width}px`;
-                    resumeBtn.style.height = `${placeholderRect.height}px`;
-
-                    resumeAnimTimeout = setTimeout(() => {
-                        // Put back inside placeholder
-                        resumePlaceholder.appendChild(resumeBtn);
-                        resumeBtn.classList.remove('animating');
-
-                        // Clear styles to let CSS layout handle it natively
-                        resumeBtn.style.position = '';
-                        resumeBtn.style.top = '';
-                        resumeBtn.style.left = '';
-                        resumeBtn.style.width = '';
-                        resumeBtn.style.height = '';
-                    }, 500);
-                }
-            }
-
-            // Bind scroll and resize events
-            window.addEventListener('scroll', updateResumeDockPosition);
-            window.addEventListener('resize', () => {
-                if (resumeDocked) {
-                    resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
-                }
-            });
-
-            // Run immediately after layout settles
-            setTimeout(() => {
-                const sy = window.scrollY;
-                const aboutSec = document.getElementById('about');
-                const aboutTop = aboutSec ? aboutSec.offsetTop : 300;
-                const threshold = Math.min(window.innerHeight * 0.4, aboutTop - 160);
-                if (sy > threshold) {
-                    resumeDocked = true;
-                    document.body.appendChild(resumeBtn);
-                    resumeBtn.classList.add('docked');
-                    resumeBtn.style.position = 'fixed';
-                    resumeBtn.style.top = '22px';
-                    resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
-                    resumeBtn.style.width = '100px';
-                    resumeBtn.style.height = '42px';
-                } else {
-                    resumeDocked = false;
-                    resumePlaceholder.appendChild(resumeBtn);
-                    resumeBtn.style.position = '';
-                    resumeBtn.style.top = '';
-                    resumeBtn.style.left = '';
-                    resumeBtn.style.width = '';
-                    resumeBtn.style.height = '';
-                }
-            }, 150);
 
             // ================================================================
             // CUSTOM CURSOR — Dot snaps; ring follows with smooth lag
@@ -5379,6 +5952,48 @@
 
             // Trigger scroll once on load to set initial state
             window.dispatchEvent(new Event('scroll'));
+
+
+            // ================================================================
+            // MOBILE NAVIGATION TOGGLE INTERACTION
+            // ================================================================
+            const mobileNavToggle = document.getElementById('mobileNavToggle');
+
+            if (mobileNavToggle && navPill) {
+                mobileNavToggle.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const isOpen = navPill.classList.toggle('open');
+                    mobileNavToggle.classList.toggle('active', isOpen);
+                    mobileNavToggle.setAttribute('aria-expanded', isOpen);
+                });
+
+                // Close dropdown when clicking any navigation link
+                navLinks.forEach(link => {
+                    link.addEventListener('click', () => {
+                        navPill.classList.remove('open');
+                        mobileNavToggle.classList.remove('active');
+                        mobileNavToggle.setAttribute('aria-expanded', 'false');
+                    });
+                });
+
+                // Close dropdown when scrolling (prevents page overlap on mobile scroll)
+                window.addEventListener('scroll', () => {
+                    if (navPill.classList.contains('open')) {
+                        navPill.classList.remove('open');
+                        mobileNavToggle.classList.remove('active');
+                        mobileNavToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+
+                // Close dropdown when clicking anywhere outside of the menu and toggle
+                document.addEventListener('click', (e) => {
+                    if (!navPill.contains(e.target) && !mobileNavToggle.contains(e.target)) {
+                        navPill.classList.remove('open');
+                        mobileNavToggle.classList.remove('active');
+                        mobileNavToggle.setAttribute('aria-expanded', 'false');
+                    }
+                });
+            }
 
 
             // ================================================================
@@ -5663,121 +6278,608 @@
 
 
             // ================================================================
-            // PROJECTS HORIZONTAL CAROUSEL
-            // Syncs slider thumb and arrow visibility to scroll position.
-            // Supports: arrow click, slider drag, mouse drag-scroll.
-            // !! EDIT: Change SCROLL_STEP for how far each arrow click moves !!
+            // PROJECTS STACKED DISSOLVE CAROUSEL CONTROLLER
+            // Controlled via left/right arrows with infinite wrapping loop.
+            // Syncs active card visibility, page number, and fill progress bar.
             // ================================================================
-            const SCROLL_STEP = 340; // px scrolled per arrow click
 
-            const projGrid = document.getElementById('projGrid');
+            let currentProjIndex = 0;
+            const projCards = document.querySelectorAll('.proj-card-wrap');
+            let isTransitioning = false;
+
+            function showProject(index, directClick = false) {
+                if (projCards.length === 0 || isTransitioning) return;
+
+                // Infinite wrapping loop
+                let nextIndex = index;
+                if (nextIndex < 0) {
+                    nextIndex = projCards.length - 1;
+                } else if (nextIndex >= projCards.length) {
+                    nextIndex = 0;
+                }
+
+                // If initial load or clicking same card, snap without sliding transitions
+                if (nextIndex === currentProjIndex && !directClick) {
+                    projCards.forEach((card, i) => {
+                        if (i === nextIndex) {
+                            card.classList.add('active');
+                        } else {
+                            card.classList.remove('active');
+                        }
+                    });
+                    syncProjectMetrics(nextIndex);
+                    return;
+                }
+
+                // Determine slide direction
+                let direction = 1; // 1 = Next, -1 = Prev
+                if (nextIndex === 0 && currentProjIndex === projCards.length - 1) {
+                    direction = 1;
+                } else if (nextIndex === projCards.length - 1 && currentProjIndex === 0) {
+                    direction = -1;
+                } else {
+                    direction = nextIndex > currentProjIndex ? 1 : -1;
+                }
+
+                const currentCard = projCards[currentProjIndex];
+                const nextCard = projCards[nextIndex];
+
+                if (currentCard && nextCard) {
+                    isTransitioning = true;
+
+                    // 1. Trigger exit slide-and-rotate transition on current card
+                    if (direction > 0) {
+                        currentCard.classList.add('exit-next');
+                    } else {
+                        currentCard.classList.add('exit-prev');
+                    }
+                    currentCard.classList.remove('active');
+
+                    // 2. Wait for exit transition to finish (400ms transition duration), simulating mode="wait"
+                    setTimeout(() => {
+                        currentCard.classList.remove('exit-next', 'exit-prev');
+
+                        // 3. Prepare next card offscreen in the correct direction (transition disabled)
+                        if (direction > 0) {
+                            nextCard.classList.add('enter-next');
+                        } else {
+                            nextCard.classList.add('enter-prev');
+                        }
+
+                        // Force layout reflow so the browser registers the offscreen position
+                        nextCard.offsetHeight;
+
+                        // 4. Slide and rotate the new card into the center position
+                        nextCard.classList.add('active');
+                        nextCard.classList.remove('enter-next', 'enter-prev');
+
+                        currentProjIndex = nextIndex;
+                        syncProjectMetrics(nextIndex);
+
+                        // Unlock transition after entrance animation completes
+                        setTimeout(() => {
+                            isTransitioning = false;
+                        }, 400);
+                    }, 400);
+                }
+            }
+
+            function syncProjectMetrics(index) {
+                // Sync pagination text metrics (e.g. 1 of 6) and the fill progress bar
+                const projActiveNum = document.getElementById('projActiveNum');
+                const projBarFill = document.getElementById('projBarFill');
+                const projTotalNum = document.getElementById('projTotalNum');
+
+                const activeCard = projCards[index];
+                const cardAccent = activeCard ? window.getComputedStyle(activeCard).getPropertyValue('--card-accent').trim() : 'var(--accent)';
+
+                if (activeCard) {
+                    document.documentElement.style.setProperty('--active-accent', cardAccent);
+                }
+
+                if (projActiveNum) {
+                    projActiveNum.textContent = String(index + 1);
+                    projActiveNum.style.color = cardAccent;
+                }
+                if (projTotalNum) {
+                    projTotalNum.textContent = String(projCards.length);
+                }
+                if (projBarFill) {
+                    projBarFill.style.width = ((index + 1) / projCards.length) * 100 + '%';
+                    projBarFill.style.backgroundColor = cardAccent;
+                }
+            }
+
+            // Arrow click event handlers for header buttons
             const projLeft = document.getElementById('projLeft');
             const projRight = document.getElementById('projRight');
-            const projTrack = document.getElementById('projSliderTrack');
-            const projThumb = document.getElementById('projSliderThumb');
 
-            // -- Slider thumb sizing and positioning --
-            function projUpdateSlider() {
-                if (!projGrid || !projThumb) return;
-                const { scrollLeft, scrollWidth, clientWidth } = projGrid;
-                const ratio = clientWidth / scrollWidth;
-                const thumbW = Math.max(ratio * 100, 8);         // percent width, min 8%
-                const thumbPos = (scrollLeft / (scrollWidth - clientWidth)) * (100 - thumbW);
-                projThumb.style.width = thumbW + '%';
-                projThumb.style.left = (isNaN(thumbPos) ? 0 : thumbPos) + '%';
-            }
-
-            // -- Arrow visibility based on scroll position --
-            function projUpdateArrows() {
-                if (!projGrid) return;
-                const { scrollLeft, scrollWidth, clientWidth } = projGrid;
-                const atLeft = scrollLeft < 10;
-                const atRight = scrollLeft > scrollWidth - clientWidth - 10;
-                projLeft?.classList.toggle('visible', !atLeft);
-                projRight?.classList.toggle('visible', !atRight);
-            }
-
-            // -- Combined update --
-            function projUpdate() {
-                projUpdateSlider();
-                projUpdateArrows();
-            }
-
-            // Arrow click handlers
-            projRight?.addEventListener('click', () => {
-                projGrid.scrollBy({ left: SCROLL_STEP, behavior: 'smooth' });
-            });
-            projLeft?.addEventListener('click', () => {
-                projGrid.scrollBy({ left: -SCROLL_STEP, behavior: 'smooth' });
-            });
-
-            // Sync on scroll
-            projGrid?.addEventListener('scroll', projUpdate, { passive: true });
-
-            // -- Slider drag --
-            let sliderDragging = false;
-            let sliderStartX = 0;
-            let sliderScrollAt = 0;
-
-            projThumb?.addEventListener('mousedown', e => {
-                sliderDragging = true;
-                sliderStartX = e.clientX;
-                sliderScrollAt = projGrid.scrollLeft;
-                projThumb.classList.add('dragging');
+            projLeft?.addEventListener('click', (e) => {
                 e.preventDefault();
+                showProject(currentProjIndex - 1, true);
             });
 
-            document.addEventListener('mousemove', e => {
-                if (!sliderDragging) return;
-                const trackW = projTrack.clientWidth;
-                const thumbW = projThumb.offsetWidth;
-                const available = trackW - thumbW;
-                const dx = e.clientX - sliderStartX;
-                const ratio = dx / available;
-                const maxScroll = projGrid.scrollWidth - projGrid.clientWidth;
-                projGrid.scrollLeft = Math.max(0, Math.min(maxScroll, sliderScrollAt + ratio * maxScroll));
+            projRight?.addEventListener('click', (e) => {
+                e.preventDefault();
+                showProject(currentProjIndex + 1, true);
             });
 
-            document.addEventListener('mouseup', () => {
-                if (!sliderDragging) return;
-                sliderDragging = false;
-                projThumb?.classList.remove('dragging');
-            });
+            // Initialize Projects Carousel state on paint
+            showProject(0, false);
 
-            // Click on track to jump
-            projTrack?.addEventListener('click', e => {
-                if (e.target === projThumb) return; // ignore thumb clicks
-                const rect = projTrack.getBoundingClientRect();
-                const clickPos = (e.clientX - rect.left) / rect.width;
-                const maxScroll = projGrid.scrollWidth - projGrid.clientWidth;
-                projGrid.scrollTo({ left: clickPos * maxScroll, behavior: 'smooth' });
-            });
 
-            // -- Mouse drag-to-scroll on card row --
-            let isDragging = false;
-            let dragStartX = 0;
-            let scrollAtDrag = 0;
+            // ================================================================
+            // PROJECTS TELEMETRY INTERACTIVE HUD CONTROLLER
+            // Attach mouseover/mouseleave events to SVG system components
+            // to update text logs, indicators, and console border colors.
+            // ================================================================
 
-            projGrid?.addEventListener('mousedown', e => {
-                isDragging = true;
-                dragStartX = e.clientX;
-                scrollAtDrag = projGrid.scrollLeft;
-                projGrid.classList.add('dragging');
-            });
+            const projectsSection = document.getElementById('projects');
+            if (projectsSection) {
 
-            document.addEventListener('mousemove', e => {
-                if (!isDragging) return;
-                projGrid.scrollLeft = scrollAtDrag - (e.clientX - dragStartX);
-            });
+                // ---- PROJECT 1: SIS Failure Predictor ----
+                const sisLegGroups = projectsSection.querySelectorAll('.sis-leg-group');
+                const sisConsole = projectsSection.querySelector('.sis-hud-console');
+                const sisText = projectsSection.querySelector('.sis-hud-text');
+                const sisPing = projectsSection.querySelector('.ping-circle');
+                const sisIndicatorDot = projectsSection.querySelector('.sis-hud-console + circle');
 
-            document.addEventListener('mouseup', () => {
-                isDragging = false;
-                projGrid?.classList.remove('dragging');
-            });
+                const sisStates = {
+                    A: { text: "LEG A: 2.1mA - NOMINAL", stroke: "#22d3ee", isAlert: false },
+                    B: { text: "LEG B: 2.0mA - NOMINAL", stroke: "#22d3ee", isAlert: false },
+                    C: { text: "LEG C: 1.6mA - DEVIATION", stroke: "#f43f5e", isAlert: true }
+                };
 
-            // Initial render
-            projUpdate();
-            window.addEventListener('resize', projUpdate);
+                sisLegGroups.forEach(group => {
+                    group.addEventListener('mouseenter', () => {
+                        const leg = group.getAttribute('data-leg');
+                        const state = sisStates[leg];
+                        if (!state) return;
+
+                        // Highlight hovered leg case, dim others
+                        sisLegGroups.forEach(g => {
+                            const caseRect = g.querySelector('.sis-leg-case');
+                            const legBar = g.querySelector('.sis-leg-bar');
+                            if (g === group) {
+                                caseRect.style.stroke = state.stroke;
+                                caseRect.style.strokeWidth = "1.8px";
+                                caseRect.style.fill = state.isAlert ? "rgba(244, 63, 94, 0.08)" : "rgba(34, 211, 238, 0.08)";
+                                g.style.opacity = "1";
+                                
+                                // Pause the default oscillation animation to lock the active telemetry reading
+                                if (legBar) {
+                                    legBar.style.animationPlayState = 'paused';
+                                }
+                            } else {
+                                g.style.opacity = "0.35";
+                            }
+                        });
+
+                        // Update HUD console
+                        if (sisText) {
+                            sisText.textContent = state.text;
+                            sisText.style.fill = "#ffffff";
+                        }
+                        if (sisConsole) {
+                            sisConsole.style.stroke = state.stroke;
+                        }
+                        if (sisIndicatorDot) sisIndicatorDot.style.fill = state.stroke;
+                        if (sisPing) {
+                            sisPing.style.stroke = state.stroke;
+                        }
+                    });
+
+                    group.addEventListener('mouseleave', () => {
+                        // Reset all legs
+                        sisLegGroups.forEach(g => {
+                            const caseRect = g.querySelector('.sis-leg-case');
+                            const legBar = g.querySelector('.sis-leg-bar');
+                            const isLegC = g.getAttribute('data-leg') === 'C';
+                            caseRect.style.stroke = isLegC ? "rgba(244, 63, 94, 0.2)" : "rgba(34, 211, 238, 0.2)";
+                            caseRect.style.strokeWidth = "1px";
+                            caseRect.style.fill = "rgba(255, 255, 255, 0.02)";
+                            g.style.opacity = "1";
+                            
+                            // Resume telemetry oscillation animation
+                            if (legBar) {
+                                legBar.style.animationPlayState = 'running';
+                            }
+                        });
+
+                        // Reset HUD console
+                        if (sisText) {
+                            sisText.textContent = "ALERT: DEV_RATE > 10%";
+                            sisText.style.fill = "#ffffff";
+                        }
+                        if (sisConsole) {
+                            sisConsole.style.stroke = "rgba(244, 63, 94, 0.15)";
+                        }
+                        if (sisIndicatorDot) sisIndicatorDot.style.fill = "#f43f5e";
+                        if (sisPing) {
+                            sisPing.style.stroke = "#f43f5e";
+                        }
+                    });
+                });
+
+
+                // ---- PROJECT 2: Depthra ----
+                const depthNodeGroups = projectsSection.querySelectorAll('.depth-node-group');
+                const depthConsole = projectsSection.querySelector('.depth-hud-console');
+                const depthText = projectsSection.querySelector('.depth-hud-text');
+                const depthPing = projectsSection.querySelector('.depth-ping-circle');
+                const depthIndicatorDot = projectsSection.querySelector('.depth-hud-console + circle');
+                const depthScanLine = projectsSection.querySelector('.depth-scan-line');
+
+                const depthStates = {
+                    Alpha: { text: "NODE ALPHA: 14.2m - DEPLETED", stroke: "#f43f5e", isAlert: true },
+                    Beta: { text: "NODE BETA: 32.8m - STABLE", stroke: "#00E5FF", isAlert: false }
+                };
+
+                depthNodeGroups.forEach(group => {
+                    group.addEventListener('mouseenter', () => {
+                        const node = group.getAttribute('data-node');
+                        const state = depthStates[node];
+                        if (!state) return;
+
+                        // Highlight hovered node, dim other
+                        depthNodeGroups.forEach(g => {
+                            const nodeCircle = g.querySelector('.depth-node');
+                            if (g === group) {
+                                nodeCircle.setAttribute('r', '5.5');
+                                g.style.opacity = "1";
+                                g.style.animationPlayState = 'paused'; // pause target node pulse
+                            } else {
+                                g.style.opacity = "0.35";
+                            }
+                        });
+
+                        // Update HUD console
+                        if (depthText) {
+                            depthText.textContent = state.text;
+                            depthText.style.fill = "#ffffff";
+                        }
+                        if (depthConsole) {
+                            depthConsole.style.stroke = state.stroke;
+                        }
+                        if (depthIndicatorDot) depthIndicatorDot.style.fill = state.stroke;
+                        if (depthPing) {
+                            depthPing.style.stroke = state.stroke;
+                        }
+                        // Pause scanner sweep on lock-on telemetry
+                        if (depthScanLine) {
+                            depthScanLine.style.animationPlayState = 'paused';
+                        }
+                    });
+
+                    group.addEventListener('mouseleave', () => {
+                        // Reset nodes
+                        depthNodeGroups.forEach(g => {
+                            const nodeCircle = g.querySelector('.depth-node');
+                            nodeCircle.setAttribute('r', '3.5');
+                            g.style.opacity = "1";
+                            g.style.animationPlayState = 'running'; // resume pulse
+                        });
+
+                        // Reset HUD console
+                        if (depthText) {
+                            depthText.textContent = "SCANNING DEPTH AQUIFERS...";
+                            depthText.style.fill = "#ffffff";
+                        }
+                        if (depthConsole) {
+                            depthConsole.style.stroke = "rgba(0, 229, 255, 0.15)";
+                        }
+                        if (depthIndicatorDot) depthIndicatorDot.style.fill = "#00E5FF";
+                        if (depthPing) {
+                            depthPing.style.stroke = "#00E5FF";
+                        }
+                        // Resume scanner sweep
+                        if (depthScanLine) {
+                            depthScanLine.style.animationPlayState = 'running';
+                        }
+                    });
+                });
+
+
+                // ---- PROJECT 3: Smart Drainage System ----
+                const drainageGroup = projectsSection.querySelector('.drainage-wave-group');
+                const drainageConsole = projectsSection.querySelector('.drainage-hud-console');
+                const drainageText = projectsSection.querySelector('.drainage-hud-text');
+                const drainagePing = projectsSection.querySelector('.drainage-ping-circle');
+                const drainageIndicatorDot = projectsSection.querySelector('.drainage-hud-console + circle');
+                const flowingDots = projectsSection.querySelectorAll('.flowing-dot');
+                const drainageWavePath = projectsSection.querySelector('.drainage-wave-path');
+
+                if (drainageGroup) {
+                    drainageGroup.addEventListener('mouseenter', () => {
+                        // Speed up dots and scale them on hover
+                        flowingDots.forEach(dot => {
+                            dot.style.animationDuration = '1.2s';
+                            dot.setAttribute('r', '3');
+                        });
+                        
+                        // Speed up wave ripples on hover
+                        if (drainageWavePath) {
+                            drainageWavePath.style.animationDuration = '1.5s';
+                        }
+
+                        // Update HUD console
+                        if (drainageText) {
+                            drainageText.textContent = "DISCHARGE: 42L/s | STATUS: OK";
+                            drainageText.style.fill = "#ffffff";
+                        }
+                        if (drainageConsole) {
+                            drainageConsole.style.stroke = "#00C9A7";
+                            drainageConsole.style.fill = "rgba(0, 201, 167, 0.04)";
+                        }
+                        if (drainageIndicatorDot) drainageIndicatorDot.style.fill = "#00C9A7";
+                        if (drainagePing) {
+                            drainagePing.style.stroke = "#00C9A7";
+                        }
+                    });
+
+                    drainageGroup.addEventListener('mouseleave', () => {
+                        // Reset dots speed and size
+                        flowingDots.forEach(dot => {
+                            dot.style.animationDuration = '';
+                            const isDelay = dot.style.animationDelay !== '';
+                            dot.setAttribute('r', isDelay ? '1.5' : '2');
+                        });
+                        
+                        // Reset wave ripples speed
+                        if (drainageWavePath) {
+                            drainageWavePath.style.animationDuration = '';
+                        }
+
+                        // Reset HUD console
+                        if (drainageText) {
+                            drainageText.textContent = "FLOW LEVEL: NOMINAL";
+                            drainageText.style.fill = "#ffffff";
+                        }
+                        if (drainageConsole) {
+                            drainageConsole.style.stroke = "rgba(0, 201, 167, 0.15)";
+                            drainageConsole.style.fill = "rgba(3, 3, 3, 0.9)";
+                        }
+                        if (drainageIndicatorDot) drainageIndicatorDot.style.fill = "#00C9A7";
+                        if (drainagePing) {
+                            drainagePing.style.stroke = "#00C9A7";
+                        }
+                    });
+                }
+
+
+                // ---- PROJECT 4: 4-Bit ALU in Verilog ----
+                const aluPathGroups = projectsSection.querySelectorAll('.alu-path-group');
+                const aluConsole = projectsSection.querySelector('.alu-hud-console');
+                const aluText = projectsSection.querySelector('.alu-hud-text');
+                const aluPing = projectsSection.querySelector('.alu-ping-circle');
+                const aluIndicatorDot = projectsSection.querySelector('.alu-hud-console + circle');
+                const aluLogicCore = projectsSection.querySelector('.alu-logic-core');
+
+                const aluStates = {
+                    A: { text: "INPUT A: 0101 (DECIMAL 5)", stroke: "#BF9AFF", coreColor: "rgba(123, 47, 255, 0.08)" },
+                    B: { text: "INPUT B: 1010 (DECIMAL 10)", stroke: "#BF9AFF", coreColor: "rgba(123, 47, 255, 0.08)" },
+                    Y: { text: "OUTPUT Y: 1111 (OP: OR | RES: 15)", stroke: "#7B2FFF", coreColor: "rgba(123, 47, 255, 0.16)" }
+                };
+
+                aluPathGroups.forEach(group => {
+                    const inputA = group.getAttribute('data-input');
+                    const outputY = group.getAttribute('data-output');
+                    const key = inputA || outputY;
+
+                    group.addEventListener('mouseenter', () => {
+                        const state = aluStates[key];
+                        if (!state) return;
+
+                        // Highlight hovered path, dim others
+                        aluPathGroups.forEach(g => {
+                            const line = g.querySelector('line');
+                            if (g === group) {
+                                line.style.stroke = state.stroke;
+                                line.style.strokeWidth = "2px";
+                                g.style.opacity = "1";
+                            } else {
+                                g.style.opacity = "0.3";
+                            }
+                        });
+
+                        // Highlight core ALU component, pause background pulse
+                        if (aluLogicCore) {
+                            aluLogicCore.style.fill = state.coreColor;
+                            aluLogicCore.style.stroke = state.stroke;
+                            aluLogicCore.style.strokeWidth = "2px";
+                            aluLogicCore.style.animationPlayState = 'paused';
+                        }
+
+                        // Update HUD console
+                        if (aluText) {
+                            aluText.textContent = state.text;
+                            aluText.style.fill = "#ffffff";
+                        }
+                        if (aluConsole) {
+                            aluConsole.style.stroke = state.stroke;
+                        }
+                        if (aluIndicatorDot) aluIndicatorDot.style.fill = state.stroke;
+                        if (aluPing) {
+                            aluPing.style.stroke = state.stroke;
+                        }
+                    });
+
+                    group.addEventListener('mouseleave', () => {
+                        // Reset paths
+                        aluPathGroups.forEach(g => {
+                            const line = g.querySelector('line');
+                            line.style.stroke = "rgba(123, 47, 255, 0.2)";
+                            line.style.strokeWidth = "1px";
+                            g.style.opacity = "1";
+                        });
+
+                        // Reset core, resume pulse
+                        if (aluLogicCore) {
+                            aluLogicCore.style.fill = "none";
+                            aluLogicCore.style.stroke = "rgba(123, 47, 255, 0.3)";
+                            aluLogicCore.style.strokeWidth = "1.5px";
+                            aluLogicCore.style.animationPlayState = 'running';
+                        }
+
+                        // Reset HUD console
+                        if (aluText) {
+                            aluText.textContent = "ALU EXECUTION RUNNING...";
+                            aluText.style.fill = "#ffffff";
+                        }
+                        if (aluConsole) {
+                            aluConsole.style.stroke = "rgba(123, 47, 255, 0.15)";
+                        }
+                        if (aluIndicatorDot) aluIndicatorDot.style.fill = "#7B2FFF";
+                        if (aluPing) {
+                            aluPing.style.stroke = "#7B2FFF";
+                        }
+                    });
+                });
+
+
+                // ---- PROJECT 5: Spectral Analyzer ----
+                const spectralGroup = projectsSection.querySelector('.spectral-wave-group');
+                const spectralWave = projectsSection.querySelector('.spectral-wave-path');
+                const spectralConsole = projectsSection.querySelector('.spectral-hud-console');
+                const spectralText = projectsSection.querySelector('.spectral-hud-text');
+                const spectralPing = projectsSection.querySelector('.spectral-ping-circle');
+                const spectralIndicatorDot = projectsSection.querySelector('.spectral-hud-console + circle');
+
+                const SINE_WAVE = "M 30 84 Q 47.5 48, 65 84 T 100 84 T 135 84 T 170 84";
+                const HARMONIC_WAVE = "M 30 84 Q 40 60, 50 84 T 70 84 T 90 84 T 110 84 T 130 84 T 150 84 T 170 84";
+
+                if (spectralGroup) {
+                    spectralGroup.addEventListener('mouseenter', () => {
+                        // Morph wave to higher frequency harmonics
+                        if (spectralWave) {
+                            spectralWave.setAttribute('d', HARMONIC_WAVE);
+                            spectralWave.style.strokeWidth = '2px';
+                            spectralWave.style.animationPlayState = 'paused'; // freeze oscillate jitter on lock-on
+                        }
+
+                        // Update HUD console
+                        if (spectralText) {
+                            spectralText.textContent = "THD: 0.12% | FREQ: 2.40kHz";
+                            spectralText.style.fill = "#ffffff";
+                        }
+                        if (spectralConsole) {
+                            spectralConsole.style.stroke = "#22d3ee";
+                        }
+                        if (spectralIndicatorDot) spectralIndicatorDot.style.fill = "#22d3ee";
+                        if (spectralPing) {
+                            spectralPing.style.stroke = "#22d3ee";
+                        }
+                    });
+
+                    spectralGroup.addEventListener('mouseleave', () => {
+                        // Morph back to default sine wave
+                        if (spectralWave) {
+                            spectralWave.setAttribute('d', SINE_WAVE);
+                            spectralWave.style.strokeWidth = '1.5px';
+                            spectralWave.style.animationPlayState = 'running'; // resume wave oscillation
+                        }
+
+                        // Reset HUD console
+                        if (spectralText) {
+                            spectralText.textContent = "SPECTRUM TELEMETRY ACTIVE";
+                            spectralText.style.fill = "#ffffff";
+                        }
+                        if (spectralConsole) {
+                            spectralConsole.style.stroke = "rgba(34, 211, 238, 0.15)";
+                        }
+                        if (spectralIndicatorDot) spectralIndicatorDot.style.fill = "#22d3ee";
+                        if (spectralPing) {
+                            spectralPing.style.stroke = "#22d3ee";
+                        }
+                    });
+                }
+
+
+                // ---- PROJECT 6: AC to 5V DC Converter ----
+                const powerGroups = projectsSection.querySelectorAll('.power-signal-group');
+                const powerConsole = projectsSection.querySelector('.power-hud-console');
+                const powerText = projectsSection.querySelector('.power-hud-text');
+                const powerPing = projectsSection.querySelector('.power-ping-circle');
+                const powerIndicatorDot = projectsSection.querySelector('.power-hud-console + circle');
+                const acWavePath = projectsSection.querySelector('.ac-wave-path');
+                const dcPulseLine = projectsSection.querySelector('.power-signal-group[data-wave="DC"] line:nth-child(2)');
+
+                const powerStates = {
+                    AC: { text: "AC INPUT: 230V RMS @ 50Hz", stroke: "#f43f5e" },
+                    DC: { text: "DC OUTPUT: 5.02V REGULATED", stroke: "#00E5FF" }
+                };
+
+                powerGroups.forEach(group => {
+                    group.addEventListener('mouseenter', () => {
+                        const wave = group.getAttribute('data-wave');
+                        const state = powerStates[wave];
+                        if (!state) return;
+
+                        // Highlight hovered group case, dim other
+                        powerGroups.forEach(g => {
+                            const borderRect = g.querySelector('rect');
+                            if (g === group) {
+                                borderRect.style.stroke = state.stroke;
+                                borderRect.style.strokeWidth = "1.6px";
+                                g.style.opacity = "1";
+                            } else {
+                                g.style.opacity = "0.3";
+                            }
+                        });
+
+                        // Pause active signal flows during telemetry hold
+                        if (wave === 'AC' && acWavePath) {
+                            acWavePath.style.animationPlayState = 'paused';
+                        } else if (wave === 'DC' && dcPulseLine) {
+                            dcPulseLine.style.animationPlayState = 'paused';
+                        }
+
+                        // Update HUD console
+                        if (powerText) {
+                            powerText.textContent = state.text;
+                            powerText.style.fill = "#ffffff";
+                        }
+                        if (powerConsole) {
+                            powerConsole.style.stroke = state.stroke;
+                        }
+                        if (powerIndicatorDot) powerIndicatorDot.style.fill = state.stroke;
+                        if (powerPing) {
+                            powerPing.style.stroke = state.stroke;
+                        }
+                    });
+
+                    group.addEventListener('mouseleave', () => {
+                        const wave = group.getAttribute('data-wave');
+                        // Reset power blocks
+                        powerGroups.forEach(g => {
+                            const borderRect = g.querySelector('rect');
+                            borderRect.style.stroke = "rgba(244, 63, 94, 0.15)";
+                            borderRect.style.strokeWidth = "1px";
+                            g.style.opacity = "1";
+                        });
+
+                        // Resume signal flows
+                        if (wave === 'AC' && acWavePath) {
+                            acWavePath.style.animationPlayState = 'running';
+                        } else if (wave === 'DC' && dcPulseLine) {
+                            dcPulseLine.style.animationPlayState = 'running';
+                        }
+
+                        // Reset HUD console
+                        if (powerText) {
+                            powerText.textContent = "CONVERSION RATIO: 46:1";
+                            powerText.style.fill = "#ffffff";
+                        }
+                        if (powerConsole) {
+                            powerConsole.style.stroke = "rgba(244, 63, 94, 0.15)";
+                        }
+                        if (powerIndicatorDot) powerIndicatorDot.style.fill = "#f43f5e";
+                        if (powerPing) {
+                            powerPing.style.stroke = "#f43f5e";
+                        }
+                    });
+                });
+            }
 
 
             // ================================================================
