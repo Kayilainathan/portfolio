@@ -628,7 +628,8 @@
             letter-spacing: -0.04em;
             line-height: 1.0;
             color: var(--text);
-            word-break: break-word; /* graceful wrap on mobile */
+            word-break: break-word;
+            /* graceful wrap on mobile */
         }
 
         /* On desktop keep it on one line */
@@ -1063,9 +1064,10 @@
             text-decoration: none;
             cursor: pointer;
             z-index: 10;
-            pointer-events: none; /* enabled by .appeared */
+            pointer-events: none;
+            /* enabled by .appeared */
             transition: opacity 0.6s var(--ease-out),
-                        transform 0.6s var(--ease-out);
+                transform 0.6s var(--ease-out);
         }
 
         /* Entry state — JS adds this after 1.2s delay */
@@ -1114,13 +1116,11 @@
             position: absolute;
             inset: -1px;
             border-radius: inherit;
-            background: conic-gradient(
-                from var(--scroll-angle, 0deg),
-                transparent 0deg,
-                rgba(34, 211, 238, 0.7) 60deg,
-                rgba(167, 139, 250, 0.5) 120deg,
-                transparent 180deg
-            );
+            background: conic-gradient(from var(--scroll-angle, 0deg),
+                    transparent 0deg,
+                    rgba(34, 211, 238, 0.7) 60deg,
+                    rgba(167, 139, 250, 0.5) 120deg,
+                    transparent 180deg);
             -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
@@ -1194,27 +1194,64 @@
         /* scrollNudgeAppear keyframe removed — appearance is now class-driven */
 
         @keyframes scrollBorderSpin {
-            to { --scroll-angle: 360deg; }
+            to {
+                --scroll-angle: 360deg;
+            }
         }
 
         @keyframes scrollPillPulse {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(6px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(6px);
+            }
         }
 
         @keyframes scrollRingExpand {
-            0%, 100% { inset: -4px; opacity: 0.4; }
-            50%       { inset: -9px; opacity: 0; }
+
+            0%,
+            100% {
+                inset: -4px;
+                opacity: 0.4;
+            }
+
+            50% {
+                inset: -9px;
+                opacity: 0;
+            }
         }
 
         @keyframes chevronBounce {
-            0%, 100% { transform: translateY(-1px); opacity: 0.6; }
-            50%       { transform: translateY(2px);  opacity: 1; }
+
+            0%,
+            100% {
+                transform: translateY(-1px);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateY(2px);
+                opacity: 1;
+            }
         }
 
         @keyframes scrollLineGrow {
-            0%, 100% { height: 0px;  opacity: 0; }
-            40%, 60% { height: 20px; opacity: 1; }
+
+            0%,
+            100% {
+                height: 0px;
+                opacity: 0;
+            }
+
+            40%,
+            60% {
+                height: 20px;
+                opacity: 1;
+            }
         }
 
         @property --scroll-angle {
@@ -1231,7 +1268,8 @@
             position: relative;
             padding-top: 120px;
             padding-bottom: 140px;
-            overflow: visible; /* Let glows and parallax float outside bounds */
+            overflow: visible;
+            /* Let glows and parallax float outside bounds */
         }
 
         .about-container {
@@ -1333,28 +1371,32 @@
             top: 4%;
             left: calc(50% - 670px);
             width: 210px;
-            --glow-color: rgba(34, 211, 238, 0.55); /* Cyan */
+            --glow-color: rgba(34, 211, 238, 0.55);
+            /* Cyan */
         }
 
         .asset-top-right {
             top: 4%;
             right: calc(50% - 670px);
             width: 210px;
-            --glow-color: rgba(236, 72, 153, 0.55); /* Pink/Magenta */
+            --glow-color: rgba(236, 72, 153, 0.55);
+            /* Pink/Magenta */
         }
 
         .asset-bottom-left {
             bottom: 8%;
             left: calc(50% - 620px);
             width: 180px;
-            --glow-color: rgba(167, 139, 250, 0.55); /* Purple */
+            --glow-color: rgba(167, 139, 250, 0.55);
+            /* Purple */
         }
 
         .asset-bottom-right {
             bottom: 8%;
             right: calc(50% - 660px);
             width: 220px;
-            --glow-color: rgba(34, 211, 238, 0.45); /* Cyan-purple mix */
+            --glow-color: rgba(34, 211, 238, 0.45);
+            /* Cyan-purple mix */
         }
 
         /* Responsive adjustments for viewports narrower than 1150px (tablets & mobile) */
@@ -2012,11 +2054,13 @@
             flex-direction: row;
             gap: 36px;
             overflow-x: auto;
-            overflow-y: visible;      /* let glow blobs escape vertically */
+            overflow-y: visible;
+            /* let glow blobs escape vertically */
             scroll-behavior: smooth;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            padding: 48px 28px 56px; /* increased horizontal padding to 28px to prevent glow clipping */
+            padding: 48px 28px 56px;
+            /* increased horizontal padding to 28px to prevent glow clipping */
             cursor: grab;
             align-items: flex-start;
         }
@@ -2043,7 +2087,8 @@
             /* The gradient lives HERE — shows as the 4px border gap */
             background: var(--card-gradient);
             border-radius: 38px;
-            padding: 4px;           /* this is the border thickness */
+            padding: 4px;
+            /* this is the border thickness */
 
             transition: transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
         }
@@ -2063,7 +2108,8 @@
             opacity: 0.65;
             pointer-events: none;
             filter: blur(12px);
-            z-index: -1;            /* strictly behind the wrapper */
+            z-index: -1;
+            /* strictly behind the wrapper */
             background: var(--card-gradient);
             transition: opacity 0.45s ease, filter 0.45s ease;
         }
@@ -2086,8 +2132,10 @@
             flex-direction: column;
             gap: 0;
             overflow: hidden;
-            border-radius: 34px;    /* = wrapper(38) - padding(4) */
-            background: #0A0A0C;    /* PURE BLACK — absolutely no colour */
+            border-radius: 34px;
+            /* = wrapper(38) - padding(4) */
+            background: #0A0A0C;
+            /* PURE BLACK — absolutely no colour */
             border: none;
             box-shadow: none;
         }
@@ -2109,7 +2157,8 @@
             user-select: none;
             pointer-events: none;
             z-index: 3;
-            color: rgba(255, 255, 255, 0.10); /* plain white, always visible */
+            color: rgba(255, 255, 255, 0.10);
+            /* plain white, always visible */
             transition: color 0.45s ease, transform 0.45s var(--ease-spring);
         }
 
@@ -2246,7 +2295,8 @@
         .project-link::after {
             content: '';
             position: absolute;
-            inset: -2px;             /* sits outside the button boundary */
+            inset: -2px;
+            /* sits outside the button boundary */
             border-radius: inherit;
             background: var(--card-gradient);
             z-index: -1;
@@ -2256,7 +2306,8 @@
 
         .project-link:hover {
             border-color: transparent;
-            color: #ffffff;          /* SVG stays white — always legible */
+            color: #ffffff;
+            /* SVG stays white — always legible */
             transform: translateY(-2px) scale(1.1);
         }
 
@@ -2268,7 +2319,8 @@
         .project-link svg {
             flex-shrink: 0;
             position: relative;
-            z-index: 1;              /* always above the background gradient */
+            z-index: 1;
+            /* always above the background gradient */
             transition: transform 0.4s var(--ease-spring);
         }
 
@@ -2285,7 +2337,7 @@
             position: relative;
             overflow: hidden;
             transition: color 0.3s ease, border-color 0.3s ease,
-                        transform 0.35s var(--ease-spring);
+                transform 0.35s var(--ease-spring);
         }
 
         /* Gradient ring behind tag on hover */
@@ -2302,7 +2354,8 @@
         }
 
         .proj-card-wrap .project-tags .tag:hover {
-            color: #ffffff;          /* always solid white — never invisible */
+            color: #ffffff;
+            /* always solid white — never invisible */
             border-color: transparent;
             background: rgba(255, 255, 255, 0.05);
             transform: translateY(-2px) scale(1.04);
@@ -2323,22 +2376,27 @@
         .proj-card-wrap:nth-child(1) {
             --card-gradient: linear-gradient(137deg, #FF2D78 0%, #FF9500 100%);
         }
+
         /* 02 — Electric Cyan → Sky Blue  (cool, focused) */
         .proj-card-wrap:nth-child(2) {
             --card-gradient: linear-gradient(137deg, #00E5FF 0%, #0077FF 100%);
         }
+
         /* 03 — Indigo → Soft Violet  (deep, calm) */
         .proj-card-wrap:nth-child(3) {
             --card-gradient: linear-gradient(137deg, #7B2FFF 0%, #BF9AFF 100%);
         }
+
         /* 04 — Royal Blue → Vivid Magenta  (bold contrast) */
         .proj-card-wrap:nth-child(4) {
             --card-gradient: linear-gradient(137deg, #3B82F6 0%, #EC4899 100%);
         }
+
         /* 05 — Emerald → Aqua  (fresh, techy) */
         .proj-card-wrap:nth-child(5) {
             --card-gradient: linear-gradient(137deg, #00C9A7 0%, #00A3FF 100%);
         }
+
         /* 06 — Gold → Coral  (warm earth) */
         .proj-card-wrap:nth-child(6) {
             --card-gradient: linear-gradient(137deg, #FFD60A 0%, #FF6B35 100%);
@@ -2440,46 +2498,251 @@
 
 
         /* ================================================================
-           SKILLS SECTION — Three grouped tag panels
+           SKILLS SECTION — Redesigned Fresh Minimalistic Liquid Glass
            ================================================================ */
+        .skills-header-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            margin-bottom: 54px;
+            padding: 20px;
+        }
+
+        /* Animated SVG liquid morph behind the header */
+        .skills-svg-backdrop {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            opacity: 0.75;
+            filter: blur(48px);
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            animation: liquidMorph 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes liquidMorph {
+            0% {
+                transform: rotate(0deg) scale(1) translate(0px, 0px);
+            }
+            33% {
+                transform: rotate(120deg) scale(1.15) translate(15px, -10px);
+            }
+            66% {
+                transform: rotate(240deg) scale(0.9) translate(-10px, 15px);
+            }
+            100% {
+                transform: rotate(360deg) scale(1.05) translate(5px, 5px);
+            }
+        }
+
+        .skills-title-3d {
+            position: relative;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin: 0;
+            z-index: 1;
+            cursor: default;
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, text-shadow 0.15s ease-out;
+            color: #ffffff;
+            text-transform: capitalize;
+            /* subtle default text glow */
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+            font-family: 'Kanit', system-ui, -apple-system, sans-serif !important;
+        }
+
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
+            gap: 24px;
+            perspective: 1000px;
         }
 
+        /* 3D Wrapper that serves as the project-card style gradient border */
+        .skill-group-wrap {
+            position: relative;
+            background: var(--skill-card-gradient);
+            border-radius: 28px;
+            padding: 3px; /* border thickness */
+            transition: transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+            transform-style: preserve-3d;
+            overflow: visible;
+        }
+
+        .skill-group-wrap:hover {
+            transform: translateY(-8px) scale(1.015);
+        }
+
+        /* Distinct gradient pairings matching project cards */
+        .skills-grid .skill-group-wrap:nth-child(1) {
+            --skill-card-gradient: linear-gradient(137deg, #FF2D78 0%, #FF9500 100%);
+            --skill-accent: #FF2D78;
+            --skill-accent-glow: rgba(255, 45, 120, 0.25);
+        }
+        .skills-grid .skill-group-wrap:nth-child(2) {
+            --skill-card-gradient: linear-gradient(137deg, #00E5FF 0%, #0077FF 100%);
+            --skill-accent: #00E5FF;
+            --skill-accent-glow: rgba(0, 229, 255, 0.25);
+        }
+        .skills-grid .skill-group-wrap:nth-child(3) {
+            --skill-card-gradient: linear-gradient(137deg, #7B2FFF 0%, #BF9AFF 100%);
+            --skill-accent: #7B2FFF;
+            --skill-accent-glow: rgba(123, 47, 255, 0.25);
+        }
+
+        /* Soft neon halo shadow behind the card */
+        .skill-glow {
+            position: absolute;
+            inset: 0px;
+            border-radius: 28px;
+            opacity: 0.45;
+            pointer-events: none;
+            filter: blur(12px);
+            z-index: -1;
+            background: var(--skill-card-gradient);
+            transition: opacity 0.45s ease, filter 0.45s ease;
+        }
+
+        .skill-group-wrap:hover .skill-glow {
+            opacity: 0.8;
+            filter: blur(8px);
+        }
+
+        /* Fluid card body - Black background */
         .skill-group {
-            padding: 22px 24px;
+            position: relative;
+            padding: 36px 32px;
+            background: #0A0A0C !important; /* Pure black, identical to project cards */
+            border: none;
+            border-radius: 25px;
+            overflow: hidden;
+            transition: border-radius 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            height: 100%;
+        }
+
+        /* Ambient liquid spotlight inside each card */
+        .skill-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                400px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px),
+                rgba(255, 255, 255, 0.05),
+                transparent 60%
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Interactive SVG morphing inside card */
+        .skill-card-svg {
+            position: absolute;
+            right: -25px;
+            bottom: -35px;
+            width: 170px;
+            height: 170px;
+            opacity: 0.65;
+            pointer-events: none;
+            filter: blur(14px);
+            z-index: 1;
+            mix-blend-mode: screen;
+            animation: skillSvgMorph 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes skillSvgMorph {
+            0% {
+                transform: rotate(0deg) scale(1) translate(0px, 0px);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2) translate(10px, -10px);
+            }
+            100% {
+                transform: rotate(360deg) scale(0.95) translate(-5px, 5px);
+            }
         }
 
         .skill-group-label {
-            font-size: 0.74rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+            position: relative;
+            z-index: 3;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 14px;
+            margin-bottom: 24px;
+            transition: color 0.3s ease;
+            transform: translateZ(20px);
+            font-family: 'Kanit', system-ui, -apple-system, sans-serif !important;
+        }
+
+        .skill-group-wrap:hover .skill-group-label {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         .skill-tags {
+            position: relative;
+            z-index: 3;
             display: flex;
             flex-wrap: wrap;
-            gap: 7px;
+            gap: 10px;
+            transform: translateZ(10px);
         }
 
-        /* Redesigned highly visible skill tags */
+        /* Ultra fresh interactive glass pills */
         .skill-tags .tag {
-            color: rgba(255, 255, 255, 0.88);
-            /* high legibility */
-            background: rgba(255, 255, 255, 0.045);
-            border-color: rgba(255, 255, 255, 0.09);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            color: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 100px;
+            font-family: 'Kanit', system-ui, -apple-system, sans-serif !important;
+            transition: 
+                color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
+        /* Organic expansion and accent glow */
         .skill-tags .tag:hover {
-            color: var(--accent);
-            background: rgba(34, 211, 238, 0.08);
-            border-color: rgba(34, 211, 238, 0.35);
-            box-shadow: 0 4px 14px rgba(34, 211, 238, 0.2);
+            color: #ffffff;
+            background: rgba(34, 211, 238, 0.12);
+            border-color: rgba(34, 211, 238, 0.45);
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 
+                0 6px 20px rgba(34, 211, 238, 0.25),
+                0 0 8px rgba(34, 211, 238, 0.15);
+        }
+
+        /* Alternate neon color accents for variation */
+        .skill-group-wrap:nth-child(2) .skill-tags .tag:hover {
+            background: rgba(0, 229, 255, 0.12);
+            border-color: rgba(0, 229, 255, 0.45);
+            box-shadow: 
+                0 6px 20px rgba(0, 229, 255, 0.25),
+                0 0 8px rgba(0, 229, 255, 0.15);
+        }
+
+        .skill-group-wrap:nth-child(3) .skill-tags .tag:hover {
+            background: rgba(123, 47, 255, 0.12);
+            border-color: rgba(123, 47, 255, 0.45);
+            box-shadow: 
+                0 6px 20px rgba(123, 47, 255, 0.25),
+                0 0 8px rgba(123, 47, 255, 0.15);
         }
 
 
@@ -2498,12 +2761,11 @@
             flex-direction: row;
             align-items: flex-start;
             gap: 26px;
-            /* Space between cards */
             overflow-x: auto;
             scroll-behavior: smooth;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            padding: 24px 28px 85px; /* increased bottom padding to 85px to provide breathing room for hover height expansion */
+            padding: 24px 56px 36px;
             cursor: grab;
         }
 
@@ -2518,7 +2780,7 @@
 
         .course-card {
             flex: 0 0 min(290px, 85vw);
-            height: 250px; /* Base height */
+            height: 280px;
             padding: 24px;
             display: flex;
             flex-direction: column;
@@ -2530,15 +2792,13 @@
             border-radius: 20px;
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             transition:
-                height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.4s ease;
         }
 
         .course-card:hover {
-            height: 310px; /* Expand on hover to accommodate View Certificate button comfortably */
-            transform: translateY(-8px) scale(1.015);
+            transform: translateY(-6px) scale(1.015);
             border-color: var(--card-accent);
             box-shadow:
                 0 16px 48px rgba(0, 0, 0, 0.5),
@@ -2568,8 +2828,17 @@
         }
 
         @keyframes pulseCloud {
-            0% { opacity: 0.60; filter: blur(20px); transform: translateX(-50%) scale(0.9); }
-            100% { opacity: 0.95; filter: blur(16px); transform: translateX(-50%) scale(1.1); }
+            0% {
+                opacity: 0.60;
+                filter: blur(20px);
+                transform: translateX(-50%) scale(0.9);
+            }
+
+            100% {
+                opacity: 0.95;
+                filter: blur(16px);
+                transform: translateX(-50%) scale(1.1);
+            }
         }
 
         /* Accent classes */
@@ -2578,6 +2847,7 @@
             --card-accent-dim: rgba(34, 211, 238, 0.25);
             --card-accent-glow: rgba(34, 211, 238, 0.15);
         }
+
         .course-purple {
             --card-accent: #a78bfa;
             --card-accent-dim: rgba(167, 139, 250, 0.25);
@@ -2602,10 +2872,12 @@
             position: relative;
             z-index: 2;
         }
+
         .course-card:hover .course-platform-pill {
             border-color: var(--card-accent-dim);
             color: var(--text);
         }
+
         .pill-icon {
             color: var(--card-accent);
             flex-shrink: 0;
@@ -2615,6 +2887,7 @@
             filter: drop-shadow(0 0 4px var(--card-accent-glow));
             transition: transform 0.4s var(--ease-spring);
         }
+
         .course-card:hover .pill-icon {
             transform: scale(1.1) rotate(5deg);
         }
@@ -2630,11 +2903,12 @@
             position: relative;
             z-index: 2;
         }
+
         .course-card:hover .course-name {
             color: #ffffff;
         }
 
-        /* Skills Group — liquid design buttons */
+        /* Skills Group — pinned to bottom, slides up on hover */
         .cert-skills-group {
             display: flex;
             flex-direction: row;
@@ -2642,7 +2916,15 @@
             gap: 8px;
             position: relative;
             z-index: 2;
+            margin-top: auto;
+            transform: translateY(0);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
+
+        .course-card:hover .cert-skills-group {
+            transform: translateY(-44px);
+        }
+
         .cert-skill-btn {
             display: inline-flex;
             align-items: center;
@@ -2658,6 +2940,7 @@
             overflow: hidden;
             transition: color 0.35s ease, border-color 0.35s ease, transform 0.35s var(--ease-spring);
         }
+
         .cert-skill-btn::before {
             content: '';
             position: absolute;
@@ -2667,37 +2950,42 @@
             transition: opacity 0.35s ease;
             z-index: -1;
         }
+
         .course-card:hover .cert-skill-btn {
             color: rgba(255, 255, 255, 0.75);
             border-color: rgba(255, 255, 255, 0.12);
         }
+
         .cert-skill-btn:hover {
             color: #ffffff !important;
             border-color: var(--card-accent) !important;
             transform: translateY(-2px) scale(1.04);
             box-shadow: 0 4px 12px var(--card-accent-glow);
         }
+
         .cert-skill-btn:hover::before {
             opacity: 1;
         }
 
-        /* Button Arising Animation */
+        /* View Cert — absolutely positioned, slides up inside the card on hover */
         .course-bottom {
             position: absolute;
-            bottom: 20px;
             left: 24px;
             right: 24px;
+            bottom: -48px;
             display: flex;
             justify-content: center;
             opacity: 0;
-            transform: translateY(18px);
-            transition: opacity 0.4s ease, transform 0.4s var(--ease-spring);
+            transition:
+                opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
+                bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             pointer-events: none;
             z-index: 3;
         }
+
         .course-card:hover .course-bottom {
             opacity: 1;
-            transform: translateY(0);
+            bottom: 22px;
             pointer-events: auto;
         }
 
@@ -2720,6 +3008,13 @@
             letter-spacing: 0.02em;
             transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease, transform 0.3s var(--ease-spring);
         }
+
+        /* Outer line of color when the certificate card is hovered */
+        .course-card:hover .course-link-btn {
+            border-color: var(--card-accent);
+            box-shadow: 0 0 12px var(--card-accent-glow);
+        }
+
         .course-link-btn::before {
             content: '';
             position: absolute;
@@ -2729,24 +3024,29 @@
             transition: opacity 0.4s ease;
             z-index: -1;
         }
+
         .course-link-btn:not(.course-completed-badge):hover::before {
             opacity: 1;
         }
+
+        /* Solid full color background on button hover */
         .course-link-btn:not(.course-completed-badge):hover {
-            background: linear-gradient(135deg, var(--card-accent) 0%, var(--card-accent-dim) 100%);
+            background: var(--card-accent);
             border-color: var(--card-accent);
             color: #0A0A0C;
-            box-shadow: 
+            box-shadow:
                 0 0 25px var(--card-accent),
                 0 0 10px var(--card-accent-dim);
             transform: translateY(-2px) scale(1.02);
         }
+
         .course-link-btn svg {
             flex-shrink: 0;
             position: relative;
             z-index: 2;
             transition: transform 0.4s var(--ease-spring), color 0.35s ease;
         }
+
         .course-link-btn:not(.course-completed-badge):hover svg {
             color: #0A0A0C !important;
             transform: scale(1.15) rotate(-10deg);
@@ -2759,17 +3059,21 @@
             color: rgba(255, 255, 255, 0.35);
             cursor: default;
         }
+
         .course-completed-badge:hover {
             border-color: rgba(255, 255, 255, 0.08);
             box-shadow: none;
             transform: none;
         }
+
         .course-completed-badge:hover::before {
             opacity: 0;
         }
+
         .course-completed-badge svg {
             color: rgba(255, 255, 255, 0.3) !important;
         }
+
         .course-completed-badge:hover svg {
             transform: none;
         }
@@ -2811,11 +3115,11 @@
         }
 
         .course-arrow-left {
-            left: 4px;
+            left: 8px;
         }
 
         .course-arrow-right {
-            right: 4px;
+            right: 8px;
         }
 
         /* ---- COURSE SLIDER ---- */
@@ -3228,7 +3532,8 @@
                regardless of how tall the stacked hero content is */
             .scroll-nudge {
                 position: fixed;
-                bottom: 90px; /* sit above the bottom nav pill */
+                bottom: 90px;
+                /* sit above the bottom nav pill */
                 left: 50%;
             }
 
@@ -3270,7 +3575,8 @@
 
             /* Highlights: shrink stage */
             .highlights-stage {
-                height: 300px; /* taller to fit more text */
+                height: 300px;
+                /* taller to fit more text */
             }
 
             .hl-card {
@@ -3294,6 +3600,7 @@
             .proj-card-wrap {
                 flex: 0 0 min(300px, 88vw);
             }
+
             .course-card {
                 flex: 0 0 min(300px, 88vw);
             }
@@ -3312,7 +3619,8 @@
 
             /* Footer */
             footer {
-                padding: 24px 16px 80px; /* bottom clearance for nav pill */
+                padding: 24px 16px 80px;
+                /* bottom clearance for nav pill */
             }
 
             /* Nav even tighter */
@@ -3410,21 +3718,13 @@
             .proj-card-wrap {
                 flex: 0 0 min(280px, 90vw);
             }
+
             .proj-card {
                 height: 300px;
             }
+
             .course-card {
                 flex: 0 0 min(280px, 90vw);
-                height: 240px; /* Base height on mobile */
-                transition:
-                    height 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                    box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1),
-                    border-color 0.4s ease;
-            }
-
-            .course-card:hover {
-                height: 300px; /* Expand on hover on mobile to fit the button cleanly */
             }
 
             /* Skills */
@@ -3506,8 +3806,9 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 4px 20px rgba(0,0,0,0.25);
-            overflow: hidden; /* clip the indicator so it never escapes the pill */
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 4px 20px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+            /* clip the indicator so it never escapes the pill */
         }
 
         /* Gliding active indicator — moved by JS */
@@ -3517,9 +3818,9 @@
             left: 4px;
             height: calc(100% - 8px);
             border-radius: 100px;
-            background: linear-gradient(135deg, rgba(34,211,238,0.18) 0%, rgba(34,211,238,0.08) 100%);
-            border: 1px solid rgba(34,211,238,0.28);
-            box-shadow: 0 0 16px rgba(34,211,238,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+            background: linear-gradient(135deg, rgba(34, 211, 238, 0.18) 0%, rgba(34, 211, 238, 0.08) 100%);
+            border: 1px solid rgba(34, 211, 238, 0.28);
+            box-shadow: 0 0 16px rgba(34, 211, 238, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
             pointer-events: none;
             z-index: 0;
             transition: left 0.4s var(--ease-smooth), width 0.4s var(--ease-smooth);
@@ -3555,8 +3856,8 @@
             width: 22px;
             height: 22px;
             border-radius: 50%;
-            background: rgba(255,255,255,0.06);
-            border: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s var(--ease-spring), box-shadow 0.3s ease;
             flex-shrink: 0;
         }
@@ -3576,8 +3877,8 @@
         }
 
         .tab-btn:hover .tab-btn-icon {
-            background: rgba(255,255,255,0.10);
-            border-color: rgba(255,255,255,0.16);
+            background: rgba(255, 255, 255, 0.10);
+            border-color: rgba(255, 255, 255, 0.16);
             transform: scale(1.08);
         }
 
@@ -3587,9 +3888,9 @@
         }
 
         .tab-btn.active .tab-btn-icon {
-            background: rgba(34,211,238,0.14);
-            border-color: rgba(34,211,238,0.35);
-            box-shadow: 0 0 10px rgba(34,211,238,0.20);
+            background: rgba(34, 211, 238, 0.14);
+            border-color: rgba(34, 211, 238, 0.35);
+            box-shadow: 0 0 10px rgba(34, 211, 238, 0.20);
         }
 
         .tab-btn.active .tab-btn-icon svg {
@@ -3602,8 +3903,8 @@
         }
 
         .tab-btn-human:hover .tab-btn-icon {
-            background: rgba(167,139,250,0.12);
-            border-color: rgba(167,139,250,0.30);
+            background: rgba(167, 139, 250, 0.12);
+            border-color: rgba(167, 139, 250, 0.30);
         }
 
         .tab-btn-human.active {
@@ -3611,16 +3912,16 @@
         }
 
         .tab-btn-human.active .tab-btn-icon {
-            background: rgba(167,139,250,0.15);
-            border-color: rgba(167,139,250,0.38);
-            box-shadow: 0 0 10px rgba(167,139,250,0.22);
+            background: rgba(167, 139, 250, 0.15);
+            border-color: rgba(167, 139, 250, 0.38);
+            box-shadow: 0 0 10px rgba(167, 139, 250, 0.22);
         }
 
         /* When human is active, change indicator to purple tint */
         .about-tabs.human-active .tab-indicator {
-            background: linear-gradient(135deg, rgba(167,139,250,0.18) 0%, rgba(167,139,250,0.08) 100%);
-            border-color: rgba(167,139,250,0.28);
-            box-shadow: 0 0 16px rgba(167,139,250,0.12), inset 0 1px 0 rgba(255,255,255,0.08);
+            background: linear-gradient(135deg, rgba(167, 139, 250, 0.18) 0%, rgba(167, 139, 250, 0.08) 100%);
+            border-color: rgba(167, 139, 250, 0.28);
+            box-shadow: 0 0 16px rgba(167, 139, 250, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.08);
         }
 
         /* Bio content transitions */
@@ -3640,8 +3941,15 @@
         }
 
         @keyframes fadeInBio {
-            from { opacity: 0; transform: translateY(7px); }
-            to   { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(7px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* ============================================================
@@ -3661,7 +3969,7 @@
             gap: 8px;
             padding: 5px 13px;
             background: var(--purple-dim);
-            border: 1px solid rgba(167,139,250,0.22);
+            border: 1px solid rgba(167, 139, 250, 0.22);
             border-radius: 999px;
             font-size: 0.8rem;
             font-weight: 500;
@@ -3672,15 +3980,15 @@
         }
 
         .hero-semester:hover {
-            background: rgba(167,139,250,0.16);
-            border-color: rgba(167,139,250,0.38);
-            box-shadow: 0 0 14px rgba(167,139,250,0.14);
+            background: rgba(167, 139, 250, 0.16);
+            border-color: rgba(167, 139, 250, 0.38);
+            box-shadow: 0 0 14px rgba(167, 139, 250, 0.14);
         }
 
         .hero-status:hover {
-            background: rgba(34,211,238,0.16);
-            border-color: rgba(34,211,238,0.38);
-            box-shadow: 0 0 14px rgba(34,211,238,0.14);
+            background: rgba(34, 211, 238, 0.16);
+            border-color: rgba(34, 211, 238, 0.38);
+            box-shadow: 0 0 14px rgba(34, 211, 238, 0.14);
         }
 
         .hero-status {
@@ -3777,9 +4085,11 @@
                             <!-- Academic semester badge -->
                             <div class="hero-semester" aria-label="Currently in 5th Semester">
                                 <!-- Book-open SVG -->
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                                    aria-hidden="true">
+                                    <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+                                    <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
                                 </svg>
                                 Year 3 · Sem 5
                             </div>
@@ -3887,7 +4197,8 @@
                     <div class="scroll-nudge-pill">
                         <span class="scroll-nudge-label">Scroll</span>
                         <span class="scroll-nudge-chevron">
-                            <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg width="9" height="9" viewBox="0 0 12 12" fill="none" stroke="currentColor"
+                                stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                 <polyline points="2,4 6,8 10,4" />
                             </svg>
                         </span>
@@ -3904,16 +4215,20 @@
             <section id="about" class="section">
                 <!-- 3D Asset Corner Elements (hidden decoration for screen readers, positioned relative to #about section) -->
                 <div class="about-asset-wrapper asset-top-left" aria-hidden="true">
-                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png" alt="" class="about-asset-img" draggable="false">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png"
+                        alt="" class="about-asset-img" draggable="false">
                 </div>
                 <div class="about-asset-wrapper asset-top-right" aria-hidden="true">
-                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/lego_icon-1.703bb594.png" alt="" class="about-asset-img" draggable="false">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/lego_icon-1.703bb594.png"
+                        alt="" class="about-asset-img" draggable="false">
                 </div>
                 <div class="about-asset-wrapper asset-bottom-left" aria-hidden="true">
-                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/p59_1.4659672e.png" alt="" class="about-asset-img" draggable="false">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/p59_1.4659672e.png"
+                        alt="" class="about-asset-img" draggable="false">
                 </div>
                 <div class="about-asset-wrapper asset-bottom-right" aria-hidden="true">
-                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/Group_134-1.2e04f3ce.png" alt="" class="about-asset-img" draggable="false">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/Group_134-1.2e04f3ce.png"
+                        alt="" class="about-asset-img" draggable="false">
                 </div>
 
                 <div class="about-container">
@@ -3924,25 +4239,30 @@
                         <!-- Gliding active indicator (JS positions it) -->
                         <div class="tab-indicator" id="tabIndicator" aria-hidden="true"></div>
 
-                        <button class="tab-btn tab-btn-builder active" id="tabBuilder" onclick="toggleAbout('builder')" aria-pressed="true">
+                        <button class="tab-btn tab-btn-builder active" id="tabBuilder" onclick="toggleAbout('builder')"
+                            aria-pressed="true">
                             <span class="tab-btn-icon" aria-hidden="true">
                                 <!-- Wrench / builder icon -->
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path
+                                        d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z" />
                                 </svg>
                             </span>
                             <span class="tab-btn-label">The Builder</span>
                         </button>
 
-                        <button class="tab-btn tab-btn-human" id="tabHuman" onclick="toggleAbout('human')" aria-pressed="false">
+                        <button class="tab-btn tab-btn-human" id="tabHuman" onclick="toggleAbout('human')"
+                            aria-pressed="false">
                             <span class="tab-btn-icon" aria-hidden="true">
                                 <!-- Coffee cup / human icon -->
-                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17 8h1a4 4 0 1 1 0 8h-1"/>
-                                    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z"/>
-                                    <line x1="6" y1="2" x2="6" y2="4"/>
-                                    <line x1="10" y1="2" x2="10" y2="4"/>
-                                    <line x1="14" y1="2" x2="14" y2="4"/>
+                                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 8h1a4 4 0 1 1 0 8h-1" />
+                                    <path d="M3 8h14v9a4 4 0 0 1-4 4H7a4 4 0 0 1-4-4Z" />
+                                    <line x1="6" y1="2" x2="6" y2="4" />
+                                    <line x1="10" y1="2" x2="10" y2="4" />
+                                    <line x1="14" y1="2" x2="14" y2="4" />
                                 </svg>
                             </span>
                             <span class="tab-btn-label">The Human</span>
@@ -3952,20 +4272,34 @@
                     <!-- The Builder Content -->
                     <div id="bio-builder" class="about-content active-bio">
                         <p class="about-text about-lead">
-                            An electronics and instrumentation engineering student at MIT Anna University, i focus on full-stack web systems, IoT sensor networks, and predictive hardware intelligence. I truly enjoy designing robust cloud architectures and smart hardware assemblies that solve hard real-world problems.
+                            An electronics and instrumentation engineering student at MIT Anna University, i focus on
+                            full-stack web systems, IoT sensor networks, and predictive hardware intelligence. I truly
+                            enjoy designing robust cloud architectures and smart hardware assemblies that solve hard
+                            real-world problems.
                         </p>
                         <p class="about-text about-sub">
-                            From designing digital logic in Vivado and soldering IoT prototypes at hackathons to training predictive AI for functional safety, I love operating right where hardware meets software. My philosophy is simple: <strong class="white-reveal">I build to learn, and I simulate to build better.</strong>
+                            From designing digital logic in Vivado and soldering IoT prototypes at hackathons to
+                            training predictive AI for functional safety, I love operating right where hardware meets
+                            software. My philosophy is simple: <strong class="white-reveal">I build to learn, and I
+                                simulate to build better.</strong>
                         </p>
                     </div>
 
                     <!-- The Human Content -->
                     <div id="bio-human" class="about-content hidden-bio">
                         <p class="about-text about-lead">
-                            When I’m not buried in hardware data sheets or debugging code, you can usually find me touching grass—literally and figuratively—with my hackathon crew, <strong>TouchGrass.Devs</strong>. We thrive on the chaos of 24-hour sprints, whether we're debugging web interfaces under pressure or racing against the clock to hunt down IoT components.
+                            When I’m not buried in hardware data sheets or debugging code, you can usually find me
+                            touching grass—literally and figuratively—with my hackathon crew,
+                            <strong>TouchGrass.Devs</strong>. We thrive on the chaos of 24-hour sprints, whether we're
+                            debugging web interfaces under pressure or racing against the clock to hunt down IoT
+                            components.
                         </p>
                         <p class="about-text about-sub">
-                            Off the clock, I'm a massive film freak. I treat my Letterboxd diary like a second portfolio, tracking, rating, and overanalyzing cinematography. To unwind, I usually step away from the screens entirely to play the musical keyboard, or log onto Chess.com for a quick mental reset. I'm fueled by great storytelling, collaborative chaos, and a good Spotify playlist.
+                            Off the clock, I'm a massive film freak. I treat my Letterboxd diary like a second
+                            portfolio, tracking, rating, and overanalyzing cinematography. To unwind, I usually step
+                            away from the screens entirely to play the musical keyboard, or log onto Chess.com for a
+                            quick mental reset. I'm fueled by great storytelling, collaborative chaos, and a good
+                            Spotify playlist.
                         </p>
                     </div>
                 </div>
@@ -4214,7 +4548,8 @@
                                     <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener"
                                         class="project-link" aria-label="View on GitHub">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                            <path
+                                                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                                         </svg>
                                     </a>
                                 </div>
@@ -4259,7 +4594,8 @@
                                     <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank"
                                         rel="noopener" class="project-link" aria-label="View on GitHub">
                                         <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                            <path
+                                                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
                                         </svg>
                                     </a>
                                 </div>
@@ -4324,38 +4660,93 @@
                  !! EDIT: Add a new .glass.skill-group block for a new category !!
                  ============================================================ -->
             <section id="skills" class="section">
-                <h2 class="section-title reveal">Skills</h2>
+                <div class="skills-header-container reveal">
+                    <!-- Liquid Morph SVG Backdrop -->
+                    <svg class="skills-svg-backdrop" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="url(#skills-liquid-grad)" d="M41.5,-68.8C54.4,-61.8,66.1,-51.7,73.5,-38.7C80.8,-25.7,83.9,-9.8,81.4,5C78.9,19.9,70.9,33.7,60.8,44.9C50.7,56,38.5,64.6,24.9,69.5C11.3,74.5,-3.6,75.9,-18.2,73.1C-32.9,70.3,-47.2,63.2,-58.3,52.5C-69.5,41.9,-77.4,27.7,-80.6,12.3C-83.8,-3,-82.2,-19.6,-75.7,-34.1C-69.1,-48.6,-57.6,-61,-43.8,-67.7C-30.1,-74.3,-15,-75.2,-0.2,-74.8C14.5,-74.4,28.7,-75.7,41.5,-68.8Z" transform="translate(100 100)" />
+                        <defs>
+                            <linearGradient id="skills-liquid-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="rgba(34, 211, 238, 0.22)" />
+                                <stop offset="50%" stop-color="rgba(168, 85, 247, 0.18)" />
+                                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.05)" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h2 class="section-title skills-title-3d">Skills</h2>
+                </div>
 
                 <div class="skills-grid reveal-stagger">
 
-                    <div class="glass skill-group tilt-card">
-                        <div class="skill-group-label">Languages</div>
-                        <div class="skill-tags">
-                            <span class="tag">C</span>
-                            <span class="tag">C++</span>
-                            <span class="tag">Python</span>
-                            <span class="tag">Verilog</span>
+                    <!-- Languages -->
+                    <div class="skill-group-wrap">
+                        <div class="skill-glow"></div>
+                        <div class="skill-group">
+                            <!-- Category-specific morphing SVG backdrop -->
+                            <svg class="skill-card-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="url(#lang-grad)" d="M44.7,-77C57.4,-70.6,67,-57.8,73.5,-43.8C80,-29.8,83.3,-14.9,81.4,-0.9C79.4,13.1,72.2,26.2,65.3,39C58.4,51.8,51.7,64.2,40.9,71.1C30.1,78,15,79.3,-0.1,79.5C-15.3,79.7,-30.5,78.7,-43.7,72.6C-56.9,66.5,-68,55.3,-74.6,41.9C-81.2,28.5,-83.4,12.8,-82.9,-2.8C-82.5,-18.4,-79.4,-33.9,-71.8,-46.8C-64.2,-59.7,-52.1,-70,-38.3,-75.7C-24.5,-81.4,-9,-82.5,4.3,-89.9C17.6,-97.4,26.5,-83.4,44.7,-77Z" transform="translate(100 100)" />
+                                <defs>
+                                    <linearGradient id="lang-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#FF2D78" stop-opacity="0.30" />
+                                        <stop offset="100%" stop-color="#FF9500" stop-opacity="0.02" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="skill-group-label">Languages</div>
+                            <div class="skill-tags">
+                                <span class="tag">C</span>
+                                <span class="tag">C++</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">Verilog</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="glass skill-group tilt-card">
-                        <div class="skill-group-label">Core Concepts</div>
-                        <div class="skill-tags">
-                            <span class="tag">Digital Logic Design</span>
-                            <span class="tag">Analog Op-Amps</span>
-                            <span class="tag">Machine Learning</span>
+                    <!-- Core Concepts -->
+                    <div class="skill-group-wrap">
+                        <div class="skill-glow"></div>
+                        <div class="skill-group">
+                            <!-- Category-specific morphing SVG backdrop -->
+                            <svg class="skill-card-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="url(#core-grad)" d="M47,-76.8C59.6,-71.6,68.1,-57.4,72.6,-42.6C77.1,-27.8,77.7,-12.3,75.4,2.5C73.1,17.3,67.9,31.4,59.9,43.7C51.8,55.9,41,66.3,28.1,72.7C15.2,79.1,0.2,81.5,-15.7,79.7C-31.5,77.9,-48.2,71.8,-59.9,60.8C-71.6,49.8,-78.3,33.9,-81.4,17.3C-84.5,0.7,-84,-16.7,-77.8,-32.1C-71.6,-47.5,-59.7,-60.9,-45.5,-66.9C-31.2,-72.8,-14.7,-71.3,0.8,-72.7C16.3,-74.1,34.3,-82,47,-76.8Z" transform="translate(100 100)" />
+                                <defs>
+                                    <linearGradient id="core-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.30" />
+                                        <stop offset="100%" stop-color="#0077FF" stop-opacity="0.02" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="skill-group-label">Core Concepts</div>
+                            <div class="skill-tags">
+                                <span class="tag">Digital Logic Design</span>
+                                <span class="tag">Analog Op-Amps</span>
+                                <span class="tag">Machine Learning</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="glass skill-group tilt-card">
-                        <div class="skill-group-label">Tools &amp; Software</div>
-                        <div class="skill-tags">
-                            <span class="tag">Arduino IDE</span>
-                            <span class="tag">Proteus</span>
-                            <span class="tag">MATLAB</span>
-                            <span class="tag">LabVIEW</span>
-                            <span class="tag">Xilinx Vivado</span>
-                            <span class="tag">VS Code</span>
+                    <!-- Tools & Software -->
+                    <div class="skill-group-wrap">
+                        <div class="skill-glow"></div>
+                        <div class="skill-group">
+                            <!-- Category-specific morphing SVG backdrop -->
+                            <svg class="skill-card-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="url(#tools-grad)" d="M42.2,-72C54.8,-65,65.3,-53.4,70.9,-39.7C76.5,-26,77.3,-10.1,75.1,5.2C72.8,20.5,67.6,35.1,58.7,46.9C49.9,58.7,37.5,67.7,23.5,72.7C9.6,77.7,-5.8,78.7,-21,75.3C-36.2,71.9,-51.1,64,-61.7,52.3C-72.3,40.6,-78.6,25,-81,8.3C-83.3,-8.4,-81.7,-26.2,-74,-40.8C-66.3,-55.4,-52.5,-66.7,-37.8,-72.8C-23.1,-78.9,-7.5,-79.8,5.4,-88.1C18.3,-96.4,36.5,-91.3,42.2,-72Z" transform="translate(100 100)" />
+                                <defs>
+                                    <linearGradient id="tools-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#7B2FFF" stop-opacity="0.30" />
+                                        <stop offset="100%" stop-color="#BF9AFF" stop-opacity="0.02" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="skill-group-label">Tools &amp; Software</div>
+                            <div class="skill-tags">
+                                <span class="tag">Arduino IDE</span>
+                                <span class="tag">Proteus</span>
+                                <span class="tag">MATLAB</span>
+                                <span class="tag">LabVIEW</span>
+                                <span class="tag">Xilinx Vivado</span>
+                                <span class="tag">VS Code</span>
+                            </div>
                         </div>
                     </div>
 
@@ -4393,7 +4784,9 @@
                         <!-- Course 1 -->
                         <div class="course-card tilt-card course-cyan">
                             <div class="course-platform-pill">
-                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <line x1="18" y1="20" x2="18" y2="10"></line>
                                     <line x1="12" y1="20" x2="12" y2="4"></line>
                                     <line x1="6" y1="20" x2="6" y2="14"></line>
@@ -4422,7 +4815,9 @@
                         <!-- Course 2 -->
                         <div class="course-card tilt-card course-purple">
                             <div class="course-platform-pill">
-                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <circle cx="12" cy="5" r="2.5"></circle>
                                     <circle cx="5" cy="19" r="2.5"></circle>
                                     <circle cx="19" cy="19" r="2.5"></circle>
@@ -4453,7 +4848,9 @@
                         <!-- Course 3 -->
                         <div class="course-card tilt-card course-cyan">
                             <div class="course-platform-pill">
-                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <polyline points="16 18 22 12 16 6"></polyline>
                                     <polyline points="8 6 2 12 8 18"></polyline>
                                 </svg>
@@ -4480,7 +4877,9 @@
                         <!-- Course 4 -->
                         <div class="course-card tilt-card course-purple">
                             <div class="course-platform-pill">
-                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                                 </svg>
                                 MathWorks
@@ -4492,7 +4891,8 @@
                             </div>
                             <div class="course-bottom">
                                 <div class="course-link-btn course-completed-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
@@ -4504,7 +4904,9 @@
                         <!-- Course 5 -->
                         <div class="course-card tilt-card course-cyan">
                             <div class="course-platform-pill">
-                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <rect x="4" y="4" width="16" height="16" rx="2"></rect>
                                     <rect x="9" y="9" width="6" height="6"></rect>
                                     <line x1="9" y1="1" x2="9" y2="4"></line>
@@ -4539,7 +4941,9 @@
                         <!-- Course 6 -->
                         <div class="course-card tilt-card course-purple">
                             <div class="course-platform-pill">
-                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
                                     <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
                                     <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                                 </svg>
@@ -4552,7 +4956,8 @@
                             </div>
                             <div class="course-bottom">
                                 <div class="course-link-btn course-completed-badge">
-                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                         <polyline points="22 4 12 14.01 9 11.01"></polyline>
                                     </svg>
@@ -4921,8 +5326,8 @@
                 // top 40% of the viewport. For the last section we also check
                 // if the user is within 80px of the page bottom so connect
                 // always activates when reached.
-                const viewH   = window.innerHeight;
-                const pageH   = document.documentElement.scrollHeight;
+                const viewH = window.innerHeight;
+                const pageH = document.documentElement.scrollHeight;
                 const atBottom = sy + viewH >= pageH - 80;
 
                 let current = '';
@@ -5068,6 +5473,72 @@
                     btn.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
                 });
             });
+            // ================================================================
+            // LIQUID GLASS SKILLS INTERACTIVE SPOTLIGHT & 3D TILT
+            // Tracks mouse coordinates within skill group cards to update
+            // custom CSS variables for liquid spotlight gradient and subtle card rotation.
+            // ================================================================
+            document.querySelectorAll('.skill-group-wrap').forEach(wrap => {
+                const card = wrap.querySelector('.skill-group');
+                wrap.addEventListener('mousemove', e => {
+                    const r = wrap.getBoundingClientRect();
+                    const x = e.clientX - r.left;
+                    const y = e.clientY - r.top;
+                    if (card) {
+                        card.style.setProperty('--mouse-x', `${x}px`);
+                        card.style.setProperty('--mouse-y', `${y}px`);
+                    }
+
+                    // 3D Card tilt effect on the wrap
+                    const centerX = r.width / 2;
+                    const centerY = r.height / 2;
+                    const rotateX = -(y - centerY) / 22; // 3D tilt strength
+                    const rotateY = (x - centerX) / 22;
+                    wrap.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    wrap.style.transition = 'transform 0.08s ease-out';
+                });
+
+                if (card) {
+                    card.style.setProperty('--mouse-x', `-1000px`);
+                    card.style.setProperty('--mouse-y', `-1000px`);
+                }
+
+                wrap.addEventListener('mouseleave', () => {
+                    wrap.style.transform = '';
+                    if (card) {
+                        card.style.setProperty('--mouse-x', `-1000px`);
+                        card.style.setProperty('--mouse-y', `-1000px`);
+                    }
+                    wrap.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+                });
+            });
+
+            // 3D Tilt effect for the Skills Header
+            const skillsHeader = document.querySelector('.skills-header-container');
+            const title3D = document.querySelector('.skills-title-3d');
+            if (skillsHeader && title3D) {
+                skillsHeader.addEventListener('mousemove', e => {
+                    const r = skillsHeader.getBoundingClientRect();
+                    const x = e.clientX - r.left;
+                    const y = e.clientY - r.top;
+                    const centerX = r.width / 2;
+                    const centerY = r.height / 2;
+                    const rotateX = -(y - centerY) / 8; // responsive tilt
+                    const rotateY = (x - centerX) / 8;
+                    title3D.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(25px)`;
+                    title3D.style.textShadow = `
+                        ${-rotateY * 0.8}px ${-rotateX * 0.8}px 0 rgba(34, 211, 238, 0.45),
+                        ${-rotateY * 1.5}px ${-rotateX * 1.5}px 0 rgba(168, 85, 247, 0.35),
+                        ${-rotateY * 2.2}px ${-rotateX * 2.2}px 12px rgba(0, 0, 0, 0.5)
+                    `;
+                    title3D.style.transition = 'transform 0.08s ease-out, text-shadow 0.08s ease-out';
+                });
+                skillsHeader.addEventListener('mouseleave', () => {
+                    title3D.style.transform = '';
+                    title3D.style.textShadow = '';
+                    title3D.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.45s ease';
+                });
+            }
 
 
             // ================================================================
@@ -5462,10 +5933,10 @@
             // Bottom-Left: Smiley Face. Floats down and rotates counter-clockwise.
             // Bottom-Right: Cursor Arrow. Floats up and rotates clockwise.
             const parallaxConfig = [
-                { yStart: 45,  yEnd: -45, rStart: -30, rEnd: 45 },  // Top-Left (Moon)
-                { yStart: -35, yEnd: 35,  rStart: 35,  rEnd: -30 }, // Top-Right (Lego)
-                { yStart: 50,  yEnd: -50, rStart: 40,  rEnd: -25 }, // Bottom-Left (Smiley)
-                { yStart: -40, yEnd: 40,  rStart: -25, rEnd: 55 }   // Bottom-Right (Cursor)
+                { yStart: 45, yEnd: -45, rStart: -30, rEnd: 45 },  // Top-Left (Moon)
+                { yStart: -35, yEnd: 35, rStart: 35, rEnd: -30 }, // Top-Right (Lego)
+                { yStart: 50, yEnd: -50, rStart: 40, rEnd: -25 }, // Bottom-Left (Smiley)
+                { yStart: -40, yEnd: 40, rStart: -25, rEnd: 55 }   // Bottom-Right (Cursor)
             ];
 
             function updateAboutScrollEffects() {
@@ -5501,23 +5972,23 @@
                 if (activeBio) {
                     const chars = activeBio.querySelectorAll('.char');
                     const totalChars = chars.length;
-                    
+
                     // Slightly faster to complete reveal before section hits the absolute scroll limit
-                    const revealProgress = rRatio * 1.25; 
-                    
+                    const revealProgress = rRatio * 1.25;
+
                     chars.forEach((char, index) => {
                         const charStart = (index / totalChars) * 0.8;
                         const charProgress = (revealProgress - charStart) / 0.2; // 20% span to fade
                         const progress = Math.max(0, Math.min(1, charProgress));
-                        
+
                         const isLead = char.closest('.about-lead') !== null;
                         const isWhiteReveal = char.closest('.white-reveal') !== null;
-                        
+
                         if (isLead || isWhiteReveal) {
                             // Lead or White-reveal: Opacity transitions from 0.2 to 1.0, Color transitions from dark grey to white #ffffff
                             const opacity = 0.2 + progress * 0.8;
                             char.style.opacity = opacity;
-                            
+
                             const r = Math.round(110 + progress * (255 - 110));
                             const g = Math.round(122 + progress * (255 - 122));
                             const b = Math.round(130 + progress * (255 - 130));
@@ -5526,7 +5997,7 @@
                             // Sub: Opacity transitions from 0.2 to 0.55, Color transitions from dark grey to #D7E2EA
                             const opacity = 0.2 + progress * 0.35;
                             char.style.opacity = opacity;
-                            
+
                             const r = Math.round(110 + progress * (215 - 110));
                             const g = Math.round(122 + progress * (226 - 122));
                             const b = Math.round(130 + progress * (234 - 130));
@@ -5550,12 +6021,12 @@
            Switches between 'The Builder' and 'The Human' bios
            ============================================================ */
         function toggleAbout(section) {
-            const tabsWrapper  = document.getElementById('aboutTabs');
-            const indicator    = document.getElementById('tabIndicator');
-            const builderBtn   = document.getElementById('tabBuilder');
-            const humanBtn     = document.getElementById('tabHuman');
+            const tabsWrapper = document.getElementById('aboutTabs');
+            const indicator = document.getElementById('tabIndicator');
+            const builderBtn = document.getElementById('tabBuilder');
+            const humanBtn = document.getElementById('tabHuman');
             const builderContent = document.getElementById('bio-builder');
-            const humanContent   = document.getElementById('bio-human');
+            const humanContent = document.getElementById('bio-human');
 
             if (!builderContent || !humanContent || !builderBtn || !humanBtn) return;
 
@@ -5575,7 +6046,7 @@
                 const PADDING = 4; // tabs container padding
                 const maxLeft = tabsWrapper.clientWidth - PADDING - activeBtn.offsetWidth;
                 const targetLeft = Math.max(PADDING, Math.min(maxLeft, activeBtn.offsetLeft));
-                indicator.style.left  = targetLeft + 'px';
+                indicator.style.left = targetLeft + 'px';
                 indicator.style.width = activeBtn.offsetWidth + 'px';
             }
 
@@ -5599,8 +6070,8 @@
 
         // Initialise indicator position on load (no transition on first paint)
         (function initTabIndicator() {
-            const tabs   = document.getElementById('aboutTabs');
-            const ind    = document.getElementById('tabIndicator');
+            const tabs = document.getElementById('aboutTabs');
+            const ind = document.getElementById('tabIndicator');
             const active = document.querySelector('.tab-btn.active');
             if (!tabs || !ind || !active) return;
 
@@ -5609,7 +6080,7 @@
                 ind.style.transition = 'none';
                 const PADDING = 4;
                 const maxLeft = tabs.clientWidth - PADDING - active.offsetWidth;
-                ind.style.left  = Math.max(PADDING, Math.min(maxLeft, active.offsetLeft)) + 'px';
+                ind.style.left = Math.max(PADDING, Math.min(maxLeft, active.offsetLeft)) + 'px';
                 ind.style.width = active.offsetWidth + 'px';
                 // Re-enable transition after the first frame is committed
                 requestAnimationFrame(() => { ind.style.transition = ''; });

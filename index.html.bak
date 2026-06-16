@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- !! EDIT: Page title shown in browser tab !! -->
-    <title>Kayilainathan J | Portfolio</title>
-
-    <link rel="icon" type="image/png" href="img/favicon.png">
+    <title>Kayilainathan J — Portfolio</title>
 
     <!-- SEO meta description -->
     <meta name="description"
@@ -1050,11 +1048,8 @@
         }
 
         /* ================================================================
-           SCROLL NUDGE — Desktop: Premium glowing pill with animated chevron
-                          Mobile:  Compact in-flow circular arrow (no overlap)
+           SCROLL NUDGE — Premium glowing pill with animated chevron
            ================================================================ */
-
-        /* ---- DESKTOP PILL (shown above 769px) ---- */
         .scroll-nudge {
             position: absolute;
             bottom: 36px;
@@ -1106,6 +1101,7 @@
             font-weight: 600;
             letter-spacing: 0.12em;
             text-transform: uppercase;
+            /* Subtle glow aura that pulses */
             box-shadow:
                 0 0 0 0 rgba(34, 211, 238, 0),
                 0 4px 20px rgba(0, 0, 0, 0.35),
@@ -1194,47 +1190,68 @@
             animation: scrollLineGrow 3s ease-in-out infinite;
         }
 
-        /* ---- MOBILE SCROLL NUDGE — separate element, in-flow, no overlap ---- */
-        /* Shown only on ≤768px. Position: static so it never overlaps anything. */
-        .scroll-nudge-mobile {
-            display: none; /* hidden on desktop — shown via media query */
-        }
-
         /* ---- Keyframes ---- */
+        /* scrollNudgeAppear keyframe removed — appearance is now class-driven */
+
         @keyframes scrollBorderSpin {
-            to { --scroll-angle: 360deg; }
+            to {
+                --scroll-angle: 360deg;
+            }
         }
 
         @keyframes scrollPillPulse {
-            0%, 100% { transform: translateY(0); }
-            50%       { transform: translateY(6px); }
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(6px);
+            }
         }
 
         @keyframes scrollRingExpand {
-            0%, 100% { inset: -4px; opacity: 0.4; }
-            50%       { inset: -9px; opacity: 0; }
+
+            0%,
+            100% {
+                inset: -4px;
+                opacity: 0.4;
+            }
+
+            50% {
+                inset: -9px;
+                opacity: 0;
+            }
         }
 
         @keyframes chevronBounce {
-            0%, 100% { transform: translateY(-1px); opacity: 0.6; }
-            50%       { transform: translateY(2px);  opacity: 1; }
+
+            0%,
+            100% {
+                transform: translateY(-1px);
+                opacity: 0.6;
+            }
+
+            50% {
+                transform: translateY(2px);
+                opacity: 1;
+            }
         }
 
         @keyframes scrollLineGrow {
-            0%, 100%  { height: 0px;  opacity: 0; }
-            40%, 60%  { height: 20px; opacity: 1; }
-        }
 
-        /* Mobile-only circular bounce arrow */
-        @keyframes mobileArrowBounce {
-            0%, 100% { transform: translateY(0);   opacity: 0.55; }
-            50%       { transform: translateY(5px); opacity: 1;    }
-        }
+            0%,
+            100% {
+                height: 0px;
+                opacity: 0;
+            }
 
-        /* Mobile nudge fade-in entry */
-        @keyframes mobileNudgeFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to   { opacity: 1; transform: translateY(0); }
+            40%,
+            60% {
+                height: 20px;
+                opacity: 1;
+            }
         }
 
         @property --scroll-angle {
@@ -1247,146 +1264,336 @@
         /* ================================================================
            ABOUT SECTION
            ================================================================ */
-        .about-card {
-            padding: 38px 42px;
+        #about {
             position: relative;
+            padding-top: 120px;
+            padding-bottom: 140px;
             overflow: visible;
-            /* allow border running outline to display */
-            transition: transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
-                border-color 0.4s ease,
-                background-color 0.4s ease,
-                box-shadow 0.45s ease;
+            /* Let glows and parallax float outside bounds */
         }
 
-        .about-card::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: inherit;
-            padding: 1.5px;
-            background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
-            background-size: 200% auto;
-            -webkit-mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.35s ease;
-            pointer-events: none;
+        .about-container {
+            position: relative;
+            width: 100%;
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             z-index: 2;
         }
 
-        .about-card:hover {
-            transform: translateY(-5px) scale(1.01);
-            border-color: transparent;
-            /* allow gradient border to stand out */
-            background: rgba(255, 255, 255, 0.045);
-            box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45),
-                0 0 35px rgba(34, 211, 238, 0.15);
+        .about-title {
+            font-size: clamp(3rem, 8vw, 5.4rem);
+            font-weight: 900;
+            letter-spacing: -0.05em;
+            text-transform: uppercase;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 35px;
+            background: linear-gradient(180deg, #ffffff 0%, #a3a3a3 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
         }
 
-        .about-card:hover::before {
-            opacity: 1;
-            animation: borderRun 1.5s linear infinite;
+        /* Remove default line extension for redesigned about section */
+        #about .section-title::after {
+            display: none;
         }
 
         .about-text {
-            font-size: 1.05rem;
-            color: rgba(240, 240, 240, 0.9);
-            /* highly visible, readable text */
-            line-height: 1.95;
+            text-align: center;
+            font-family: 'Kanit', system-ui, -apple-system, sans-serif;
+            max-width: 840px;
+            margin: 0 auto;
+            letter-spacing: 0.01em;
+            line-height: 1.625;
+        }
+
+        .about-lead {
+            font-size: clamp(1.18rem, 2.3vw, 1.38rem);
+            font-weight: 700;
+            color: rgba(215, 226, 234, 0.9);
+            margin-bottom: 26px;
+        }
+
+        .about-sub {
+            font-size: clamp(1.02rem, 1.9vw, 1.18rem);
             font-weight: 400;
+            font-style: italic;
+            color: rgba(215, 226, 234, 0.5);
+        }
+
+        .white-reveal {
+            font-weight: 700;
+        }
+
+        .char {
+            opacity: 0.2;
+            color: #D7E2EA;
+            display: inline;
+        }
+
+        /* 3D Asset corner positioning and physics transitions */
+        .about-asset-wrapper {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+            z-index: 1;
+            /* Scroll parallax via hardware-accelerated transforms */
+            will-change: transform;
+        }
+
+        .about-asset-img {
+            width: 100%;
+            height: auto;
+            object-fit: contain;
+            user-select: none;
+            pointer-events: auto;
+            cursor: pointer;
+            /* Spring timing curve for dynamic hover physics popouts (stiffness: 450, damping: 15) */
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+            will-change: transform, filter;
+        }
+
+        /* Hover states matching the Tactile3DIcon redesign: scale: 1.22, brightness(1.1) and 10px 25px glow shadow */
+        .about-asset-img:hover {
+            transform: scale(1.22);
+            filter: brightness(1.1) drop-shadow(0 10px 25px var(--glow-color, rgba(215, 226, 234, 0.25)));
+        }
+
+        /* Mathematically offset from center to stay locked outside text boundaries */
+        .asset-top-left {
+            top: 4%;
+            left: calc(50% - 670px);
+            width: 210px;
+            --glow-color: rgba(34, 211, 238, 0.55);
+            /* Cyan */
+        }
+
+        .asset-top-right {
+            top: 4%;
+            right: calc(50% - 670px);
+            width: 210px;
+            --glow-color: rgba(236, 72, 153, 0.55);
+            /* Pink/Magenta */
+        }
+
+        .asset-bottom-left {
+            bottom: 8%;
+            left: calc(50% - 620px);
+            width: 180px;
+            --glow-color: rgba(167, 139, 250, 0.55);
+            /* Purple */
+        }
+
+        .asset-bottom-right {
+            bottom: 8%;
+            right: calc(50% - 660px);
+            width: 220px;
+            --glow-color: rgba(34, 211, 238, 0.45);
+            /* Cyan-purple mix */
+        }
+
+        /* Responsive adjustments for viewports narrower than 1150px (tablets & mobile) */
+        @media (max-width: 1150px) {
+            #about {
+                padding-top: 180px;
+                padding-bottom: 190px;
+            }
+
+            .about-asset-wrapper {
+                position: absolute;
+                z-index: 1;
+            }
+
+            .asset-top-left {
+                top: 30px;
+                left: 6%;
+                width: 105px;
+            }
+
+            .asset-top-right {
+                top: 30px;
+                right: 6%;
+                width: 105px;
+            }
+
+            .asset-bottom-left {
+                bottom: 30px;
+                left: 6%;
+                width: 100px;
+            }
+
+            .asset-bottom-right {
+                bottom: 30px;
+                right: 6%;
+                width: 110px;
+            }
+        }
+
+        /* Responsive adjustments for phone viewports */
+        @media (max-width: 480px) {
+            #about {
+                padding-top: 150px;
+                padding-bottom: 160px;
+            }
+
+            .asset-top-left {
+                top: 20px;
+                left: 4%;
+                width: 85px;
+            }
+
+            .asset-top-right {
+                top: 20px;
+                right: 4%;
+                width: 85px;
+            }
+
+            .asset-bottom-left {
+                bottom: 20px;
+                left: 4%;
+                width: 80px;
+            }
+
+            .asset-bottom-right {
+                bottom: 20px;
+                right: 4%;
+                width: 90px;
+            }
         }
 
 
         /* ================================================================
-           HIGHLIGHTS SECTION — Horizontal 3D Cylinder Carousel
-           Inspired by the bank card rAF render loop.
-           Cards are driven entirely by JS — no CSS transitions on .hl-card.
+           HIGHLIGHTS SECTION — 3D Card Stack Carousel
+           Cards pop forward one at a time; side cards recede into depth.
+           Description only shows on hover of the active front card.
+           !! EDIT: Adjust --card-w and heights as needed !!
            ================================================================ */
 
-        /* Outer wrapper: clips side-cards at the viewport edge */
-        .highlights-wrapper {
-            position: relative;
-            width: 100%;
-            overflow: hidden;
-        }
-
-        /* Stage: 3D perspective space */
+        /* Stage: sets up the 3D perspective space */
         .highlights-stage {
             position: relative;
             width: 100%;
-            height: 340px;
-            perspective: 1200px;
+            height: 320px;
+            /* !! EDIT: Increase if your text overflows !! */
+            perspective: 1100px;
             display: flex;
             justify-content: center;
             align-items: center;
-            /* Do NOT clip here — let wrapper do it */
-            overflow: visible;
         }
 
-        /* Coordinate space for all cards */
-        .hl-scene {
-            position: absolute;
-            /* sized to the active card — JS will write width/height */
-            transform-style: preserve-3d;
-        }
-
-        /* Individual card wrapper — JS writes all transforms */
+        /* Each individual card — absolutely positioned and transformed */
         .hl-card {
             position: absolute;
-            border-radius: 18px;
+            width: min(520px, 90%);
+            padding: 24px 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 0;
             cursor: pointer;
+            /* All property transitions handled here */
+            transition:
+                transform 0.65s cubic-bezier(0.34, 1.2, 0.64, 1),
+                opacity 0.55s var(--ease-out),
+                box-shadow 0.55s var(--ease-out),
+                border-color 0.55s var(--ease-out),
+                filter 0.55s var(--ease-out);
             will-change: transform, opacity;
-            backface-visibility: visible;
         }
 
-        /* Card face — the visual glass layer */
-        .hl-card-face {
-            position: absolute;
-            inset: 0;
-            border-radius: 18px;
-            overflow: hidden;
-            background: rgba(8, 8, 14, 0.72);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+        /* ---- ACTIVE — front card, full size, glowing ---- */
+        .hl-card.hl-active {
+            transform: translateX(0) translateZ(0) scale(1) rotateY(0deg);
+            opacity: 1;
+            z-index: 3;
+            border-color: rgba(34, 211, 238, 0.45);
+            background: rgba(10, 10, 16, 0.65);
+            /* Richer dark glass background */
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             box-shadow:
-                0 0 0 1px rgba(255, 255, 255, 0.04),
-                0 20px 60px rgba(0, 0, 0, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.07);
-            /* Shimmer sweep on hover (active card only) */
-        }
-
-        /* Active card glows with accent */
-        .hl-card.hl-is-active .hl-card-face {
-            border-color: rgba(34, 211, 238, 0.28);
-            box-shadow:
-                0 0 0 1px rgba(34, 211, 238, 0.12),
+                0 0 0 1px rgba(34, 211, 238, 0.15),
                 0 25px 70px rgba(0, 0, 0, 0.65),
-                0 0 40px rgba(34, 211, 238, 0.10),
+                0 0 50px rgba(34, 211, 238, 0.12),
                 inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            filter: none;
+            pointer-events: auto;
         }
 
-        /* Pulsing glow ring on active card */
-        .hl-card.hl-is-active .hl-card-face::after {
+        /* Pulsing glow ring on the active card */
+        .hl-card.hl-active::after {
             content: '';
             position: absolute;
             inset: -1px;
             border-radius: inherit;
-            border: 1px solid rgba(34, 211, 238, 0.25);
+            border: 1px solid rgba(34, 211, 238, 0.3);
             animation: hlGlowPulse 2.8s ease-in-out infinite;
             pointer-events: none;
         }
 
         @keyframes hlGlowPulse {
-            0%, 100% { box-shadow: 0 0 10px rgba(34, 211, 238, 0.12); border-color: rgba(34, 211, 238, 0.25); }
-            50%       { box-shadow: 0 0 26px rgba(34, 211, 238, 0.32); border-color: rgba(34, 211, 238, 0.50); }
+
+            0%,
+            100% {
+                box-shadow: 0 0 12px rgba(34, 211, 238, 0.15);
+                border-color: rgba(34, 211, 238, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 28px rgba(34, 211, 238, 0.35);
+                border-color: rgba(34, 211, 238, 0.55);
+            }
         }
 
-        /* Shimmer sweep — fires on hover of active card face */
-        .hl-card-face::before {
+        /* ---- PREV — card to the left, receding into depth ---- */
+        .hl-card.hl-prev {
+            transform: translateX(-48%) translateZ(-120px) scale(0.82) rotateY(14deg);
+            opacity: 0.35;
+            z-index: 2;
+            filter: blur(5px);
+            /* Cinematic depth-of-field blur */
+            pointer-events: auto;
+            /* clickable to bring forward */
+        }
+
+        /* ---- NEXT — card to the right, receding into depth ---- */
+        .hl-card.hl-next {
+            transform: translateX(48%) translateZ(-120px) scale(0.82) rotateY(-14deg);
+            opacity: 0.35;
+            z-index: 2;
+            filter: blur(5px);
+            /* Cinematic depth-of-field blur */
+            pointer-events: auto;
+        }
+
+        /* ---- HIDDEN — cards not visible ---- */
+        .hl-card.hl-hidden {
+            transform: translateZ(-220px) scale(0.6);
+            opacity: 0;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        /* Side cards brighten on hover to signal they're clickable */
+        .hl-card.hl-prev:hover,
+        .hl-card.hl-next:hover {
+            opacity: 0.7;
+            filter: blur(0);
+        }
+
+        /* Shimmer sweep overlay — appears on hover of active card */
+        .hl-card {
+            overflow: hidden;
+            /* clip the shimmer */
+        }
+
+        .hl-card::before {
             content: '';
             position: absolute;
             top: 0;
@@ -1394,100 +1601,124 @@
             width: 50%;
             height: 100%;
             background: linear-gradient(105deg,
-                transparent 0%,
-                rgba(255, 255, 255, 0.04) 40%,
-                rgba(255, 255, 255, 0.08) 50%,
-                rgba(255, 255, 255, 0.04) 60%,
-                transparent 100%);
+                    transparent 0%,
+                    rgba(255, 255, 255, 0.04) 40%,
+                    rgba(255, 255, 255, 0.09) 50%,
+                    rgba(255, 255, 255, 0.04) 60%,
+                    transparent 100%);
             pointer-events: none;
             transition: left 0s;
             z-index: 0;
         }
 
-        .hl-card.hl-is-active .hl-card-face:hover::before {
+        /* Fire shimmer sweep on hover of active card only */
+        .hl-card.hl-active:hover::before {
             left: 130%;
             transition: left 0.65s cubic-bezier(0.25, 1, 0.5, 1);
         }
 
-        /* Colored accent bar at the top of each card */
-        .hl-accent-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            border-radius: 18px 18px 0 0;
-            z-index: 2;
-        }
-
-        /* Card content area */
-        .hl-content {
-            position: absolute;
-            inset: 0;
-            padding: 22px 24px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+        /* Keep card content above shimmer */
+        .hl-header,
+        .hl-desc,
+        .hl-tag-container {
+            position: relative;
             z-index: 1;
         }
 
-        /* Header: icon + title row */
+        /* Header layout for icon and title */
         .hl-header {
             display: flex;
-            align-items: flex-start;
-            gap: 12px;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            transition: transform 0.5s var(--ease-spring);
         }
 
         /* Icon emoji */
         .hl-icon {
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             line-height: 1;
-            flex-shrink: 0;
-            margin-top: 1px;
-            transition: transform 0.4s var(--ease-spring), filter 0.4s ease;
+            transition: transform 0.5s var(--ease-spring), filter 0.5s ease;
         }
 
-        .hl-card.hl-is-active .hl-card-face:hover .hl-icon {
-            transform: translateX(-4px) scale(1.12) rotate(-10deg);
+        /* Aesthetic slide/scale/glow animation on hover */
+        .hl-card.hl-active:hover .hl-icon {
+            transform: translateX(-6px) scale(1.15) rotate(-12deg);
             filter: drop-shadow(0 0 8px var(--accent));
         }
 
         /* Title */
         .hl-title {
-            font-size: 0.95rem;
+            font-size: 1rem;
             font-weight: 600;
             color: var(--text);
-            line-height: 1.5;
-            transition: color 0.3s ease;
+            line-height: 1.45;
+            transition: color 0.3s ease, transform 0.5s var(--ease-spring);
         }
 
-        .hl-card.hl-is-active .hl-card-face:hover .hl-title {
+        /* Title picks up accent color and moves slightly right on hover */
+        .hl-card.hl-active:hover .hl-title {
             color: var(--accent);
+            transform: translateX(4px);
         }
 
-        /* Description */
+        /* Description — COLLAPSED BY DEFAULT */
         .hl-desc {
-            font-size: 0.84rem;
-            color: rgba(220, 220, 232, 0.65);
-            line-height: 1.7;
-            flex: 1;
+            font-size: 0.88rem;
+            color: rgba(220, 220, 232, 0);
+            /* starts transparent */
+            line-height: 1.75;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin-top: 0;
+            transition: max-height 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.35s ease,
+                color 0.35s ease,
+                margin-top 0.45s ease;
         }
 
-        /* Tag row */
-        .hl-tag-row {
-            margin-top: auto;
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
+        /* Active card hover expands details */
+        .hl-card.hl-active:hover .hl-desc {
+            max-height: 120px;
+            opacity: 0.72;
+            color: rgba(220, 220, 232, 0.72);
+            margin-top: 12px;
         }
 
-        /* Nav dots */
+        /* Description brightens to full white on mouse hover over text */
+        .hl-card.hl-active:hover .hl-desc:hover {
+            color: rgba(240, 240, 248, 0.95);
+            opacity: 0.95;
+        }
+
+        /* Tag container — COLLAPSED BY DEFAULT */
+        .hl-tag-container {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            margin-top: 0;
+            transition: max-height 0.45s cubic-bezier(0.25, 1, 0.5, 1),
+                opacity 0.35s ease,
+                margin-top 0.45s ease;
+        }
+
+        .hl-card.hl-active:hover .hl-tag-container {
+            max-height: 60px;
+            /* generous height to avoid vertical clipping */
+            opacity: 1;
+            margin-top: 12px;
+            overflow: visible;
+            /* prevents tag hover scale/translate transforms from being clipped */
+        }
+
+        /* Nav dots below the stage */
         .hl-dots {
             display: flex;
             justify-content: center;
             align-items: center;
             gap: 8px;
-            margin-top: 24px;
+            margin-top: 28px;
         }
 
         .hl-dot {
@@ -1501,16 +1732,12 @@
             transition: width 0.35s var(--ease-out), background 0.35s ease;
         }
 
+        /* Active dot stretches into a pill */
         .hl-dot.hl-dot-active {
             width: 22px;
             border-radius: 999px;
             background: var(--accent);
             box-shadow: 0 0 10px rgba(34, 211, 238, 0.45);
-        }
-
-        /* Drag cursor while swiping */
-        .highlights-stage.is-dragging {
-            cursor: grabbing;
         }
 
 
@@ -1804,35 +2031,38 @@
 
 
         /* ================================================================
-           PROJECTS SECTION — Horizontal scroll carousel
+           PROJECTS SECTION — Horizontal scroll carousel with liquid glass
+           + glow gradient border cards.
 
-           Cards sit in a single scrollable row. Tags and GitHub button
-           are HIDDEN by default and appear only on card hover.
-           The slider and arrows are synced to the scroll position via JS.
+           Each .proj-card-wrap contains:
+             1) .proj-glow  — blurred colour blob that bleeds behind the card
+             2) .proj-card  — the actual frosted glass foreground card
 
-           !! HOW TO ADD A PROJECT:
-              Copy a .proj-card block, fill in title, desc, tags, link.
-           !!
+           Project numbers (.proj-num) persist as large watermarks and
+           blend naturally with the gradient colours.
            ================================================================ */
 
-        /* Outer wrapper — positions arrows */
+        /* Outer wrapper — no frame, glows bleed freely into the void */
         .proj-outer {
             position: relative;
+            overflow: visible;
         }
 
-        /* The actual scrollable row */
+        /* The actual scrollable row — loose padding so glows breathe */
         .projects-grid {
             display: flex;
             flex-direction: row;
-            gap: 26px;
-            /* Increased space between containers */
+            gap: 36px;
             overflow-x: auto;
+            overflow-y: visible;
+            /* let glow blobs escape vertically */
             scroll-behavior: smooth;
             scrollbar-width: none;
-            /* Firefox: hide native bar */
             -ms-overflow-style: none;
-            padding: 16px 4px 28px;
+            padding: 48px 28px 56px;
+            /* increased horizontal padding to 28px to prevent glow clipping */
             cursor: grab;
+            align-items: flex-start;
         }
 
         .projects-grid::-webkit-scrollbar {
@@ -1844,87 +2074,98 @@
             scroll-behavior: auto;
         }
 
-        /* ---- CARD ---- */
+        /* ================================================================
+           CARD WRAPPER — IS the gradient border.
+           The wrapper's background IS the gradient; its 4px padding
+           reveals it as a coloured border ring around the black card.
+        ================================================================ */
+        .proj-card-wrap {
+            position: relative;
+            flex: 0 0 min(290px, 85vw);
+            overflow: visible;
+
+            /* The gradient lives HERE — shows as the 4px border gap */
+            background: var(--card-gradient);
+            border-radius: 38px;
+            padding: 4px;
+            /* this is the border thickness */
+
+            transition: transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+        }
+
+        .proj-card-wrap:hover {
+            transform: translateY(-10px) scale(1.018);
+        }
+
+        /* ================================================================
+           NEON HALO — soft glow from the border ring onto the background.
+           Sits behind the wrapper via z-index: -1.
+        ================================================================ */
+        .proj-glow {
+            position: absolute;
+            inset: 0px;
+            border-radius: 38px;
+            opacity: 0.65;
+            pointer-events: none;
+            filter: blur(12px);
+            z-index: -1;
+            /* strictly behind the wrapper */
+            background: var(--card-gradient);
+            transition: opacity 0.45s ease, filter 0.45s ease;
+        }
+
+        .proj-card-wrap:hover .proj-glow {
+            opacity: 0.90;
+            filter: blur(8px);
+        }
+
+        /* ================================================================
+           CARD BODY — pure black, sits inside the 4px gradient padding.
+           The wrapper IS the border. This card is just content.
+        ================================================================ */
         .proj-card {
-            flex: 0 0 min(320px, 85vw);
-            /* Card width */
-            height: 315px;
-            /* Increased card height to accommodate larger text */
-            padding: 24px 26px;
-            /* Standard professional padding */
+            position: relative;
+            width: 100%;
+            height: 320px;
+            padding: 26px 28px;
             display: flex;
             flex-direction: column;
             gap: 0;
-            position: relative;
             overflow: hidden;
-
-            /* standalone frosted glass look by default */
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
-            transition:
-                transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
-                box-shadow 0.45s var(--ease-out),
-                border-color 0.4s ease,
-                background-color 0.4s ease,
-                backdrop-filter 0.4s ease;
+            border-radius: 34px;
+            /* = wrapper(38) - padding(4) */
+            background: #0A0A0C;
+            /* PURE BLACK — absolutely no colour */
+            border: none;
+            box-shadow: none;
         }
 
-        .proj-card:hover {
-            transform: translateY(-6px) scale(1.012);
-            border-color: rgba(34, 211, 238, 0.45);
-            /* cyan accent outline */
-            background: rgba(34, 211, 238, 0.05);
-            /* cyan-tinted glass */
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            box-shadow:
-                0 20px 48px rgba(0, 0, 0, 0.6),
-                0 0 35px rgba(34, 211, 238, 0.12),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        }
-
-        /* Bottom gradient bar — always on, glows bright on hover */
+        /* Both pseudo-elements off — the wrapper handles the border */
+        .proj-card::before,
         .proj-card::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent), var(--purple));
-            opacity: 0.2;
-            transition: opacity 0.4s ease;
+            display: none;
         }
 
-        .proj-card:hover::after {
-            opacity: 0.8;
-        }
-
-        /* Project number — large ambient watermark */
+        /* Project number — plain low-opacity white watermark, no gradient text */
         .proj-num {
             position: absolute;
-            top: 18px;
-            right: 24px;
-            font-size: 3.6rem;
-            font-weight: 800;
-            color: rgba(255, 255, 255, 0.08);
-            /* Soft, clearly visible watermark */
-            letter-spacing: -0.04em;
+            top: 16px;
+            right: 22px;
+            font-size: 4.4rem;
+            font-weight: 900;
+            letter-spacing: -0.05em;
             user-select: none;
             pointer-events: none;
-            transition: color 0.45s ease, text-shadow 0.45s ease, transform 0.45s var(--ease-spring);
+            z-index: 3;
+            color: rgba(255, 255, 255, 0.10);
+            /* plain white, always visible */
+            transition: color 0.45s ease, transform 0.45s var(--ease-spring);
         }
 
-        .proj-card:hover .proj-num {
-            color: rgba(255, 255, 255, 0.20);
-            /* Sleek matte watermark, no cyan glow */
-            text-shadow: none;
-            transform: scale(1.08) translateY(-2px);
+        /* On hover: number gets slightly brighter */
+        .proj-card-wrap:hover .proj-num {
+            color: rgba(255, 255, 255, 0.22);
+            transform: scale(1.08) translateY(-4px);
         }
 
         /* Running border light loop animation on hover */
@@ -1935,7 +2176,6 @@
             inset: -1px;
             border-radius: inherit;
             padding: 1px;
-            /* border thickness */
             background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
             background-size: 200% auto;
             -webkit-mask:
@@ -1961,55 +2201,66 @@
             }
         }
 
-        /* Title */
+        /* ================================================================
+           TEXT — always solid and legible. Zero gradient-text tricks.
+           Colour only lives on the border ring and interactive chrome.
+           ================================================================ */
+
+        /* Title: solid white, brightens on hover — NEVER transparent */
+        /* Title: solid white, brightens on hover */
         .project-title {
-            font-size: 1.2rem;
-            /* Increased title font size */
+            font-size: 1.22rem;
             font-weight: 700;
-            color: var(--text);
+            color: rgba(245, 245, 250, 0.82);
             line-height: 1.3;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
+            position: relative;
+            z-index: 3;
             transition: color 0.3s ease;
         }
 
-        .proj-card:hover .project-title {
-            color: #fff;
+        .proj-card-wrap:hover .project-title {
+            color: #ffffff;
         }
 
-        /* Description */
+        /* Description: always at default top flow, dim at rest, clear on hover */
         .project-desc {
             font-size: 0.92rem;
-            /* Increased description font size */
-            color: rgba(220, 220, 232, 0.72);
-            line-height: 1.65;
-            flex: 1;
-            transition: color 0.3s ease;
+            color: rgba(185, 185, 205, 0.50);
+            line-height: 1.68;
+            position: relative;
+            z-index: 3;
+            transition: color 0.4s ease;
         }
 
-        .proj-card:hover .project-desc {
-            color: rgba(220, 220, 232, 0.9);
+        .proj-card-wrap:hover .project-desc {
+            color: rgba(215, 215, 230, 0.85);
         }
 
-        /* Bottom hover zone — tags + button, hidden until hover */
+        /* Bottom hover zone — tags + button, rises from bottom on hover */
         .proj-bottom {
+            position: absolute;
+            bottom: 26px;
+            left: 28px;
+            right: 28px;
             display: flex;
             flex-direction: row;
-            /* Align tags left and round button right */
             align-items: center;
             justify-content: space-between;
             gap: 12px;
-            padding-top: 12px;
-            /* Hidden state */
+            z-index: 3;
             opacity: 0;
-            transform: translateY(10px);
+            transform: translateY(15px);
+            pointer-events: none;
             transition:
-                opacity 0.4s var(--ease-out),
-                transform 0.4s var(--ease-out);
+                opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        .proj-card:hover .proj-bottom {
+        .proj-card-wrap:hover .proj-bottom {
             opacity: 1;
             transform: translateY(0);
+            pointer-events: auto;
         }
 
         /* Tech tags inside card */
@@ -2019,48 +2270,136 @@
             gap: 6px;
         }
 
-        /* GitHub button — circular design with running border */
+        /* GitHub button — dark circle, gradient BORDER RING on hover (not a fill) */
         .project-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 36px;
-            /* Circle shape */
-            height: 36px;
+            width: 34px;
+            height: 34px;
             border-radius: 50%;
-            /* Fully round */
-            color: #fff;
+            color: rgba(255, 255, 255, 0.55);
             text-decoration: none;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
             flex-shrink: 0;
             position: relative;
+            overflow: hidden;
             transition:
-                background 0.35s ease,
-                border-color 0.35s ease,
-                box-shadow 0.35s ease,
+                border-color 0.3s ease,
+                color 0.3s ease,
                 transform 0.4s var(--ease-spring);
         }
 
-        .project-link:hover {
-            background: rgba(34, 211, 238, 0.12);
-            /* tinted hover */
-            border-color: transparent;
-            box-shadow: 0 4px 20px rgba(34, 211, 238, 0.15);
-            transform: translateY(-2px);
+        /* Gradient border ring injected behind button on hover */
+        .project-link::after {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            /* sits outside the button boundary */
+            border-radius: inherit;
+            background: var(--card-gradient);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
-        /* GitHub SVG inside button */
+        .project-link:hover {
+            border-color: transparent;
+            color: #ffffff;
+            /* SVG stays white — always legible */
+            transform: translateY(-2px) scale(1.1);
+        }
+
+        .project-link:hover::after {
+            opacity: 1;
+        }
+
+        /* GitHub SVG */
         .project-link svg {
             flex-shrink: 0;
             position: relative;
-            z-index: 3;
-            /* Keep icon above masked running border */
+            z-index: 1;
+            /* always above the background gradient */
             transition: transform 0.4s var(--ease-spring);
         }
 
         .project-link:hover svg {
-            transform: scale(1.15) rotate(-5deg);
+            transform: scale(1.12) rotate(-6deg);
+        }
+
+        /* Tags inside project cards — gradient BORDER on hover, text stays white */
+        .proj-card-wrap .project-tags .tag {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.10);
+            color: rgba(210, 210, 226, 0.60);
+            font-size: 0.77rem;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.3s ease, border-color 0.3s ease,
+                transform 0.35s var(--ease-spring);
+        }
+
+        /* Gradient ring behind tag on hover */
+        .proj-card-wrap .project-tags .tag::before {
+            content: '';
+            position: absolute;
+            inset: -1.5px;
+            border-radius: inherit;
+            background: var(--card-gradient);
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .proj-card-wrap .project-tags .tag:hover {
+            color: #ffffff;
+            /* always solid white — never invisible */
+            border-color: transparent;
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: none;
+        }
+
+        .proj-card-wrap .project-tags .tag:hover::before {
+            opacity: 1;
+        }
+
+        /* ================================================================
+           PER-CARD GRADIENT PALETTES — redesigned
+           Rule: each gradient is a distinct, saturated two-stop pair.
+           The border is the ONLY place these colours appear.
+           ================================================================ */
+
+        /* 01 — Hot Pink → Amber  (warm, energetic) */
+        .proj-card-wrap:nth-child(1) {
+            --card-gradient: linear-gradient(137deg, #FF2D78 0%, #FF9500 100%);
+        }
+
+        /* 02 — Electric Cyan → Sky Blue  (cool, focused) */
+        .proj-card-wrap:nth-child(2) {
+            --card-gradient: linear-gradient(137deg, #00E5FF 0%, #0077FF 100%);
+        }
+
+        /* 03 — Indigo → Soft Violet  (deep, calm) */
+        .proj-card-wrap:nth-child(3) {
+            --card-gradient: linear-gradient(137deg, #7B2FFF 0%, #BF9AFF 100%);
+        }
+
+        /* 04 — Royal Blue → Vivid Magenta  (bold contrast) */
+        .proj-card-wrap:nth-child(4) {
+            --card-gradient: linear-gradient(137deg, #3B82F6 0%, #EC4899 100%);
+        }
+
+        /* 05 — Emerald → Aqua  (fresh, techy) */
+        .proj-card-wrap:nth-child(5) {
+            --card-gradient: linear-gradient(137deg, #00C9A7 0%, #00A3FF 100%);
+        }
+
+        /* 06 — Gold → Coral  (warm earth) */
+        .proj-card-wrap:nth-child(6) {
+            --card-gradient: linear-gradient(137deg, #FFD60A 0%, #FF6B35 100%);
         }
 
         /* ---- SCROLL ARROWS ---- */
@@ -2159,46 +2498,251 @@
 
 
         /* ================================================================
-           SKILLS SECTION — Three grouped tag panels
+           SKILLS SECTION — Redesigned Fresh Minimalistic Liquid Glass
            ================================================================ */
+        .skills-header-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+            margin-bottom: 54px;
+            padding: 20px;
+        }
+
+        /* Animated SVG liquid morph behind the header */
+        .skills-svg-backdrop {
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            opacity: 0.75;
+            filter: blur(48px);
+            z-index: 0;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            animation: liquidMorph 18s ease-in-out infinite alternate;
+        }
+
+        @keyframes liquidMorph {
+            0% {
+                transform: rotate(0deg) scale(1) translate(0px, 0px);
+            }
+            33% {
+                transform: rotate(120deg) scale(1.15) translate(15px, -10px);
+            }
+            66% {
+                transform: rotate(240deg) scale(0.9) translate(-10px, 15px);
+            }
+            100% {
+                transform: rotate(360deg) scale(1.05) translate(5px, 5px);
+            }
+        }
+
+        .skills-title-3d {
+            position: relative;
+            font-size: 2.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin: 0;
+            z-index: 1;
+            cursor: default;
+            transform-style: preserve-3d;
+            transition: transform 0.15s ease-out, text-shadow 0.15s ease-out;
+            color: #ffffff;
+            text-transform: capitalize;
+            /* subtle default text glow */
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.08);
+            font-family: 'Kanit', system-ui, -apple-system, sans-serif !important;
+        }
+
         .skills-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
+            gap: 24px;
+            perspective: 1000px;
         }
 
+        /* 3D Wrapper that serves as the project-card style gradient border */
+        .skill-group-wrap {
+            position: relative;
+            background: var(--skill-card-gradient);
+            border-radius: 28px;
+            padding: 3px; /* border thickness */
+            transition: transform 0.5s cubic-bezier(0.34, 1.3, 0.64, 1);
+            transform-style: preserve-3d;
+            overflow: visible;
+        }
+
+        .skill-group-wrap:hover {
+            transform: translateY(-8px) scale(1.015);
+        }
+
+        /* Distinct gradient pairings matching project cards */
+        .skills-grid .skill-group-wrap:nth-child(1) {
+            --skill-card-gradient: linear-gradient(137deg, #FF2D78 0%, #FF9500 100%);
+            --skill-accent: #FF2D78;
+            --skill-accent-glow: rgba(255, 45, 120, 0.25);
+        }
+        .skills-grid .skill-group-wrap:nth-child(2) {
+            --skill-card-gradient: linear-gradient(137deg, #00E5FF 0%, #0077FF 100%);
+            --skill-accent: #00E5FF;
+            --skill-accent-glow: rgba(0, 229, 255, 0.25);
+        }
+        .skills-grid .skill-group-wrap:nth-child(3) {
+            --skill-card-gradient: linear-gradient(137deg, #7B2FFF 0%, #BF9AFF 100%);
+            --skill-accent: #7B2FFF;
+            --skill-accent-glow: rgba(123, 47, 255, 0.25);
+        }
+
+        /* Soft neon halo shadow behind the card */
+        .skill-glow {
+            position: absolute;
+            inset: 0px;
+            border-radius: 28px;
+            opacity: 0.45;
+            pointer-events: none;
+            filter: blur(12px);
+            z-index: -1;
+            background: var(--skill-card-gradient);
+            transition: opacity 0.45s ease, filter 0.45s ease;
+        }
+
+        .skill-group-wrap:hover .skill-glow {
+            opacity: 0.8;
+            filter: blur(8px);
+        }
+
+        /* Fluid card body - Black background */
         .skill-group {
-            padding: 22px 24px;
+            position: relative;
+            padding: 36px 32px;
+            background: #0A0A0C !important; /* Pure black, identical to project cards */
+            border: none;
+            border-radius: 25px;
+            overflow: hidden;
+            transition: border-radius 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            transform-style: preserve-3d;
+            height: 100%;
+        }
+
+        /* Ambient liquid spotlight inside each card */
+        .skill-group::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(
+                400px circle at var(--mouse-x, -1000px) var(--mouse-y, -1000px),
+                rgba(255, 255, 255, 0.05),
+                transparent 60%
+            );
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Interactive SVG morphing inside card */
+        .skill-card-svg {
+            position: absolute;
+            right: -25px;
+            bottom: -35px;
+            width: 170px;
+            height: 170px;
+            opacity: 0.65;
+            pointer-events: none;
+            filter: blur(14px);
+            z-index: 1;
+            mix-blend-mode: screen;
+            animation: skillSvgMorph 15s ease-in-out infinite alternate;
+        }
+
+        @keyframes skillSvgMorph {
+            0% {
+                transform: rotate(0deg) scale(1) translate(0px, 0px);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2) translate(10px, -10px);
+            }
+            100% {
+                transform: rotate(360deg) scale(0.95) translate(-5px, 5px);
+            }
         }
 
         .skill-group-label {
-            font-size: 0.74rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
+            position: relative;
+            z-index: 3;
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.16em;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 14px;
+            margin-bottom: 24px;
+            transition: color 0.3s ease;
+            transform: translateZ(20px);
+            font-family: 'Kanit', system-ui, -apple-system, sans-serif !important;
+        }
+
+        .skill-group-wrap:hover .skill-group-label {
+            color: #ffffff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
         }
 
         .skill-tags {
+            position: relative;
+            z-index: 3;
             display: flex;
             flex-wrap: wrap;
-            gap: 7px;
+            gap: 10px;
+            transform: translateZ(10px);
         }
 
-        /* Redesigned highly visible skill tags */
+        /* Ultra fresh interactive glass pills */
         .skill-tags .tag {
-            color: rgba(255, 255, 255, 0.88);
-            /* high legibility */
-            background: rgba(255, 255, 255, 0.045);
-            border-color: rgba(255, 255, 255, 0.09);
+            font-size: 0.85rem;
+            font-weight: 500;
+            padding: 8px 16px;
+            color: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 100px;
+            font-family: 'Kanit', system-ui, -apple-system, sans-serif !important;
+            transition: 
+                color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                background 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                border-color 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
+        /* Organic expansion and accent glow */
         .skill-tags .tag:hover {
-            color: var(--accent);
-            background: rgba(34, 211, 238, 0.08);
-            border-color: rgba(34, 211, 238, 0.35);
-            box-shadow: 0 4px 14px rgba(34, 211, 238, 0.2);
+            color: #ffffff;
+            background: rgba(34, 211, 238, 0.12);
+            border-color: rgba(34, 211, 238, 0.45);
+            transform: scale(1.08) translateY(-3px);
+            box-shadow: 
+                0 6px 20px rgba(34, 211, 238, 0.25),
+                0 0 8px rgba(34, 211, 238, 0.15);
+        }
+
+        /* Alternate neon color accents for variation */
+        .skill-group-wrap:nth-child(2) .skill-tags .tag:hover {
+            background: rgba(0, 229, 255, 0.12);
+            border-color: rgba(0, 229, 255, 0.45);
+            box-shadow: 
+                0 6px 20px rgba(0, 229, 255, 0.25),
+                0 0 8px rgba(0, 229, 255, 0.15);
+        }
+
+        .skill-group-wrap:nth-child(3) .skill-tags .tag:hover {
+            background: rgba(123, 47, 255, 0.12);
+            border-color: rgba(123, 47, 255, 0.45);
+            box-shadow: 
+                0 6px 20px rgba(123, 47, 255, 0.25),
+                0 0 8px rgba(123, 47, 255, 0.15);
         }
 
 
@@ -2215,13 +2759,13 @@
         .courses-grid {
             display: flex;
             flex-direction: row;
+            align-items: flex-start;
             gap: 26px;
-            /* Space between cards */
             overflow-x: auto;
             scroll-behavior: smooth;
             scrollbar-width: none;
             -ms-overflow-style: none;
-            padding: 16px 4px 28px;
+            padding: 24px 56px 36px;
             cursor: grab;
         }
 
@@ -2235,204 +2779,305 @@
         }
 
         .course-card {
-            flex: 0 0 min(320px, 85vw);
-            /* Card width */
-            height: 240px;
-            /* Fixed height to accommodate content */
-            padding: 24px 26px;
+            flex: 0 0 min(290px, 85vw);
+            height: 280px;
+            padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 0;
             position: relative;
-            overflow: visible;
-            /* to allow running border outline */
-
-            background: rgba(255, 255, 255, 0.025);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            background: #0A0A0C;
+            border: 1px solid rgba(255, 255, 255, 0.05);
             border-radius: 20px;
-            /* Smoothed edges */
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-
             transition:
-                transform 0.45s cubic-bezier(0.34, 1.3, 0.64, 1),
-                box-shadow 0.45s var(--ease-out),
-                border-color 0.4s ease,
-                background-color 0.4s ease;
+                transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.4s ease;
         }
 
         .course-card:hover {
-            transform: translateY(-6px) scale(1.012);
-            border-color: rgba(167, 139, 250, 0.45);
-            /* purple accent outline */
-            background: rgba(167, 139, 250, 0.05);
-            /* purple-tinted glass */
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
+            transform: translateY(-6px) scale(1.015);
+            border-color: var(--card-accent);
             box-shadow:
-                0 20px 48px rgba(0, 0, 0, 0.6),
-                0 0 35px rgba(167, 139, 250, 0.12),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+                0 16px 48px rgba(0, 0, 0, 0.5),
+                0 0 24px var(--card-accent-glow);
         }
 
-        /* Bottom gradient bar — always on, curves to match container and glows on hover */
-        .course-card::after {
+        /* Top Glowing Cloud — more cloudy, smooth, and glowy */
+        .course-card::before {
             content: '';
             position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 2.5px;
-            background: linear-gradient(90deg, var(--purple), rgba(236, 72, 153, 0.6));
-            opacity: 0.25;
-            border-bottom-left-radius: inherit;
-            border-bottom-right-radius: inherit;
-            transition: opacity 0.4s ease, height 0.4s ease;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 80px;
+            background: radial-gradient(circle, var(--card-accent) 0%, transparent 70%);
+            filter: blur(18px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 1;
         }
 
-        .course-card:hover::after {
+        .course-card:hover::before {
             opacity: 0.85;
-            height: 3.5px;
+            animation: pulseCloud 2s ease-in-out infinite alternate;
         }
 
-        .course-date {
-            font-size: 0.82rem;
+        @keyframes pulseCloud {
+            0% {
+                opacity: 0.60;
+                filter: blur(20px);
+                transform: translateX(-50%) scale(0.9);
+            }
+
+            100% {
+                opacity: 0.95;
+                filter: blur(16px);
+                transform: translateX(-50%) scale(1.1);
+            }
+        }
+
+        /* Accent classes */
+        .course-cyan {
+            --card-accent: #22d3ee;
+            --card-accent-dim: rgba(34, 211, 238, 0.25);
+            --card-accent-glow: rgba(34, 211, 238, 0.15);
+        }
+
+        .course-purple {
+            --card-accent: #a78bfa;
+            --card-accent-dim: rgba(167, 139, 250, 0.25);
+            --card-accent-glow: rgba(167, 139, 250, 0.15);
+        }
+
+        /* Platform Pill */
+        .course-platform-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            font-size: 0.72rem;
             font-weight: 600;
-            color: var(--purple);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            margin-bottom: 8px;
+            color: var(--text-muted);
+            width: fit-content;
+            margin-bottom: 12px;
+            transition: border-color 0.3s ease, color 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
 
-        .course-name {
-            font-size: 1.3rem;
-            font-weight: 700;
+        .course-card:hover .course-platform-pill {
+            border-color: var(--card-accent-dim);
             color: var(--text);
-            line-height: 1.3;
-            margin-bottom: 6px;
-            padding-right: 48px;
-            /* Leave space for top-right SVG icon */
         }
 
-        /* Certificate SVG icon container */
-        .course-icon-box {
-            position: absolute;
-            top: 24px;
-            right: 26px;
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            background: rgba(167, 139, 250, 0.08);
-            border: 1px solid rgba(167, 139, 250, 0.2);
-            display: flex;
+        .pill-icon {
+            color: var(--card-accent);
+            flex-shrink: 0;
+            display: inline-flex;
             align-items: center;
             justify-content: center;
-            color: var(--purple);
-            transition: all 0.4s var(--ease-spring);
-            pointer-events: none;
-            /* Let clicks pass through to card */
+            filter: drop-shadow(0 0 4px var(--card-accent-glow));
+            transition: transform 0.4s var(--ease-spring);
         }
 
-        .course-card:hover .course-icon-box {
-            background: rgba(167, 139, 250, 0.18);
-            transform: scale(1.08) rotate(8deg);
-            color: #fff;
-            box-shadow: 0 0 15px rgba(167, 139, 250, 0.3);
+        .course-card:hover .pill-icon {
+            transform: scale(1.1) rotate(5deg);
         }
 
-        .course-platform {
-            font-size: 0.94rem;
-            color: var(--text-muted);
-            margin-bottom: 16px;
-            flex: 1;
+        /* Course Title */
+        .course-name {
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.92);
+            line-height: 1.35;
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
 
-        /* Bottom area containing link button — hidden until hover, left-aligned */
-        .course-bottom {
+        .course-card:hover .course-name {
+            color: #ffffff;
+        }
+
+        /* Skills Group — pinned to bottom, slides up on hover */
+        .cert-skills-group {
             display: flex;
-            justify-content: flex-start;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 8px;
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+            transform: translateY(0);
+            transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .course-card:hover .cert-skills-group {
+            transform: translateY(-44px);
+        }
+
+        .cert-skill-btn {
+            display: inline-flex;
             align-items: center;
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 999px;
+            font-size: 0.74rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.55);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.35s ease, border-color 0.35s ease, transform 0.35s var(--ease-spring);
+        }
+
+        .cert-skill-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--card-accent-dim) 0%, transparent 100%);
             opacity: 0;
-            transform: translateY(10px);
-            transition: opacity 0.4s var(--ease-out), transform 0.4s var(--ease-out);
-            min-height: 40px;
+            transition: opacity 0.35s ease;
+            z-index: -1;
+        }
+
+        .course-card:hover .cert-skill-btn {
+            color: rgba(255, 255, 255, 0.75);
+            border-color: rgba(255, 255, 255, 0.12);
+        }
+
+        .cert-skill-btn:hover {
+            color: #ffffff !important;
+            border-color: var(--card-accent) !important;
+            transform: translateY(-2px) scale(1.04);
+            box-shadow: 0 4px 12px var(--card-accent-glow);
+        }
+
+        .cert-skill-btn:hover::before {
+            opacity: 1;
+        }
+
+        /* View Cert — absolutely positioned, slides up inside the card on hover */
+        .course-bottom {
+            position: absolute;
+            left: 24px;
+            right: 24px;
+            bottom: -48px;
+            display: flex;
+            justify-content: center;
+            opacity: 0;
+            transition:
+                opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
+                bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+            z-index: 3;
         }
 
         .course-card:hover .course-bottom {
             opacity: 1;
-            transform: translateY(0);
+            bottom: 22px;
+            pointer-events: auto;
         }
 
-        /* Certificate link button — sleek pill style with text, spring active effect */
         .course-link-btn {
+            width: 100%;
+            justify-content: center;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 18px;
+            padding: 9px 18px;
             border-radius: 999px;
             color: #fff;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 600;
             text-decoration: none;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
-            overflow: visible;
+            overflow: hidden;
             letter-spacing: 0.02em;
-            transition:
-                background 0.35s ease,
-                border-color 0.35s ease,
-                box-shadow 0.35s ease,
-                transform 0.3s var(--ease-spring);
+            transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease, transform 0.3s var(--ease-spring);
         }
 
-        .course-link-btn:hover {
-            background: rgba(167, 139, 250, 0.12);
-            border-color: transparent;
-            box-shadow: 0 4px 20px rgba(167, 139, 250, 0.2);
-            transform: translateY(-2px) scale(1.03);
+        /* Outer line of color when the certificate card is hovered */
+        .course-card:hover .course-link-btn {
+            border-color: var(--card-accent);
+            box-shadow: 0 0 12px var(--card-accent-glow);
         }
 
-        .course-link-btn:active {
-            transform: translateY(1px) scale(0.95);
+        .course-link-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, var(--card-accent-dim) 0%, rgba(167, 139, 250, 0.08) 100%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+            z-index: -1;
+        }
+
+        .course-link-btn:not(.course-completed-badge):hover::before {
+            opacity: 1;
+        }
+
+        /* Solid full color background on button hover */
+        .course-link-btn:not(.course-completed-badge):hover {
+            background: var(--card-accent);
+            border-color: var(--card-accent);
+            color: #0A0A0C;
+            box-shadow:
+                0 0 25px var(--card-accent),
+                0 0 10px var(--card-accent-dim);
+            transform: translateY(-2px) scale(1.02);
         }
 
         .course-link-btn svg {
             flex-shrink: 0;
             position: relative;
-            z-index: 3;
-            transition: transform 0.4s var(--ease-spring);
+            z-index: 2;
+            transition: transform 0.4s var(--ease-spring), color 0.35s ease;
         }
 
-        .course-link-btn:hover svg {
+        .course-link-btn:not(.course-completed-badge):hover svg {
+            color: #0A0A0C !important;
             transform: scale(1.15) rotate(-10deg);
         }
 
-        /* Running border effect on the certificate link button on hover */
-        .course-link-btn::before {
-            content: '';
-            position: absolute;
-            inset: -1px;
-            border-radius: inherit;
-            padding: 1px;
-            background: linear-gradient(90deg, var(--purple), var(--accent), var(--purple));
-            background-size: 200% auto;
-            -webkit-mask:
-                linear-gradient(#fff 0 0) content-box,
-                linear-gradient(#fff 0 0);
-            -webkit-mask-composite: xor;
-            mask-composite: exclude;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
-            z-index: 2;
+        /* Completed static badge button style */
+        .course-completed-badge {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.35);
+            cursor: default;
         }
 
-        .course-link-btn:hover::before {
-            opacity: 1;
-            animation: borderRun 1.5s linear infinite;
+        .course-completed-badge:hover {
+            border-color: rgba(255, 255, 255, 0.08);
+            box-shadow: none;
+            transform: none;
         }
+
+        .course-completed-badge:hover::before {
+            opacity: 0;
+        }
+
+        .course-completed-badge svg {
+            color: rgba(255, 255, 255, 0.3) !important;
+        }
+
+        .course-completed-badge:hover svg {
+            transform: none;
+        }
+
 
         /* ---- COURSE SCROLL ARROWS ---- */
         .course-arrow {
@@ -2470,11 +3115,11 @@
         }
 
         .course-arrow-left {
-            left: 4px;
+            left: 8px;
         }
 
         .course-arrow-right {
-            right: 4px;
+            right: 8px;
         }
 
         /* ---- COURSE SLIDER ---- */
@@ -2817,13 +3462,9 @@
                 border-radius: 14px;
             }
 
-            /* Highlights stage: shorter on mobile, allow card overflow for side-peek */
-            .highlights-wrapper {
-                overflow: hidden;
-            }
-
+            /* Highlights stage shorter on mobile */
             .highlights-stage {
-                height: 300px;
+                height: 280px;
             }
 
             /* Skills */
@@ -2887,97 +3528,13 @@
                 /* prevent nav links from shrinking */
             }
 
-            /* Scroll nudge desktop pill: hide completely on mobile.
-               The mobile-only .scroll-nudge-mobile element handles this role
-               as an in-flow element so it never overlaps content. */
+            /* Scroll nudge: anchor to viewport on mobile so it's always visible
+               regardless of how tall the stacked hero content is */
             .scroll-nudge {
-                display: none !important;
-            }
-
-            /* Mobile scroll nudge — in-flow circular arrow button */
-            .scroll-nudge-mobile {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                gap: 6px;
-                width: 100%;
-                padding: 20px 0 8px;
-                text-decoration: none;
-                cursor: pointer;
-                /* Fade-in driven by .appeared class added via JS */
-                opacity: 0;
-                pointer-events: none;
-                transition: opacity 0.5s var(--ease-out);
-            }
-
-            .scroll-nudge-mobile.appeared {
-                opacity: 1;
-                pointer-events: auto;
-                animation: mobileNudgeFadeIn 0.5s var(--ease-out) forwards;
-            }
-
-            .scroll-nudge-mobile.appeared.hidden {
-                opacity: 0;
-                pointer-events: none;
-            }
-
-            /* Circle button housing the arrow */
-            .scroll-nudge-mobile-btn {
-                position: relative;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.04);
-                border: 1px solid rgba(34, 211, 238, 0.22);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--accent);
-                box-shadow:
-                    0 0 18px rgba(34, 211, 238, 0.10),
-                    0 4px 16px rgba(0, 0, 0, 0.30),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.07);
-                animation: mobileArrowBounce 2s ease-in-out infinite;
-                transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-            }
-
-            /* Spinning conic border ring on the circle */
-            .scroll-nudge-mobile-btn::before {
-                content: '';
-                position: absolute;
-                inset: -1px;
-                border-radius: 50%;
-                background: conic-gradient(
-                    from var(--scroll-angle, 0deg),
-                    transparent 0deg,
-                    rgba(34, 211, 238, 0.65) 60deg,
-                    rgba(167, 139, 250, 0.45) 120deg,
-                    transparent 180deg
-                );
-                -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-                mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-                -webkit-mask-composite: xor;
-                mask-composite: exclude;
-                padding: 1px;
-                opacity: 0.75;
-                animation: scrollBorderSpin 2.8s linear infinite;
-            }
-
-            .scroll-nudge-mobile:active .scroll-nudge-mobile-btn {
-                background: rgba(34, 211, 238, 0.10);
-                border-color: rgba(34, 211, 238, 0.45);
-                box-shadow: 0 0 22px rgba(34, 211, 238, 0.22);
-            }
-
-            /* Tiny label below the circle */
-            .scroll-nudge-mobile-label {
-                font-size: 0.60rem;
-                font-weight: 600;
-                letter-spacing: 0.12em;
-                text-transform: uppercase;
-                color: rgba(255, 255, 255, 0.28);
+                position: fixed;
+                bottom: 90px;
+                /* sit above the bottom nav pill */
+                left: 50%;
             }
 
             /* Hide desktop-only arrows on touch devices */
@@ -2994,40 +3551,6 @@
 
             body {
                 cursor: auto;
-            }
-
-            /* ---- Mobile header: prevent brand + resume from overflowing ---- */
-            /* Brand K button: keep visible but smaller top offset on mobile */
-            #brand {
-                top: 14px;
-                left: 16px;
-                width: 38px;
-                height: 38px;
-            }
-
-            /* Resume button: on mobile, never dock to header — stays in hero.
-               Reset any JS-driven docked styles via this CSS guard. */
-            .resume-btn.docked {
-                /* Force undocked visual appearance on mobile even if JS added .docked */
-                position: static !important;
-                top: auto !important;
-                left: auto !important;
-                width: 100% !important;
-                height: 100% !important;
-                border-radius: 999px;
-                font-size: 0.90rem;
-                backdrop-filter: none;
-                -webkit-backdrop-filter: none;
-                background: rgba(255, 255, 255, 0.03);
-                box-shadow: none;
-                border-color: var(--border);
-            }
-
-            /* Ensure resume placeholder always occupies its layout space on mobile */
-            .resume-placeholder {
-                position: relative;
-                width: 120px;
-                height: 44px;
             }
         }
 
@@ -3050,9 +3573,10 @@
                 font-size: clamp(2.2rem, 12vw, 3.2rem);
             }
 
-            /* Highlights: shrink stage on phones */
+            /* Highlights: shrink stage */
             .highlights-stage {
-                height: 260px;
+                height: 300px;
+                /* taller to fit more text */
             }
 
             .hl-card {
@@ -3073,7 +3597,10 @@
             /* Experience single-col already handled via its own media query */
 
             /* Project + course cards: fill more of viewport */
-            .proj-card,
+            .proj-card-wrap {
+                flex: 0 0 min(300px, 88vw);
+            }
+
             .course-card {
                 flex: 0 0 min(300px, 88vw);
             }
@@ -3188,17 +3715,16 @@
             }
 
             /* Project / course cards */
-            .proj-card,
-            .course-card {
+            .proj-card-wrap {
                 flex: 0 0 min(280px, 90vw);
             }
 
             .proj-card {
-                height: 290px;
+                height: 300px;
             }
 
             .course-card {
-                height: 220px;
+                flex: 0 0 min(280px, 90vw);
             }
 
             /* Skills */
@@ -3207,10 +3733,10 @@
                 padding: 5px 10px;
             }
 
-            /* Scroll nudge mobile circle: slightly smaller on tiny screens */
-            .scroll-nudge-mobile-btn {
-                width: 36px;
-                height: 36px;
+            /* Scroll nudge: smaller pill on very small screens */
+            .scroll-nudge-pill {
+                padding: 8px 16px;
+                font-size: 0.66rem;
             }
 
             /* Section title */
@@ -3666,7 +4192,7 @@
 
                 </div><!-- /.hero-grid -->
 
-                <!-- Scroll nudge DESKTOP — premium glowing pill, hides after scroll -->
+                <!-- Scroll nudge — premium glowing pill, hides after scroll -->
                 <a href="#about" class="scroll-nudge" id="scrollNudge" aria-label="Scroll to About">
                     <div class="scroll-nudge-pill">
                         <span class="scroll-nudge-label">Scroll</span>
@@ -3680,17 +4206,6 @@
                     <div class="scroll-nudge-line"></div>
                 </a>
 
-                <!-- Scroll nudge MOBILE — compact in-flow circular arrow, no overlap -->
-                <a href="#about" class="scroll-nudge-mobile" id="scrollNudgeMobile" aria-label="Scroll to About">
-                    <span class="scroll-nudge-mobile-btn" aria-hidden="true">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="6,9 12,15 18,9" />
-                        </svg>
-                    </span>
-                    <span class="scroll-nudge-mobile-label">Scroll</span>
-                </a>
-
             </section>
 
 
@@ -3698,9 +4213,26 @@
                  ABOUT SECTION
 ============================================================ -->
             <section id="about" class="section">
-                <h2 class="section-title reveal">About</h2>
+                <!-- 3D Asset Corner Elements (hidden decoration for screen readers, positioned relative to #about section) -->
+                <div class="about-asset-wrapper asset-top-left" aria-hidden="true">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/moon_icon.11395d36.png"
+                        alt="" class="about-asset-img" draggable="false">
+                </div>
+                <div class="about-asset-wrapper asset-top-right" aria-hidden="true">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/lego_icon-1.703bb594.png"
+                        alt="" class="about-asset-img" draggable="false">
+                </div>
+                <div class="about-asset-wrapper asset-bottom-left" aria-hidden="true">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/p59_1.4659672e.png"
+                        alt="" class="about-asset-img" draggable="false">
+                </div>
+                <div class="about-asset-wrapper asset-bottom-right" aria-hidden="true">
+                    <img src="https://shrug-person-78902957.figma.site/_components/v2/ebb2b8f25d8e24d5f0a5ca8af4c950de81aa2fd7/Group_134-1.2e04f3ce.png"
+                        alt="" class="about-asset-img" draggable="false">
+                </div>
 
-                <div class="glass about-card reveal">
+                <div class="about-container">
+                    <h2 class="section-title about-title reveal">ABOUT ME</h2>
 
                     <!-- Toggle Buttons — segmented pill control -->
                     <div class="about-tabs" id="aboutTabs">
@@ -3739,35 +4271,30 @@
 
                     <!-- The Builder Content -->
                     <div id="bio-builder" class="about-content active-bio">
-                        <p class="about-text">
-                            I’m a third-year Electronics and Instrumentation Engineering student at MIT, Anna
-                            University.
-                            Over the past two years, my curiosity about how complex systems work has evolved into a
-                            hands-on
-                            obsession with building them. I don't just want to understand the theory; I want to wire it,
-                            code it, and make it run.
+                        <p class="about-text about-lead">
+                            An electronics and instrumentation engineering student at MIT Anna University, i focus on
+                            full-stack web systems, IoT sensor networks, and predictive hardware intelligence. I truly
+                            enjoy designing robust cloud architectures and smart hardware assemblies that solve hard
+                            real-world problems.
                         </p>
-                        <br>
-                        <p class="about-text">
+                        <p class="about-text about-sub">
                             From designing digital logic in Vivado and soldering IoT prototypes at hackathons to
-                            training
-                            predictive AI for functional safety, I love operating right where hardware meets software.
-                            My
-                            philosophy is simple: <strong>I build to learn, and I simulate to build better.</strong>
+                            training predictive AI for functional safety, I love operating right where hardware meets
+                            software. My philosophy is simple: <strong class="white-reveal">I build to learn, and I
+                                simulate to build better.</strong>
                         </p>
                     </div>
 
                     <!-- The Human Content -->
                     <div id="bio-human" class="about-content hidden-bio">
-                        <p class="about-text">
+                        <p class="about-text about-lead">
                             When I’m not buried in hardware data sheets or debugging code, you can usually find me
                             touching grass—literally and figuratively—with my hackathon crew,
                             <strong>TouchGrass.Devs</strong>. We thrive on the chaos of 24-hour sprints, whether we're
                             debugging web interfaces under pressure or racing against the clock to hunt down IoT
                             components.
                         </p>
-                        <br>
-                        <p class="about-text">
+                        <p class="about-text about-sub">
                             Off the clock, I'm a massive film freak. I treat my Letterboxd diary like a second
                             portfolio, tracking, rating, and overanalyzing cinematography. To unwind, I usually step
                             away from the screens entirely to play the musical keyboard, or log onto Chess.com for a
@@ -3775,91 +4302,77 @@
                             Spotify playlist.
                         </p>
                     </div>
-
                 </div>
             </section>
 
 
             <!-- ============================================================
-                 HIGHLIGHTS SECTION — Horizontal 3D Cylinder Carousel
-                 Inspired by the bank-card rAF render loop design.
-                 !! EDIT: Add/remove .hl-card divs and matching .hl-dot buttons !!
+                 HIGHLIGHTS SECTION — 3D Card Stack Carousel
+                 Cards loop one at a time. Auto-advances every 4s.
+                 Click side cards or dots to jump. Hover active for desc.
+
+                 !! EDIT: Add a new .hl-card block AND a new .hl-dot button
+                          to add more highlights. Keep them in sync. !!
                  ============================================================ -->
             <section id="highlights" class="section">
                 <h2 class="section-title reveal">Highlights</h2>
 
-                <!-- Clip wrapper prevents side-peek cards from causing horizontal scroll -->
-                <div class="highlights-wrapper reveal">
+                <!-- 3D perspective stage — holds all cards -->
+                <div class="highlights-stage reveal" id="hlStage">
 
-                    <!-- 3D perspective stage -->
-                    <div class="highlights-stage" id="hlStage" aria-label="Highlights carousel">
+                    <!-- Card 1 — starts as active -->
+                    <!-- !! EDIT: icon, title, desc, tag for each card !! -->
+                    <div class="glass hl-card hl-active" data-index="0">
+                        <div class="hl-header">
+                            <div class="hl-icon">🏆</div>
+                            <div class="hl-title">2nd Place &amp; ₹10k — Techquest IoT-Hunt</div>
+                        </div>
+                        <p class="hl-desc">
+                            Runner-up with team TouchGrass.Devs. Built an IoT drainage management system
+                            emphasizing real-time sensor data and rapid hardware integration.
+                        </p>
+                        <div class="hl-tag-container"><span class="tag tag-cyan">REC Tech Event</span></div>
+                    </div>
 
-                        <!-- Scene node: JS writes width/height and transform-style -->
-                        <div class="hl-scene" id="hlScene">
+                    <!-- Card 2 — starts as next (right side) -->
+                    <div class="glass hl-card hl-next" data-index="1">
+                        <div class="hl-header">
+                            <div class="hl-icon">🥉</div>
+                            <div class="hl-title">3rd Place &amp; ₹4k — WebEscape Event</div>
+                        </div>
+                        <p class="hl-desc">
+                            Earned 3rd place debugging advanced front-end logic challenges with team
+                            TouchGrass.Devs under strict competition time constraints.
+                        </p>
+                        <div class="hl-tag-container"><span class="tag tag-cyan">REC Tech Event</span></div>
+                    </div>
 
-                            <!-- Card 1 -->
-                            <!-- !! EDIT: icon emoji, title, desc, tag for each card !! -->
-                            <div class="hl-card" data-hl-index="0">
-                                <div class="hl-card-face">
-                                    <div class="hl-accent-bar" style="background: linear-gradient(90deg, #22d3ee, #818cf8);"></div>
-                                    <div class="hl-content">
-                                        <div class="hl-header">
-                                            <div class="hl-icon">🏆</div>
-                                            <div class="hl-title">2nd Place &amp; ₹10k &mdash; Techquest IoT-Hunt</div>
-                                        </div>
-                                        <p class="hl-desc">
-                                            Runner-up with team TouchGrass.Devs. Built an IoT drainage
-                                            management system emphasizing real-time sensor data and rapid
-                                            hardware integration.
-                                        </p>
-                                        <div class="hl-tag-row"><span class="tag tag-cyan">REC Tech Event</span></div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- Card 3 — starts as prev (left side) -->
+                    <div class="glass hl-card hl-prev" data-index="2">
+                        <div class="hl-header">
+                            <div class="hl-icon">🌐</div>
+                            <div class="hl-title">Event Organizer — Intecho'26 Code Craze</div>
+                        </div>
+                        <p class="hl-desc">
+                            Core technical organizer for the MIT college symposium. Orchestrated coding
+                            challenges and coordinated all student team tasks end-to-end.
+                        </p>
+                        <div class="hl-tag-container"><span class="tag tag-purple">MIT Anna University</span></div>
+                    </div>
 
-                            <!-- Card 2 -->
-                            <div class="hl-card" data-hl-index="1">
-                                <div class="hl-card-face">
-                                    <div class="hl-accent-bar" style="background: linear-gradient(90deg, #f59e0b, #ef4444);"></div>
-                                    <div class="hl-content">
-                                        <div class="hl-header">
-                                            <div class="hl-icon">🥉</div>
-                                            <div class="hl-title">3rd Place &amp; ₹4k &mdash; WebEscape Event</div>
-                                        </div>
-                                        <p class="hl-desc">
-                                            Earned 3rd place debugging advanced front-end logic challenges
-                                            with team TouchGrass.Devs under strict competition time constraints.
-                                        </p>
-                                        <div class="hl-tag-row"><span class="tag tag-cyan">REC Tech Event</span></div>
-                                    </div>
-                                </div>
-                            </div>
+                    <!-- !! ADD NEW CARDS HERE — use hl-hidden for extra cards !! -->
+                    <!-- Example:
+                    <div class="glass hl-card hl-hidden" data-index="3">
+                        <div class="hl-icon">🚀</div>
+                        <div class="hl-title">Your New Achievement</div>
+                        <p class="hl-desc">Description here...</p>
+                        <div><span class="tag tag-cyan">Tag</span></div>
+                    </div>
+                    -->
 
-                            <!-- Card 3 -->
-                            <div class="hl-card" data-hl-index="2">
-                                <div class="hl-card-face">
-                                    <div class="hl-accent-bar" style="background: linear-gradient(90deg, #a78bfa, #ec4899);"></div>
-                                    <div class="hl-content">
-                                        <div class="hl-header">
-                                            <div class="hl-icon">🌐</div>
-                                            <div class="hl-title">Event Organizer &mdash; Intecho&rsquo;26 Code Craze</div>
-                                        </div>
-                                        <p class="hl-desc">
-                                            Core technical organizer for the MIT college symposium.
-                                            Orchestrated coding challenges and coordinated all student
-                                            team tasks end-to-end.
-                                        </p>
-                                        <div class="hl-tag-row"><span class="tag tag-purple">MIT Anna University</span></div>
-                                    </div>
-                                </div>
-                            </div>
+                </div>
 
-                        </div><!-- /.hl-scene -->
-                    </div><!-- /.highlights-stage -->
-
-                </div><!-- /.highlights-wrapper -->
-
-                <!-- Navigation dots — one per card -->
+                <!-- Navigation dots — one per card, synced by JS -->
                 <!-- !! EDIT: Add a <button class="hl-dot"> for each card you add !! -->
                 <div class="hl-dots" id="hlDots" aria-label="Highlight navigation">
                     <button class="hl-dot hl-dot-active" aria-label="Highlight 1"></button>
@@ -3990,143 +4503,143 @@
                     <div class="projects-grid" id="projGrid">
 
                         <!-- ============================================
-                             PROJECT CARD — copy this whole block to add more.
+                             PROJECT CARD WRAP — copy this whole block to add.
+                             Each wrap gets gradient colours automatically
+                             via nth-child CSS tokens.
                              !! EDIT: title, desc, tags, link per project !!
                              ============================================ -->
 
                         <!-- Project 1 -->
-                        <div class="proj-card">
-                            <span class="proj-num" aria-hidden="true">01</span>
-                            <div class="project-title">SIS Failure Predictor</div>
-                            <p class="project-desc">
-                                Hackathon project integrating hardware monitoring and predictive
-                                algorithms on a real-world TRICONEX safety system by Schneider Electric.
-                            </p>
-                            <!-- Hidden until hover -->
-                            <div class="proj-bottom">
-                                <div class="project-tags">
-                                    <span class="tag">Python</span>
-                                    <span class="tag">Data Science</span>
-                                    <span class="tag">ML</span>
+                        <div class="proj-card-wrap">
+                            <!-- Ambient glow blob behind card -->
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <span class="proj-num" aria-hidden="true">01</span>
+                                <div class="project-title">SIS Failure Predictor</div>
+                                <p class="project-desc">
+                                    Hackathon project integrating hardware monitoring and predictive
+                                    algorithms on a real-world TRICONEX safety system by Schneider Electric.
+                                </p>
+                                <div class="proj-bottom">
+                                    <div class="project-tags">
+                                        <span class="tag">Python</span>
+                                        <span class="tag">Data Science</span>
+                                        <span class="tag">ML</span>
+                                    </div>
                                 </div>
-                                <!-- !! EDIT: Add href when repo is ready !! -->
-                                <!-- Uncomment when link is available:
-                                <a href="https://github.com/YOUR_LINK"
-                                   target="_blank" rel="noopener" class="project-link"
-                                   aria-label="View on GitHub">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                                    </svg>
-                                </a>
-                                -->
                             </div>
                         </div>
 
                         <!-- Project 2 -->
-                        <div class="proj-card">
-                            <span class="proj-num" aria-hidden="true">02</span>
-                            <div class="project-title">Depthra</div>
-                            <p class="project-desc">
-                                AI-powered groundwater monitoring app analyzing DWLR station data
-                                from across India using machine learning data processing models.
-                            </p>
-                            <div class="proj-bottom">
-                                <div class="project-tags">
-                                    <span class="tag">HTML / CSS</span>
-                                    <span class="tag">AI</span>
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <span class="proj-num" aria-hidden="true">02</span>
+                                <div class="project-title">Depthra</div>
+                                <p class="project-desc">
+                                    AI-powered groundwater monitoring app analyzing DWLR station data
+                                    from across India using machine learning data processing models.
+                                </p>
+                                <div class="proj-bottom">
+                                    <div class="project-tags">
+                                        <span class="tag">HTML / CSS</span>
+                                        <span class="tag">AI</span>
+                                    </div>
+                                    <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener"
+                                        class="project-link" aria-label="View on GitHub">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                        </svg>
+                                    </a>
                                 </div>
-                                <!-- !! EDIT: GitHub link !! -->
-                                <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener"
-                                    class="project-link" aria-label="View on GitHub">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                        <path
-                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                                    </svg>
-                                </a>
                             </div>
                         </div>
 
                         <!-- Project 3 -->
-                        <div class="proj-card">
-                            <span class="proj-num" aria-hidden="true">03</span>
-                            <div class="project-title">Smart Drainage System</div>
-                            <p class="project-desc">
-                                ESP32-based real-time drainage monitoring using ultrasonic and flow
-                                sensors for automated blockage detection and smart alerts.
-                            </p>
-                            <div class="proj-bottom">
-                                <div class="project-tags">
-                                    <span class="tag">Embedded C</span>
-                                    <span class="tag">ESP32</span>
-                                    <span class="tag">Sensors</span>
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <span class="proj-num" aria-hidden="true">03</span>
+                                <div class="project-title">Smart Drainage System</div>
+                                <p class="project-desc">
+                                    ESP32-based real-time drainage monitoring using ultrasonic and flow
+                                    sensors for automated blockage detection and smart alerts.
+                                </p>
+                                <div class="proj-bottom">
+                                    <div class="project-tags">
+                                        <span class="tag">Embedded C</span>
+                                        <span class="tag">ESP32</span>
+                                        <span class="tag">Sensors</span>
+                                    </div>
                                 </div>
-                                <!-- No GitHub link yet — uncomment when ready:
-                                <a href="#"
-                                   target="_blank" rel="noopener" class="project-link"
-                                   aria-label="View on GitHub">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
-                                    </svg>
-                                </a>
-                                -->
                             </div>
                         </div>
 
                         <!-- Project 4 -->
-                        <div class="proj-card">
-                            <span class="proj-num" aria-hidden="true">04</span>
-                            <div class="project-title">4-Bit ALU in Verilog</div>
-                            <p class="project-desc">
-                                Simulated a 4-Bit ALU in Xilinx Vivado with 8+ logical operations.
-                                Functionality verified with a comprehensive testbench.
-                            </p>
-                            <div class="proj-bottom">
-                                <div class="project-tags">
-                                    <span class="tag">Verilog HDL</span>
-                                    <span class="tag">Vivado</span>
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <span class="proj-num" aria-hidden="true">04</span>
+                                <div class="project-title">4-Bit ALU in Verilog</div>
+                                <p class="project-desc">
+                                    Simulated a 4-Bit ALU in Xilinx Vivado with 8+ logical operations.
+                                    Functionality verified with a comprehensive testbench.
+                                </p>
+                                <div class="proj-bottom">
+                                    <div class="project-tags">
+                                        <span class="tag">Verilog HDL</span>
+                                        <span class="tag">Vivado</span>
+                                    </div>
+                                    <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank"
+                                        rel="noopener" class="project-link" aria-label="View on GitHub">
+                                        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                                            <path
+                                                d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
+                                        </svg>
+                                    </a>
                                 </div>
-                                <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank"
-                                    rel="noopener" class="project-link" aria-label="View on GitHub">
-                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
-                                        <path
-                                            d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
-                                    </svg>
-                                </a>
                             </div>
                         </div>
 
                         <!-- Project 5 -->
-                        <div class="proj-card">
-                            <span class="proj-num" aria-hidden="true">05</span>
-                            <div class="project-title">Spectral Analyzer</div>
-                            <p class="project-desc">
-                                ESP32-based digital spectral analyzer using FFT processing to display
-                                frequency spectrum and Total Harmonic Distortion (THD) in real time.
-                            </p>
-                            <div class="proj-bottom">
-                                <div class="project-tags">
-                                    <span class="tag">ESP32</span>
-                                    <span class="tag">Arduino IDE</span>
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <span class="proj-num" aria-hidden="true">05</span>
+                                <div class="project-title">Spectral Analyzer</div>
+                                <p class="project-desc">
+                                    ESP32-based digital spectral analyzer using FFT processing to display
+                                    frequency spectrum and Total Harmonic Distortion (THD) in real time.
+                                </p>
+                                <div class="proj-bottom">
+                                    <div class="project-tags">
+                                        <span class="tag">ESP32</span>
+                                        <span class="tag">Arduino IDE</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Project 6 -->
-                        <div class="proj-card">
-                            <span class="proj-num" aria-hidden="true">06</span>
-                            <div class="project-title">AC to 5V DC Converter</div>
-                            <p class="project-desc">
-                                Bridge rectifier with PN junction diodes and an LM7805 linear regulator
-                                producing a stable 5V regulated DC output from AC mains.
-                            </p>
-                            <div class="proj-bottom">
-                                <div class="project-tags">
-                                    <span class="tag">Analog Electronics</span>
+                        <div class="proj-card-wrap">
+                            <div class="proj-glow"></div>
+                            <div class="proj-card">
+                                <span class="proj-num" aria-hidden="true">06</span>
+                                <div class="project-title">AC to 5V DC Converter</div>
+                                <p class="project-desc">
+                                    Bridge rectifier with PN junction diodes and an LM7805 linear regulator
+                                    producing a stable 5V regulated DC output from AC mains.
+                                </p>
+                                <div class="proj-bottom">
+                                    <div class="project-tags">
+                                        <span class="tag">Analog Electronics</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- !! ADD NEW PROJECT CARDS HERE — copy a block above !! -->
+                        <!-- !! ADD NEW PROJECT CARDS HERE — copy a .proj-card-wrap block above !! -->
 
                     </div><!-- /.projects-grid -->
 
@@ -4147,38 +4660,93 @@
                  !! EDIT: Add a new .glass.skill-group block for a new category !!
                  ============================================================ -->
             <section id="skills" class="section">
-                <h2 class="section-title reveal">Skills</h2>
+                <div class="skills-header-container reveal">
+                    <!-- Liquid Morph SVG Backdrop -->
+                    <svg class="skills-svg-backdrop" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                        <path fill="url(#skills-liquid-grad)" d="M41.5,-68.8C54.4,-61.8,66.1,-51.7,73.5,-38.7C80.8,-25.7,83.9,-9.8,81.4,5C78.9,19.9,70.9,33.7,60.8,44.9C50.7,56,38.5,64.6,24.9,69.5C11.3,74.5,-3.6,75.9,-18.2,73.1C-32.9,70.3,-47.2,63.2,-58.3,52.5C-69.5,41.9,-77.4,27.7,-80.6,12.3C-83.8,-3,-82.2,-19.6,-75.7,-34.1C-69.1,-48.6,-57.6,-61,-43.8,-67.7C-30.1,-74.3,-15,-75.2,-0.2,-74.8C14.5,-74.4,28.7,-75.7,41.5,-68.8Z" transform="translate(100 100)" />
+                        <defs>
+                            <linearGradient id="skills-liquid-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="rgba(34, 211, 238, 0.22)" />
+                                <stop offset="50%" stop-color="rgba(168, 85, 247, 0.18)" />
+                                <stop offset="100%" stop-color="rgba(59, 130, 246, 0.05)" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                    <h2 class="section-title skills-title-3d">Skills</h2>
+                </div>
 
                 <div class="skills-grid reveal-stagger">
 
-                    <div class="glass skill-group tilt-card">
-                        <div class="skill-group-label">Languages</div>
-                        <div class="skill-tags">
-                            <span class="tag">C</span>
-                            <span class="tag">C++</span>
-                            <span class="tag">Python</span>
-                            <span class="tag">Verilog</span>
+                    <!-- Languages -->
+                    <div class="skill-group-wrap">
+                        <div class="skill-glow"></div>
+                        <div class="skill-group">
+                            <!-- Category-specific morphing SVG backdrop -->
+                            <svg class="skill-card-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="url(#lang-grad)" d="M44.7,-77C57.4,-70.6,67,-57.8,73.5,-43.8C80,-29.8,83.3,-14.9,81.4,-0.9C79.4,13.1,72.2,26.2,65.3,39C58.4,51.8,51.7,64.2,40.9,71.1C30.1,78,15,79.3,-0.1,79.5C-15.3,79.7,-30.5,78.7,-43.7,72.6C-56.9,66.5,-68,55.3,-74.6,41.9C-81.2,28.5,-83.4,12.8,-82.9,-2.8C-82.5,-18.4,-79.4,-33.9,-71.8,-46.8C-64.2,-59.7,-52.1,-70,-38.3,-75.7C-24.5,-81.4,-9,-82.5,4.3,-89.9C17.6,-97.4,26.5,-83.4,44.7,-77Z" transform="translate(100 100)" />
+                                <defs>
+                                    <linearGradient id="lang-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#FF2D78" stop-opacity="0.30" />
+                                        <stop offset="100%" stop-color="#FF9500" stop-opacity="0.02" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="skill-group-label">Languages</div>
+                            <div class="skill-tags">
+                                <span class="tag">C</span>
+                                <span class="tag">C++</span>
+                                <span class="tag">Python</span>
+                                <span class="tag">Verilog</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="glass skill-group tilt-card">
-                        <div class="skill-group-label">Core Concepts</div>
-                        <div class="skill-tags">
-                            <span class="tag">Digital Logic Design</span>
-                            <span class="tag">Analog Op-Amps</span>
-                            <span class="tag">Machine Learning</span>
+                    <!-- Core Concepts -->
+                    <div class="skill-group-wrap">
+                        <div class="skill-glow"></div>
+                        <div class="skill-group">
+                            <!-- Category-specific morphing SVG backdrop -->
+                            <svg class="skill-card-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="url(#core-grad)" d="M47,-76.8C59.6,-71.6,68.1,-57.4,72.6,-42.6C77.1,-27.8,77.7,-12.3,75.4,2.5C73.1,17.3,67.9,31.4,59.9,43.7C51.8,55.9,41,66.3,28.1,72.7C15.2,79.1,0.2,81.5,-15.7,79.7C-31.5,77.9,-48.2,71.8,-59.9,60.8C-71.6,49.8,-78.3,33.9,-81.4,17.3C-84.5,0.7,-84,-16.7,-77.8,-32.1C-71.6,-47.5,-59.7,-60.9,-45.5,-66.9C-31.2,-72.8,-14.7,-71.3,0.8,-72.7C16.3,-74.1,34.3,-82,47,-76.8Z" transform="translate(100 100)" />
+                                <defs>
+                                    <linearGradient id="core-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#00E5FF" stop-opacity="0.30" />
+                                        <stop offset="100%" stop-color="#0077FF" stop-opacity="0.02" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="skill-group-label">Core Concepts</div>
+                            <div class="skill-tags">
+                                <span class="tag">Digital Logic Design</span>
+                                <span class="tag">Analog Op-Amps</span>
+                                <span class="tag">Machine Learning</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="glass skill-group tilt-card">
-                        <div class="skill-group-label">Tools &amp; Software</div>
-                        <div class="skill-tags">
-                            <span class="tag">Arduino IDE</span>
-                            <span class="tag">Proteus</span>
-                            <span class="tag">MATLAB</span>
-                            <span class="tag">LabVIEW</span>
-                            <span class="tag">Xilinx Vivado</span>
-                            <span class="tag">VS Code</span>
+                    <!-- Tools & Software -->
+                    <div class="skill-group-wrap">
+                        <div class="skill-glow"></div>
+                        <div class="skill-group">
+                            <!-- Category-specific morphing SVG backdrop -->
+                            <svg class="skill-card-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+                                <path fill="url(#tools-grad)" d="M42.2,-72C54.8,-65,65.3,-53.4,70.9,-39.7C76.5,-26,77.3,-10.1,75.1,5.2C72.8,20.5,67.6,35.1,58.7,46.9C49.9,58.7,37.5,67.7,23.5,72.7C9.6,77.7,-5.8,78.7,-21,75.3C-36.2,71.9,-51.1,64,-61.7,52.3C-72.3,40.6,-78.6,25,-81,8.3C-83.3,-8.4,-81.7,-26.2,-74,-40.8C-66.3,-55.4,-52.5,-66.7,-37.8,-72.8C-23.1,-78.9,-7.5,-79.8,5.4,-88.1C18.3,-96.4,36.5,-91.3,42.2,-72Z" transform="translate(100 100)" />
+                                <defs>
+                                    <linearGradient id="tools-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#7B2FFF" stop-opacity="0.30" />
+                                        <stop offset="100%" stop-color="#BF9AFF" stop-opacity="0.02" />
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                            <div class="skill-group-label">Tools &amp; Software</div>
+                            <div class="skill-tags">
+                                <span class="tag">Arduino IDE</span>
+                                <span class="tag">Proteus</span>
+                                <span class="tag">MATLAB</span>
+                                <span class="tag">LabVIEW</span>
+                                <span class="tag">Xilinx Vivado</span>
+                                <span class="tag">VS Code</span>
+                            </div>
                         </div>
                     </div>
 
@@ -4214,27 +4782,30 @@
 
                     <div class="courses-grid" id="courseGrid">
                         <!-- Course 1 -->
-                        <div class="course-card tilt-card">
-                            <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <line x1="18" y1="20" x2="18" y2="10" />
-                                    <line x1="12" y1="20" x2="12" y2="4" />
-                                    <line x1="6" y1="20" x2="6" y2="14" />
-                                    <path d="M2 20h20" />
+                        <div class="course-card tilt-card course-cyan">
+                            <div class="course-platform-pill">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <line x1="18" y1="20" x2="18" y2="10"></line>
+                                    <line x1="12" y1="20" x2="12" y2="4"></line>
+                                    <line x1="6" y1="20" x2="6" y2="14"></line>
+                                    <path d="M2 20h20"></path>
                                 </svg>
+                                Kaggle
                             </div>
-                            <div class="course-date">Dec 2025</div>
                             <div class="course-name">Time Series</div>
-                            <div class="course-platform">Kaggle</div>
+                            <div class="cert-skills-group">
+                                <div class="cert-skill-btn">Time Series Forecasting</div>
+                                <div class="cert-skill-btn">Feature Engineering</div>
+                            </div>
                             <div class="course-bottom">
-                                <!-- !! EDIT: Replace href with your certificate URL !! -->
                                 <a href="https://www.kaggle.com/learn/certification/kayilainathanj/time-series"
                                     target="_blank" rel="noopener" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7" />
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                        <circle cx="12" cy="8" r="7"></circle>
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
                                     </svg>
                                     View Certificate
                                 </a>
@@ -4242,28 +4813,32 @@
                         </div>
 
                         <!-- Course 2 -->
-                        <div class="course-card tilt-card">
-                            <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="5" r="3" />
-                                    <circle cx="5" cy="19" r="3" />
-                                    <circle cx="19" cy="19" r="3" />
-                                    <line x1="8.5" y1="8.5" x2="6.5" y2="16" />
-                                    <line x1="15.5" y1="8.5" x2="17.5" y2="16" />
-                                    <line x1="8" y1="19" x2="16" y2="19" />
+                        <div class="course-card tilt-card course-purple">
+                            <div class="course-platform-pill">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <circle cx="12" cy="5" r="2.5"></circle>
+                                    <circle cx="5" cy="19" r="2.5"></circle>
+                                    <circle cx="19" cy="19" r="2.5"></circle>
+                                    <line x1="8.5" y1="8.5" x2="6.5" y2="16"></line>
+                                    <line x1="15.5" y1="8.5" x2="17.5" y2="16"></line>
+                                    <line x1="8" y1="19" x2="16" y2="19"></line>
                                 </svg>
+                                Kaggle
                             </div>
-                            <div class="course-date">Dec 2025</div>
                             <div class="course-name">Intermediate Machine Learning</div>
-                            <div class="course-platform">Kaggle</div>
+                            <div class="cert-skills-group">
+                                <div class="cert-skill-btn">Model Validation</div>
+                                <div class="cert-skill-btn">Random Forests &amp; XGBoost</div>
+                            </div>
                             <div class="course-bottom">
                                 <a href="https://www.kaggle.com/learn/certification/kayilainathanj/intermediate-machine-learning"
                                     target="_blank" rel="noopener" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7" />
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                        <circle cx="12" cy="8" r="7"></circle>
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
                                     </svg>
                                     View Certificate
                                 </a>
@@ -4271,92 +4846,124 @@
                         </div>
 
                         <!-- Course 3 -->
-                        <div class="course-card tilt-card">
-                            <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="2" y="3" width="20" height="18" rx="2" ry="2" />
-                                    <line x1="2" y1="8" x2="22" y2="8" />
-                                    <line x1="6" y1="6" x2="6.01" y2="6" />
-                                    <line x1="10" y1="6" x2="10.01" y2="6" />
-                                    <line x1="14" y1="6" x2="14.01" y2="6" />
+                        <div class="course-card tilt-card course-cyan">
+                            <div class="course-platform-pill">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <polyline points="16 18 22 12 16 6"></polyline>
+                                    <polyline points="8 6 2 12 8 18"></polyline>
                                 </svg>
+                                Coursera Meta
                             </div>
-                            <div class="course-date">Jan 2024</div>
                             <div class="course-name">Introduction to Front-End Development</div>
-                            <div class="course-platform">Coursera · Meta</div>
+                            <div class="cert-skills-group">
+                                <div class="cert-skill-btn">HTML5 &amp; CSS3 Layouts</div>
+                                <div class="cert-skill-btn">Responsive UI Basics</div>
+                            </div>
                             <div class="course-bottom">
                                 <a href="https://www.coursera.org/account/accomplishments/verify/QYD3R1YECXEH"
                                     target="_blank" rel="noopener" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7" />
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                        <circle cx="12" cy="8" r="7"></circle>
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
                                     </svg>
                                     View Certificate
                                 </a>
                             </div>
                         </div>
 
-                        <!-- Course 4 — No certificate link -->
-                        <div class="course-card tilt-card">
-                            <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 3v18h18" />
-                                    <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3" />
+                        <!-- Course 4 -->
+                        <div class="course-card tilt-card course-purple">
+                            <div class="course-platform-pill">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
                                 </svg>
+                                MathWorks
                             </div>
-                            <div class="course-date">Nov 2024</div>
                             <div class="course-name">MATLAB Onramp</div>
-                            <div class="course-platform">MathWorks</div>
+                            <div class="cert-skills-group">
+                                <div class="cert-skill-btn">Matrix Operations &amp; Syntax</div>
+                                <div class="cert-skill-btn">Data Analytics &amp; Plotting</div>
+                            </div>
+                            <div class="course-bottom">
+                                <div class="course-link-btn course-completed-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Course Completed
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Course 5 -->
-                        <div class="course-card tilt-card">
-                            <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="4" y="4" width="16" height="16" rx="2" />
-                                    <rect x="9" y="9" width="6" height="6" />
-                                    <line x1="9" y1="1" x2="9" y2="4" />
-                                    <line x1="15" y1="1" x2="15" y2="4" />
-                                    <line x1="9" y1="20" x2="9" y2="23" />
-                                    <line x1="15" y1="20" x2="15" y2="23" />
-                                    <line x1="20" y1="9" x2="23" y2="9" />
-                                    <line x1="20" y1="15" x2="23" y2="15" />
-                                    <line x1="1" y1="9" x2="4" y2="9" />
-                                    <line x1="1" y1="15" x2="4" y2="15" />
+                        <div class="course-card tilt-card course-cyan">
+                            <div class="course-platform-pill">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                                    <rect x="9" y="9" width="6" height="6"></rect>
+                                    <line x1="9" y1="1" x2="9" y2="4"></line>
+                                    <line x1="15" y1="1" x2="15" y2="4"></line>
+                                    <line x1="9" y1="20" x2="9" y2="23"></line>
+                                    <line x1="15" y1="20" x2="15" y2="23"></line>
+                                    <line x1="20" y1="9" x2="23" y2="9"></line>
+                                    <line x1="20" y1="15" x2="23" y2="15"></line>
+                                    <line x1="1" y1="9" x2="4" y2="9"></line>
+                                    <line x1="1" y1="15" x2="4" y2="15"></line>
                                 </svg>
+                                Coursera IBM
                             </div>
-                            <div class="course-date">Jul 2024</div>
                             <div class="course-name">Introduction to AI</div>
-                            <div class="course-platform">Coursera · IBM</div>
+                            <div class="cert-skills-group">
+                                <div class="cert-skill-btn">Machine Learning Concepts</div>
+                                <div class="cert-skill-btn">Generative AI Basics</div>
+                            </div>
                             <div class="course-bottom">
                                 <a href="https://www.coursera.org/account/accomplishments/verify/SRKBW27SV5KX"
                                     target="_blank" rel="noopener" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="8" r="7" />
-                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" />
+                                        <circle cx="12" cy="8" r="7"></circle>
+                                        <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
                                     </svg>
                                     View Certificate
                                 </a>
                             </div>
                         </div>
 
-                        <!-- Course 6 — No certificate link -->
-                        <div class="course-card tilt-card">
-                            <div class="course-icon-box" aria-hidden="true">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                        <!-- Course 6 -->
+                        <div class="course-card tilt-card course-purple">
+                            <div class="course-platform-pill">
+                                <svg class="pill-icon" width="12" height="12" viewBox="0 0 24 24" fill="none"
+                                    stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                                    stroke-linejoin="round">
+                                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
                                 </svg>
+                                TCS iON
                             </div>
-                            <div class="course-date">Jul 2024</div>
-                            <div class="course-name">TCS iON Career Edge — Young Professional</div>
-                            <div class="course-platform">TCS iON</div>
+                            <div class="course-name">TCS iON Career Edge</div>
+                            <div class="cert-skills-group">
+                                <div class="cert-skill-btn">Professional Communication</div>
+                                <div class="cert-skill-btn">Soft Skills &amp; Etiquette</div>
+                            </div>
+                            <div class="course-bottom">
+                                <div class="course-link-btn course-completed-badge">
+                                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                        stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                    </svg>
+                                    Course Completed
+                                </div>
+                            </div>
                         </div>
                     </div>
 
@@ -4474,41 +5081,14 @@
             }
             // ================================================================
             // FLOATING RESUME DOCKING SCROLL EFFECT
-            // On mobile (≤768px) the button stays in the hero section and
-            // never docks to the fixed header — avoiding top-bar overflow.
             // ================================================================
             const resumeBtn = document.getElementById('resumeBtn');
             const resumePlaceholder = document.getElementById('resume-placeholder');
             let resumeDocked = false;
             let resumeAnimTimeout = null;
 
-            // Returns true when the viewport is in a mobile-width range where
-            // docking the resume button would create a cramped header.
-            function isMobileViewport() {
-                return window.innerWidth <= 768;
-            }
-
-            // Cleanly resets the resume button back into its hero placeholder
-            // without any transition — used when switching from desktop to mobile.
-            function resetResumeToHero() {
-                if (resumeAnimTimeout) clearTimeout(resumeAnimTimeout);
-                if (!resumeBtn || !resumePlaceholder) return;
-                resumeBtn.classList.remove('docked', 'animating');
-                resumeBtn.style.cssText = ''; // clear all inline styles
-                if (!resumePlaceholder.contains(resumeBtn)) {
-                    resumePlaceholder.appendChild(resumeBtn);
-                }
-                resumeDocked = false;
-            }
-
             function updateResumeDockPosition() {
                 if (!resumeBtn || !resumePlaceholder) return;
-
-                // On mobile: always keep the button in the hero section.
-                if (isMobileViewport()) {
-                    if (resumeDocked) resetResumeToHero();
-                    return;
-                }
 
                 const sy = window.scrollY;
                 const aboutSec = document.getElementById('about');
@@ -4600,22 +5180,13 @@
             // Bind scroll and resize events
             window.addEventListener('scroll', updateResumeDockPosition);
             window.addEventListener('resize', () => {
-                if (isMobileViewport()) {
-                    // Switched to mobile — immediately pull resume button back to hero
-                    if (resumeDocked) resetResumeToHero();
-                } else if (resumeDocked) {
-                    // Desktop resize: keep docked position accurate
+                if (resumeDocked) {
                     resumeBtn.style.left = `${window.innerWidth - 100 - 26}px`;
                 }
             });
 
             // Run immediately after layout settles
             setTimeout(() => {
-                if (isMobileViewport()) {
-                    // Mobile: ensure button is always in hero on load
-                    resetResumeToHero();
-                    return;
-                }
                 const sy = window.scrollY;
                 const aboutSec = document.getElementById('about');
                 const aboutTop = aboutSec ? aboutSec.offsetTop : 300;
@@ -4699,24 +5270,7 @@
             const navIndicator = document.getElementById('navIndicator');
             const navLinks = document.querySelectorAll('.nav-link');
             const scrollNudge = document.getElementById('scrollNudge');
-            const scrollNudgeMobile = document.getElementById('scrollNudgeMobile');
             const sections = Array.from(document.querySelectorAll('.section[id]'));
-
-            // Shared helper: trigger appear on both desktop pill + mobile circle
-            function nudgeAppear() {
-                if (scrollNudge)       scrollNudge.classList.add('appeared');
-                if (scrollNudgeMobile) scrollNudgeMobile.classList.add('appeared');
-            }
-
-            // Shared helper: hide/show both nudge elements together
-            function nudgeSetHidden(isHidden) {
-                if (scrollNudge && scrollNudge.classList.contains('appeared')) {
-                    scrollNudge.classList.toggle('hidden', isHidden);
-                }
-                if (scrollNudgeMobile && scrollNudgeMobile.classList.contains('appeared')) {
-                    scrollNudgeMobile.classList.toggle('hidden', isHidden);
-                }
-            }
 
             // ---- Sliding indicator LERP physics ----
             let indL = 0, indW = 0;          // Current position (animated)
@@ -4761,8 +5315,12 @@
                 // Show nav pill after scrolling 80px
                 navPill.classList.toggle('visible', sy > 80);
 
-                // Hide both scroll nudge elements (desktop pill + mobile circle) once user scrolls past hero.
-                nudgeSetHidden(sy > 60);
+                // Hide scroll nudge once user scrolls past hero
+                // Only toggle hidden AFTER appeared is set, so the element is
+                // properly interactive before hiding is ever considered.
+                if (scrollNudge && scrollNudge.classList.contains('appeared')) {
+                    scrollNudge.classList.toggle('hidden', sy > 60);
+                }
 
                 // Active section: pick the last section whose top is within the
                 // top 40% of the viewport. For the last section we also check
@@ -4805,20 +5363,14 @@
                 });
             });
 
-            // Scroll nudge — appear on load + click handlers (desktop + mobile)
-            if (scrollNudge || scrollNudgeMobile) {
-                // Trigger entry transition after the page settles (1.2s)
-                setTimeout(() => { nudgeAppear(); }, 1200);
+            // Scroll nudge — class-driven appear + click
+            if (scrollNudge) {
+                // Trigger the entry transition after the page settles (1.2s)
+                setTimeout(() => {
+                    scrollNudge.classList.add('appeared');
+                }, 1200);
 
-                // Desktop nudge click
-                scrollNudge?.addEventListener('click', e => {
-                    e.preventDefault();
-                    const about = document.getElementById('about');
-                    if (about) scrollTo(about, -80);
-                });
-
-                // Mobile nudge click
-                scrollNudgeMobile?.addEventListener('click', e => {
+                scrollNudge.addEventListener('click', e => {
                     e.preventDefault();
                     const about = document.getElementById('about');
                     if (about) scrollTo(about, -80);
@@ -4921,6 +5473,72 @@
                     btn.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
                 });
             });
+            // ================================================================
+            // LIQUID GLASS SKILLS INTERACTIVE SPOTLIGHT & 3D TILT
+            // Tracks mouse coordinates within skill group cards to update
+            // custom CSS variables for liquid spotlight gradient and subtle card rotation.
+            // ================================================================
+            document.querySelectorAll('.skill-group-wrap').forEach(wrap => {
+                const card = wrap.querySelector('.skill-group');
+                wrap.addEventListener('mousemove', e => {
+                    const r = wrap.getBoundingClientRect();
+                    const x = e.clientX - r.left;
+                    const y = e.clientY - r.top;
+                    if (card) {
+                        card.style.setProperty('--mouse-x', `${x}px`);
+                        card.style.setProperty('--mouse-y', `${y}px`);
+                    }
+
+                    // 3D Card tilt effect on the wrap
+                    const centerX = r.width / 2;
+                    const centerY = r.height / 2;
+                    const rotateX = -(y - centerY) / 22; // 3D tilt strength
+                    const rotateY = (x - centerX) / 22;
+                    wrap.style.transform = `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                    wrap.style.transition = 'transform 0.08s ease-out';
+                });
+
+                if (card) {
+                    card.style.setProperty('--mouse-x', `-1000px`);
+                    card.style.setProperty('--mouse-y', `-1000px`);
+                }
+
+                wrap.addEventListener('mouseleave', () => {
+                    wrap.style.transform = '';
+                    if (card) {
+                        card.style.setProperty('--mouse-x', `-1000px`);
+                        card.style.setProperty('--mouse-y', `-1000px`);
+                    }
+                    wrap.style.transition = 'transform 0.55s cubic-bezier(0.16, 1, 0.3, 1)';
+                });
+            });
+
+            // 3D Tilt effect for the Skills Header
+            const skillsHeader = document.querySelector('.skills-header-container');
+            const title3D = document.querySelector('.skills-title-3d');
+            if (skillsHeader && title3D) {
+                skillsHeader.addEventListener('mousemove', e => {
+                    const r = skillsHeader.getBoundingClientRect();
+                    const x = e.clientX - r.left;
+                    const y = e.clientY - r.top;
+                    const centerX = r.width / 2;
+                    const centerY = r.height / 2;
+                    const rotateX = -(y - centerY) / 8; // responsive tilt
+                    const rotateY = (x - centerX) / 8;
+                    title3D.style.transform = `perspective(600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(25px)`;
+                    title3D.style.textShadow = `
+                        ${-rotateY * 0.8}px ${-rotateX * 0.8}px 0 rgba(34, 211, 238, 0.45),
+                        ${-rotateY * 1.5}px ${-rotateX * 1.5}px 0 rgba(168, 85, 247, 0.35),
+                        ${-rotateY * 2.2}px ${-rotateX * 2.2}px 12px rgba(0, 0, 0, 0.5)
+                    `;
+                    title3D.style.transition = 'transform 0.08s ease-out, text-shadow 0.08s ease-out';
+                });
+                skillsHeader.addEventListener('mouseleave', () => {
+                    title3D.style.transform = '';
+                    title3D.style.textShadow = '';
+                    title3D.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), text-shadow 0.45s ease';
+                });
+            }
 
 
             // ================================================================
@@ -4949,298 +5567,99 @@
 
 
             // ================================================================
-            // HIGHLIGHTS — Horizontal 3D Cylinder Carousel
-            // Driven by a continuous rAF render loop (bank-card style).
-            // Mouse parallax tilt + touch swipe + dot navigation + auto-advance.
-            // !! EDIT: INTERVAL_MS for auto-advance speed !!
+            // HIGHLIGHTS 3D CAROUSEL
+            // Auto-advances every 4s. Pauses on hover. Clickable side cards
+            // and dots let you jump to any card. Description reveals on hover.
+            // !! EDIT: Change INTERVAL_MS for slower/faster auto-advance !!
             // ================================================================
-            const HL_INTERVAL_MS = 4000;
-            const HL_CARD_W_DESKTOP = 420;  // px, active card width on desktop
-            const HL_CARD_H_DESKTOP = 240;  // px, active card height on desktop
-            const HL_CARD_W_MOBILE  = 290;  // px, active card width on mobile (≤640px)
-            const HL_CARD_H_MOBILE  = 190;  // px, active card height on mobile
+            const INTERVAL_MS = 4000; // milliseconds between auto-advances
 
-            const hlStage = document.getElementById('hlStage');
-            const hlScene = document.getElementById('hlScene');
             const hlCards = Array.from(document.querySelectorAll('.hl-card'));
-            const hlDots  = Array.from(document.querySelectorAll('.hl-dot'));
-            const HL_TOTAL = hlCards.length;
+            const hlDots = Array.from(document.querySelectorAll('.hl-dot'));
+            const hlStage = document.getElementById('hlStage');
+            const TOTAL = hlCards.length;
+            let hlIndex = 0; // currently active card index
+            let hlTimer = null;
 
-            // Continuous progress (fractional index, advances each frame)
-            let hlProgress = 0;
-            // Target integer index (jumps on click/swipe)
-            let hlTargetIndex = 0;
-            // Running rAF id
-            let hlRafId = 0;
-            // Auto-advance timer
-            let hlAutoTimer = null;
-            // Is auto-advance paused (hover/drag)
-            let hlPaused = false;
-
-            // Mouse state for parallax tilt on active card
-            const hlMouse = { x: 0, y: 0, tx: 0, ty: 0, inside: false };
-
-            // Touch drag state
-            let hlTouchStartX = 0;
-            let hlTouchStartY = 0;
-            let hlIsDragging = false;
-            let hlDragDelta = 0;
-
-            // Card dimensions (updated on resize)
-            let hlCardW = HL_CARD_W_DESKTOP;
-            let hlCardH = HL_CARD_H_DESKTOP;
-
-            // Update card + scene dimensions based on viewport
-            function hlUpdateDimensions() {
-                const isMobile = window.innerWidth <= 640;
-                hlCardW = isMobile ? HL_CARD_W_MOBILE  : HL_CARD_W_DESKTOP;
-                hlCardH = isMobile ? HL_CARD_H_MOBILE  : HL_CARD_H_DESKTOP;
-
-                if (hlScene) {
-                    hlScene.style.width  = hlCardW + 'px';
-                    hlScene.style.height = hlCardH + 'px';
-                    hlScene.style.transformStyle = 'preserve-3d';
-                }
-                hlCards.forEach(card => {
-                    card.style.width  = hlCardW + 'px';
-                    card.style.height = hlCardH + 'px';
-                });
-            }
-
-            // Sync nav dots to the rounded active index
-            function hlSyncDots(idx) {
-                hlDots.forEach((dot, i) => {
-                    dot.classList.toggle('hl-dot-active', i === idx);
-                });
-            }
-
-            // Mark the visually centered card with .hl-is-active
-            function hlMarkActive(idx) {
+            // Apply position classes based on current active index
+            function hlUpdate() {
                 hlCards.forEach((card, i) => {
-                    card.classList.toggle('hl-is-active', i === idx);
-                });
-            }
+                    // Remove all state classes
+                    card.classList.remove('hl-active', 'hl-prev', 'hl-next', 'hl-hidden');
 
-            // rAF render loop
-            function hlRender() {
-                // Smoothly advance progress toward target
-                const diff = hlTargetIndex - hlProgress;
-                hlProgress += diff * 0.08;
-                if (Math.abs(diff) < 0.001) hlProgress = hlTargetIndex;
-
-                // Smooth mouse inertia
-                hlMouse.x += (hlMouse.tx - hlMouse.x) * 0.08;
-                hlMouse.y += (hlMouse.ty - hlMouse.y) * 0.08;
-
-                const D = 1200; // perspective distance
-                const stageW = hlStage ? hlStage.offsetWidth : window.innerWidth;
-                const peekPx = 40; // how many px of side card peek at screen edge
-                const gap    = 30; // gap between center and adjacent card edge (px)
-
-                const roundedIdx = Math.round(hlProgress);
-                hlMarkActive(((roundedIdx % HL_TOTAL) + HL_TOTAL) % HL_TOTAL);
-                hlSyncDots(((roundedIdx % HL_TOTAL) + HL_TOTAL) % HL_TOTAL);
-
-                hlCards.forEach((card, i) => {
-                    // Solve circular offset in [-TOTAL/2, TOTAL/2]
-                    let offset = i - hlProgress;
-                    const half = HL_TOTAL / 2;
-                    while (offset >  half) offset -= HL_TOTAL;
-                    while (offset < -half) offset += HL_TOTAL;
-
-                    const absOff = Math.abs(offset);
-                    const sign   = offset < 0 ? -1 : (offset > 0 ? 1 : 0);
-
-                    // Hide cards beyond 2.5 offsets
-                    if (absOff > 2.5) {
-                        card.style.visibility = 'hidden';
-                        return;
-                    }
-                    card.style.visibility = 'visible';
-
-                    let x = 0, z = 0, rotY = 0, rotX = 0, opac = 1;
-
-                    if (absOff <= 1) {
-                        // Center ↔ adjacent: smoothstep
-                        const t = absOff;
-                        const e = t * t * (3 - 2 * t);
-                        // x: from 0 to half-width + gap (so card edges just touch)
-                        const xTarget = hlCardW / 2 + hlCardW / 2 + gap;
-                        x    =  sign * e * xTarget;
-                        z    =  200 * (1 - e) + 60 * e;       // 200 → 60
-                        rotY =  sign * e * 18;                 // 0 → ±18 deg
-                        opac =  1 * (1 - e) + 0.40 * e;       // 1 → 0.40
-                    } else if (absOff <= 2) {
-                        // Adjacent ↔ edge peek: smoothstep
-                        const t = absOff - 1;
-                        const e = t * t * (3 - 2 * t);
-
-                        const xStart = hlCardW / 2 + hlCardW / 2 + gap;
-                        // x-end: right at stage edge minus peekPx so we see a sliver
-                        const sEnd = D / (D - (-80));
-                        const xEnd = (stageW / 2 - peekPx) / sEnd;
-
-                        x    =  sign * (xStart + e * (xEnd - xStart));
-                        z    =  60  * (1 - e) + (-80) * e;    // 60 → -80
-                        rotY =  sign * (18 + e * (35 - 18));   // 18 → 35 deg
-                        opac =  0.40 * (1 - e) + 0.10 * e;    // 0.40 → 0.10
+                    if (i === hlIndex) {
+                        card.classList.add('hl-active');
+                    } else if (i === (hlIndex - 1 + TOTAL) % TOTAL) {
+                        card.classList.add('hl-prev');   // Left side
+                    } else if (i === (hlIndex + 1) % TOTAL) {
+                        card.classList.add('hl-next');   // Right side
                     } else {
-                        // Beyond edge: smoothly vanish off-screen
-                        const t = Math.min(absOff - 2, 1);
-                        const e = t * t * (3 - 2 * t);
-
-                        const sEnd2 = D / (D - (-80));
-                        const xEdge = (stageW / 2 - peekPx) / sEnd2;
-                        const xOff  = stageW / 2 + hlCardW;
-
-                        x    =  sign * (xEdge + e * (xOff - xEdge));
-                        z    =  -80  + e * (-200 - (-80));     // -80 → -200
-                        rotY =  sign * 40;
-                        opac =  0.10 * (1 - e);
+                        card.classList.add('hl-hidden'); // Far behind
                     }
-
-                    // Mouse-driven tilt only on the active (center) card
-                    const centerFactor = Math.max(0, 1 - absOff);
-                    rotX = -hlMouse.y * 10 * centerFactor;
-                    rotY += hlMouse.x * 8 * centerFactor;
-
-                    // Depth sorting
-                    card.style.zIndex = Math.round(z + 300).toString();
-                    card.style.opacity = opac.toFixed(3);
-                    card.style.transform = [
-                        `translateX(${x.toFixed(2)}px)`,
-                        `translateZ(${z.toFixed(2)}px)`,
-                        `rotateY(${rotY.toFixed(2)}deg)`,
-                        `rotateX(${rotX.toFixed(2)}deg)`
-                    ].join(' ');
                 });
 
-                hlRafId = requestAnimationFrame(hlRender);
+                // Sync dot states
+                hlDots.forEach((dot, i) => {
+                    dot.classList.toggle('hl-dot-active', i === hlIndex);
+                });
             }
 
-            // Navigate to a specific integer index (wraps)
-            function hlGoTo(idx) {
-                // Choose the shortest circular path
-                let delta = idx - hlTargetIndex;
-                // Normalize delta into [-TOTAL/2, TOTAL/2]
-                while (delta >  HL_TOTAL / 2) delta -= HL_TOTAL;
-                while (delta < -HL_TOTAL / 2) delta += HL_TOTAL;
-                hlTargetIndex += delta;
-                hlSyncDots(((idx % HL_TOTAL) + HL_TOTAL) % HL_TOTAL);
-            }
-
-            // Advance by +1
+            // Advance to the next card
             function hlNext() {
-                hlGoTo(hlTargetIndex + 1);
+                hlIndex = (hlIndex + 1) % TOTAL;
+                hlUpdate();
             }
 
-            // Start auto-advance
-            function hlAutoStart() {
-                if (hlAutoTimer) clearInterval(hlAutoTimer);
-                hlAutoTimer = setInterval(() => {
-                    if (!hlPaused) hlNext();
-                }, HL_INTERVAL_MS);
+            // Jump to a specific card index
+            function hlGoTo(i) {
+                hlIndex = i;
+                hlUpdate();
             }
 
-            // Stop auto-advance
-            function hlAutoStop() {
-                clearInterval(hlAutoTimer);
-                hlAutoTimer = null;
+            // Start auto-advance timer
+            function hlStart() {
+                if (hlTimer) clearInterval(hlTimer);
+                hlTimer = setInterval(hlNext, INTERVAL_MS);
             }
 
-            // Restart auto-advance (reset timer after manual navigation)
-            function hlAutoRestart() {
-                hlAutoStop();
-                hlAutoStart();
+            // Stop auto-advance timer
+            function hlStop() {
+                clearInterval(hlTimer);
+                hlTimer = null;
             }
 
-            // === MOUSE (parallax tilt) ===
-            if (hlStage) {
-                hlStage.addEventListener('mousemove', e => {
-                    const r = hlStage.getBoundingClientRect();
-                    hlMouse.tx = ((e.clientX - r.left) / r.width  - 0.5) * 2;  // -1 to 1
-                    hlMouse.ty = ((e.clientY - r.top)  / r.height - 0.5) * 2;
-                    hlMouse.inside = true;
-                });
-                hlStage.addEventListener('mouseleave', () => {
-                    hlMouse.tx = 0;
-                    hlMouse.ty = 0;
-                    hlMouse.inside = false;
-                    hlPaused = false;
-                });
-                hlStage.addEventListener('mouseenter', () => {
-                    hlPaused = true; // pause auto-advance while hovering
-                });
-            }
-
-            // === CLICK on side cards ===
+            // Clicking a side card brings it to the front
             hlCards.forEach((card, i) => {
                 card.addEventListener('click', () => {
-                    const currentActive = ((Math.round(hlTargetIndex) % HL_TOTAL) + HL_TOTAL) % HL_TOTAL;
-                    if (i !== currentActive) {
-                        // Compute direction-aware target
-                        let delta = i - currentActive;
-                        while (delta >  HL_TOTAL / 2) delta -= HL_TOTAL;
-                        while (delta < -HL_TOTAL / 2) delta += HL_TOTAL;
-                        hlTargetIndex += delta;
-                        hlAutoRestart();
+                    if (i !== hlIndex) {
+                        hlGoTo(i);
+                        hlStop();
+                        hlStart(); // reset timer after manual click
                     }
                 });
             });
 
-            // === DOT navigation ===
+            // Clicking a dot jumps to that card
             hlDots.forEach((dot, i) => {
                 dot.addEventListener('click', () => {
                     hlGoTo(i);
-                    hlAutoRestart();
+                    hlStop();
+                    hlStart();
                 });
             });
 
-            // === TOUCH swipe ===
+            // Pause on hover, resume on leave
             if (hlStage) {
-                hlStage.addEventListener('touchstart', e => {
-                    hlTouchStartX = e.touches[0].clientX;
-                    hlTouchStartY = e.touches[0].clientY;
-                    hlIsDragging  = false;
-                    hlDragDelta   = 0;
-                    hlPaused      = true;
-                }, { passive: true });
-
-                hlStage.addEventListener('touchmove', e => {
-                    const dx = e.touches[0].clientX - hlTouchStartX;
-                    const dy = e.touches[0].clientY - hlTouchStartY;
-                    if (!hlIsDragging && Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 6) {
-                        hlIsDragging = true;
-                        hlStage.classList.add('is-dragging');
-                    }
-                    if (hlIsDragging) {
-                        hlDragDelta = dx;
-                        // Live-drag: shift progress by fraction of card width
-                        hlTargetIndex = Math.round(hlTargetIndex) - (dx / hlCardW);
-                    }
-                }, { passive: true });
-
-                hlStage.addEventListener('touchend', () => {
-                    if (hlIsDragging) {
-                        // Snap to nearest integer if dragged far enough; else return to original
-                        const snapped = Math.round(hlTargetIndex);
-                        hlTargetIndex = snapped;
-                    }
-                    hlIsDragging = false;
-                    hlDragDelta  = 0;
-                    hlPaused     = false;
-                    hlStage.classList.remove('is-dragging');
-                    hlAutoRestart();
-                }, { passive: true });
+                hlStage.addEventListener('mouseenter', hlStop);
+                hlStage.addEventListener('mouseleave', hlStart);
+                // Touch equivalents for mobile
+                hlStage.addEventListener('touchstart', hlStop, { passive: true });
+                hlStage.addEventListener('touchend', hlStart, { passive: true });
             }
 
-            // === RESIZE ===
-            window.addEventListener('resize', hlUpdateDimensions);
-
-            // Init
-            hlUpdateDimensions();
-            hlRender();         // start rAF loop
-            hlAutoStart();      // start auto-advance
+            // Initialize the carousel
+            hlUpdate();
+            hlStart();
 
 
             // ================================================================
@@ -5477,12 +5896,130 @@
             courseUpdate();
             window.addEventListener('resize', courseUpdate);
 
-        });
-        /* ============================================================
-   ABOUT SECTION TOGGLE
-   Switches between 'The Builder' and 'The Human' bios
-============================================================ */
+            // ============================================================
+            // DYNAMIC CHARACTER REVEAL & SCROLL PARALLAX FOR ABOUT SECTION
+            // ============================================================
 
+            // Recursive helper to split text nodes into individual chars wrapped in spans
+            function splitTextIntoSpans(node) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    const text = node.nodeValue;
+                    const fragment = document.createDocumentFragment();
+                    for (let i = 0; i < text.length; i++) {
+                        const span = document.createElement('span');
+                        span.className = 'char';
+                        span.textContent = text[i];
+                        fragment.appendChild(span);
+                    }
+                    node.parentNode.replaceChild(fragment, node);
+                } else if (node.nodeType === Node.ELEMENT_NODE) {
+                    // Recurse to preserve strong and other formatted sub-tags
+                    const children = Array.from(node.childNodes);
+                    children.forEach(child => splitTextIntoSpans(child));
+                }
+            }
+
+            const bioBuilder = document.getElementById('bio-builder');
+            const bioHuman = document.getElementById('bio-human');
+            if (bioBuilder) splitTextIntoSpans(bioBuilder);
+            if (bioHuman) splitTextIntoSpans(bioHuman);
+
+            const aboutSection = document.getElementById('about');
+            const aboutAssets = Array.from(document.querySelectorAll('.about-asset-wrapper'));
+
+            // Floating configurations for 4 corner elements:
+            // Top-Left: Crescent Moon. Floats down and rotates clockwise.
+            // Top-Right: Lego Block. Floats up and rotates counter-clockwise.
+            // Bottom-Left: Smiley Face. Floats down and rotates counter-clockwise.
+            // Bottom-Right: Cursor Arrow. Floats up and rotates clockwise.
+            const parallaxConfig = [
+                { yStart: 45, yEnd: -45, rStart: -30, rEnd: 45 },  // Top-Left (Moon)
+                { yStart: -35, yEnd: 35, rStart: 35, rEnd: -30 }, // Top-Right (Lego)
+                { yStart: 50, yEnd: -50, rStart: 40, rEnd: -25 }, // Bottom-Left (Smiley)
+                { yStart: -40, yEnd: 40, rStart: -25, rEnd: 55 }   // Bottom-Right (Cursor)
+            ];
+
+            function updateAboutScrollEffects() {
+                if (!aboutSection) return;
+
+                const rect = aboutSection.getBoundingClientRect();
+                const viewH = window.innerHeight;
+
+                // ---- SCROLL PROGRESS FOR PARALLAX ----
+                // Scroll starts when section top is at viewport bottom, ends when section bottom is at viewport top
+                const startParallax = viewH;
+                const endParallax = -rect.height;
+                let pRatio = (startParallax - rect.top) / (startParallax - endParallax);
+                pRatio = Math.max(0, Math.min(1, pRatio));
+
+                // Apply translation and rotation to assets
+                aboutAssets.forEach((asset, idx) => {
+                    const config = parallaxConfig[idx] || { yStart: 0, yEnd: 0, rStart: -30, rEnd: 55 };
+                    const yOffset = config.yStart + pRatio * (config.yEnd - config.yStart);
+                    const rOffset = config.rStart + pRatio * (config.rEnd - config.rStart);
+                    asset.style.transform = `translate3d(0, ${yOffset}px, 0) rotate(${rOffset}deg)`;
+                });
+
+                // ---- SCROLL PROGRESS FOR TEXT REVEAL ----
+                // Starts when top is at 85% down viewport, completes when top is at 20% down viewport
+                const startReveal = viewH * 0.85;
+                const endReveal = viewH * 0.20;
+                let rRatio = (startReveal - rect.top) / (startReveal - endReveal);
+                rRatio = Math.max(0, Math.min(1, rRatio));
+
+                // Apply progressive character reveal to the currently active bio container
+                const activeBio = document.querySelector('.about-content.active-bio');
+                if (activeBio) {
+                    const chars = activeBio.querySelectorAll('.char');
+                    const totalChars = chars.length;
+
+                    // Slightly faster to complete reveal before section hits the absolute scroll limit
+                    const revealProgress = rRatio * 1.25;
+
+                    chars.forEach((char, index) => {
+                        const charStart = (index / totalChars) * 0.8;
+                        const charProgress = (revealProgress - charStart) / 0.2; // 20% span to fade
+                        const progress = Math.max(0, Math.min(1, charProgress));
+
+                        const isLead = char.closest('.about-lead') !== null;
+                        const isWhiteReveal = char.closest('.white-reveal') !== null;
+
+                        if (isLead || isWhiteReveal) {
+                            // Lead or White-reveal: Opacity transitions from 0.2 to 1.0, Color transitions from dark grey to white #ffffff
+                            const opacity = 0.2 + progress * 0.8;
+                            char.style.opacity = opacity;
+
+                            const r = Math.round(110 + progress * (255 - 110));
+                            const g = Math.round(122 + progress * (255 - 122));
+                            const b = Math.round(130 + progress * (255 - 130));
+                            char.style.color = `rgb(${r}, ${g}, ${b})`;
+                        } else {
+                            // Sub: Opacity transitions from 0.2 to 0.55, Color transitions from dark grey to #D7E2EA
+                            const opacity = 0.2 + progress * 0.35;
+                            char.style.opacity = opacity;
+
+                            const r = Math.round(110 + progress * (215 - 110));
+                            const g = Math.round(122 + progress * (226 - 122));
+                            const b = Math.round(130 + progress * (234 - 130));
+                            char.style.color = `rgb(${r}, ${g}, ${b})`;
+                        }
+                    });
+                }
+            }
+
+            // Expose function to global scope so global toggleAbout can invoke it
+            window.updateAboutScrollEffects = updateAboutScrollEffects;
+
+            // Bind events
+            window.addEventListener('scroll', updateAboutScrollEffects, { passive: true });
+            updateAboutScrollEffects(); // run once immediately
+
+        });
+
+        /* ============================================================
+           ABOUT SECTION TOGGLE
+           Switches between 'The Builder' and 'The Human' bios
+           ============================================================ */
         function toggleAbout(section) {
             const tabsWrapper = document.getElementById('aboutTabs');
             const indicator = document.getElementById('tabIndicator');
@@ -5524,6 +6061,11 @@
                 builderContent.classList.replace('active-bio', 'hidden-bio');
                 humanContent.classList.replace('hidden-bio', 'active-bio');
             }
+
+            // Re-trigger layout character reveal instantly for newly exposed content
+            if (typeof window.updateAboutScrollEffects === 'function') {
+                window.updateAboutScrollEffects();
+            }
         }
 
         // Initialise indicator position on load (no transition on first paint)
@@ -5543,7 +6085,7 @@
                 // Re-enable transition after the first frame is committed
                 requestAnimationFrame(() => { ind.style.transition = ''; });
             });
-        })();// end DOMContentLoaded
+        })();
     </script>
 
 </body>
