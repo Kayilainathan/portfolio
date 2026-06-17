@@ -306,7 +306,7 @@ export default function BlueprintSlider() {
                             strokeWidth="1.5"
                             className="transition-all duration-300"
                           />
-                          <text x="100" y="44" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">L1</text>
+                          <text x="100" y="44" fill={activeProject.accentColor} fillOpacity="0.9" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">L1</text>
                         </g>
 
                         {/* LEG B (Bottom Left) */}
@@ -325,7 +325,7 @@ export default function BlueprintSlider() {
                             strokeWidth="1.5"
                             className="transition-all duration-300"
                           />
-                          <text x="63" y="103" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="end" fontWeight="bold">L2</text>
+                          <text x="63" y="103" fill={activeProject.accentColor} fillOpacity="0.9" fontSize="5" fontFamily="monospace" textAnchor="end" fontWeight="bold">L2</text>
                         </g>
 
                         {/* LEG C (Bottom Right) */}
@@ -344,7 +344,7 @@ export default function BlueprintSlider() {
                             strokeWidth="1.5"
                             className="transition-all duration-300"
                           />
-                          <text x="137" y="103" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="start" fontWeight="bold">L3</text>
+                          <text x="137" y="103" fill="#f43f5e" fillOpacity="0.9" fontSize="5" fontFamily="monospace" textAnchor="start" fontWeight="bold">L3</text>
                         </g>
 
                         {/* Core active receiver */}
@@ -376,7 +376,7 @@ export default function BlueprintSlider() {
                             strokeOpacity={hoveredNode === "soil" ? 0.8 : 0.3}
                             className="transition-all duration-300"
                           />
-                          <text x="100" y="58" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">TOP SOIL LAYER</text>
+                          <text x="100" y="58" fill={activeProject.accentColor} fillOpacity="0.85" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">TOP SOIL LAYER</text>
                         </g>
 
                         {/* AQUIFER FILTER Layer */}
@@ -411,7 +411,7 @@ export default function BlueprintSlider() {
                             strokeWidth="1.2"
                             className="transition-all duration-300"
                           />
-                          <text x="100" y="80" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">AQUIFER VEIN</text>
+                          <text x="100" y="80" fill={activeProject.accentColor} fillOpacity="0.85" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">AQUIFER VEIN</text>
                         </g>
 
                         {/* BEDROCK Layer */}
@@ -431,7 +431,7 @@ export default function BlueprintSlider() {
                             strokeOpacity={hoveredNode === "bedrock" ? 0.8 : 0.3}
                             className="transition-all duration-300"
                           />
-                          <text x="100" y="114" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">BEDROCK BASE</text>
+                          <text x="100" y="114" fill={activeProject.accentColor} fillOpacity="0.85" fontSize="5" fontFamily="monospace" textAnchor="middle" fontWeight="bold">BEDROCK BASE</text>
                         </g>
                       </g>
                     )}
@@ -442,7 +442,7 @@ export default function BlueprintSlider() {
                         {/* Microcontroller core body */}
                         <rect x="65" y="55" width="70" height="60" rx="4" fill="rgba(253, 224, 71, 0.02)" stroke="currentColor" strokeWidth="1.2" strokeOpacity="0.7" />
                         <rect x="73" y="63" width="54" height="44" rx="2" fill="none" stroke="currentColor" strokeOpacity="0.2" strokeDasharray="2 1" />
-                        <text x="100" y="88" fill="#ffffff" stroke="none" fontSize="7" fontFamily="monospace" textAnchor="middle" fontWeight="bold">MCU-CORE</text>
+                        <text x="100" y="88" fill="currentColor" fillOpacity="0.4" stroke="none" fontSize="7" fontFamily="monospace" textAnchor="middle" fontWeight="bold">MCU-CORE</text>
 
                         {/* Pin CLK */}
                         <g 
@@ -452,7 +452,7 @@ export default function BlueprintSlider() {
                         >
                           <line x1="50" y1="65" x2="65" y2="65" stroke="currentColor" strokeWidth={hoveredNode === "clk" ? 2 : 1.2} />
                           <circle cx="48" cy="65" r={hoveredNode === "clk" ? 3.5 : 2.5} fill={hoveredNode === "clk" ? "var(--color-accent)" : "#070913"} stroke="currentColor" strokeWidth="1" />
-                          <text x="40" y="67" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="end" fontWeight="bold">CLK</text>
+                          <text x="40" y="67" fill={activeProject.accentColor} fillOpacity="0.9" fontSize="5" fontFamily="monospace" textAnchor="end" fontWeight="bold">CLK</text>
                         </g>
 
                         {/* Pin TX */}
@@ -463,7 +463,7 @@ export default function BlueprintSlider() {
                         >
                           <line x1="50" y1="85" x2="65" y2="85" stroke="currentColor" strokeWidth={hoveredNode === "tx" ? 2 : 1.2} />
                           <circle cx="48" cy="85" r={hoveredNode === "tx" ? 3.5 : 2.5} fill={hoveredNode === "tx" ? "var(--color-accent)" : "#070913"} stroke="currentColor" strokeWidth="1" />
-                          <text x="40" y="87" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="end" fontWeight="bold">TX</text>
+                          <text x="40" y="87" fill={activeProject.accentColor} fillOpacity="0.9" fontSize="5" fontFamily="monospace" textAnchor="end" fontWeight="bold">TX</text>
                         </g>
 
                         {/* Pin RX */}
@@ -474,7 +474,7 @@ export default function BlueprintSlider() {
                         >
                           <line x1="135" y1="65" x2="150" y2="65" stroke="currentColor" strokeWidth={hoveredNode === "rx" ? 2 : 1.2} />
                           <circle cx="150" cy="65" r={hoveredNode === "rx" ? 3.5 : 2.5} fill={hoveredNode === "rx" ? "var(--color-accent)" : "#070913"} stroke="currentColor" strokeWidth="1" />
-                          <text x="157" y="67" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="start" fontWeight="bold">RX</text>
+                          <text x="157" y="67" fill={activeProject.accentColor} fillOpacity="0.9" fontSize="5" fontFamily="monospace" textAnchor="start" fontWeight="bold">RX</text>
                         </g>
 
                         {/* Pin VCC */}
@@ -485,7 +485,7 @@ export default function BlueprintSlider() {
                         >
                           <line x1="135" y1="85" x2="150" y2="85" stroke="currentColor" strokeWidth={hoveredNode === "vcc" ? 2 : 1.2} />
                           <circle cx="150" cy="85" r={hoveredNode === "vcc" ? 3.5 : 2.5} fill={hoveredNode === "vcc" ? "var(--color-accent)" : "#070913"} stroke="currentColor" strokeWidth="1" />
-                          <text x="157" y="87" fill="#ffffff" fontSize="5" fontFamily="monospace" textAnchor="start" fontWeight="bold">VCC</text>
+                          <text x="157" y="87" fill={activeProject.accentColor} fillOpacity="0.9" fontSize="5" fontFamily="monospace" textAnchor="start" fontWeight="bold">VCC</text>
                         </g>
                       </g>
                     )}
@@ -529,16 +529,37 @@ export default function BlueprintSlider() {
                       height="25" 
                       rx="4" 
                       fill="#040711" 
-                      stroke="currentColor" 
+                      stroke={
+                        hoveredNode
+                          ? (activeProject.id === "01" && hoveredNode === "C"
+                              ? "#f43f5e"
+                              : activeProject.id === "01" && hoveredNode === "B"
+                              ? "#f59e0b"
+                              : activeProject.id === "02" && hoveredNode === "bedrock"
+                              ? "#f43f5e"
+                              : activeProject.accentColor)
+                          : "currentColor"
+                      }
                       strokeWidth="1.2" 
-                      strokeOpacity="0.16" 
+                      strokeOpacity={hoveredNode ? 0.8 : 0.16}
+                      style={{ transition: "stroke 0.3s ease, stroke-width 0.3s ease, stroke-opacity 0.3s ease" }}
                     />
                     
                     {/* Console dynamic scrolling status text */}
                     <text 
                       x="100" 
                       y="170" 
-                      fill="#ffffff" 
+                      fill={
+                        hoveredNode
+                          ? (activeProject.id === "01" && hoveredNode === "C"
+                              ? "#f43f5e"
+                              : activeProject.id === "01" && hoveredNode === "B"
+                              ? "#f59e0b"
+                              : activeProject.id === "02" && hoveredNode === "bedrock"
+                              ? "#f43f5e"
+                              : activeProject.accentColor)
+                          : activeProject.accentColor
+                      }
                       fontSize="5.2" 
                       fontFamily="monospace" 
                       textAnchor="middle" 
