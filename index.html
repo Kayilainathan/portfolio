@@ -7,6 +7,7 @@
 
     <!-- !! EDIT: Page title shown in browser tab !! -->
     <title>Kayilainathan J — Portfolio</title>
+    <link rel="icon" type="image/png" href="img/favicon.png">
 
     <!-- SEO meta description -->
     <meta name="description"
@@ -1788,6 +1789,9 @@
             -webkit-mask:
                 linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
+            mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             opacity: 0.55;
@@ -1920,6 +1924,9 @@
             background: linear-gradient(90deg, var(--accent), var(--purple), var(--accent));
             background-size: 200% auto;
             -webkit-mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
+            mask:
                 linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
@@ -2993,6 +3000,9 @@
             -webkit-mask:
                 linear-gradient(#fff 0 0) content-box,
                 linear-gradient(#fff 0 0);
+            mask:
+                linear-gradient(#fff 0 0) content-box,
+                linear-gradient(#fff 0 0);
             -webkit-mask-composite: xor;
             mask-composite: exclude;
             opacity: 0;
@@ -3615,9 +3625,14 @@
             transform: scale(1.06);
         }
 
-        .proj-arrow-btn:active {
-            transform: scale(0.95);
-            box-shadow: 0 0 8px var(--active-accent, var(--card-accent));
+        .proj-arrow-btn:active,
+        .proj-arrow-btn.taptic-active {
+            transform: scale(0.85) !important;
+            border-color: var(--active-accent, var(--card-accent)) !important;
+            box-shadow: 0 0 16px var(--active-accent, var(--card-accent)) !important;
+            background: rgba(34, 211, 238, 0.12) !important;
+            color: var(--active-accent, var(--card-accent)) !important;
+            transition: all 0.05s ease !important;
         }
 
         .proj-arrow-btn:focus,
@@ -4847,6 +4862,12 @@
                 --section-gap: 90px;
             }
 
+            html, body {
+                overflow-x: hidden !important;
+                width: 100% !important;
+                max-width: 100% !important;
+            }
+
             .container {
                 padding: 0 18px;
             }
@@ -4966,19 +4987,9 @@
                 margin-bottom: 32px;
             }
 
-            /* Glassmorphic App Bar & Logo/Toggle alignment */
+            /* Hide mobile-app-bar block completely so only K and Toggle float independently */
             .mobile-app-bar {
-                display: block !important;
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: 64px;
-                background: rgba(6, 6, 8, 0.45);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-                z-index: 1000;
+                display: none !important;
             }
 
             #brand {
@@ -4987,7 +4998,7 @@
                 z-index: 1001 !important;
             }
 
-            /* Mobile Navigation sliding side drawer */
+            /* Mobile Navigation compact dropdown overlay */
             #nav {
                 position: fixed;
                 top: 0;
@@ -5006,13 +5017,14 @@
                 pointer-events: auto;
             }
 
+            /* Overlay has no blur and no dark block, but still catches clicks */
             .nav-overlay {
                 display: block !important;
                 position: absolute;
                 inset: 0;
-                background: rgba(4, 4, 6, 0.45);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
+                background: transparent !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
                 opacity: 0;
                 transition: opacity 0.4s ease;
                 pointer-events: none;
@@ -5024,125 +5036,81 @@
                 pointer-events: auto;
             }
 
+            /* Compact floating glass card dropdown positioned right below the toggle button */
             .nav-pill {
                 position: absolute;
-                top: 0;
-                right: 0;
-                bottom: 0;
-                width: min(300px, 75vw);
-                height: 100vh;
-                background: rgba(8, 8, 12, 0.96);
-                border: none !important;
-                border-left: 1px solid rgba(255, 255, 255, 0.06) !important;
-                border-radius: 0 !important;
-                backdrop-filter: blur(28px) !important;
-                -webkit-backdrop-filter: blur(28px) !important;
-                box-shadow: -10px 0 40px rgba(0, 0, 0, 0.75) !important;
+                top: 64px !important;
+                right: 16px !important;
+                bottom: auto !important;
+                width: 220px !important;
+                height: auto !important;
+                background: rgba(8, 8, 12, 0.95) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                border-radius: 20px !important;
+                backdrop-filter: blur(20px) !important;
+                -webkit-backdrop-filter: blur(20px) !important;
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6) !important;
                 display: flex;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: stretch;
-                gap: 0;
-                padding: 88px 24px 40px;
+                gap: 4px !important;
+                padding: 16px !important;
                 z-index: 999;
                 box-sizing: border-box;
 
-                /* Hidden state by default */
-                opacity: 1 !important;
-                transform: translateX(100%) !important;
-                transform-origin: right center;
-                transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
-                overflow-y: auto;
-                -webkit-overflow-scrolling: touch;
+                /* Hidden state: slides from top-right with scale spring */
+                opacity: 0 !important;
+                transform: translateY(-15px) scale(0.9) !important;
+                transform-origin: right top !important;
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
+                overflow: hidden !important;
                 max-width: none;
                 flex-wrap: nowrap;
             }
 
             #nav.open .nav-pill {
-                transform: translateX(0) !important;
+                opacity: 1 !important;
+                transform: translateY(0) scale(1) !important;
             }
 
-            /* Drawer Header & Footer custom adaptive styling */
+            /* Drawer Header & Footer are hidden to keep layout extremely clean & compact */
             .drawer-header {
-                display: flex !important;
-                flex-direction: column;
-                gap: 5px;
-                margin-bottom: 28px;
-                padding-bottom: 16px;
-                border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-                text-align: left;
+                display: none !important;
             }
 
             .drawer-title {
-                font-family: monospace;
-                font-size: 0.72rem;
-                font-weight: 700;
-                letter-spacing: 0.12em;
-                color: var(--accent);
+                display: none !important;
             }
 
             .drawer-status {
-                display: flex;
-                align-items: center;
-                gap: 6px;
-                font-size: 0.68rem;
-                color: var(--text-muted);
-                font-family: monospace;
+                display: none !important;
             }
 
             .drawer-status-dot {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: #00C9A7;
-                box-shadow: 0 0 8px #00C9A7;
+                display: none !important;
             }
 
             .drawer-footer {
-                display: flex !important;
-                gap: 12px;
-                margin-top: auto;
-                padding-top: 20px;
-                border-top: 1px solid rgba(255, 255, 255, 0.06);
-                justify-content: center;
+                display: none !important;
             }
 
             .drawer-social-btn {
-                width: 38px;
-                height: 38px;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.03);
-                border: 1px solid var(--border);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: var(--text-muted);
-                text-decoration: none;
-                font-family: monospace;
-                font-size: 0.74rem;
-                font-weight: 700;
-                transition: color 0.3s ease, border-color 0.3s ease, background 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                display: none !important;
             }
 
-            .drawer-social-btn:hover {
-                color: var(--accent);
-                border-color: var(--accent-border);
-                background: var(--accent-dim);
-                transform: scale(1.08);
-            }
-
-            /* Nav links styled as list items */
+            /* Nav links styled as list items with magnetic slide spring */
             .nav-link {
                 width: 100%;
                 text-align: left;
-                padding: 13px 16px;
-                font-size: 1.05rem;
+                padding: 10px 14px !important;
+                font-size: 0.92rem !important;
                 font-weight: 600;
                 color: var(--text-muted);
-                border-radius: 8px;
-                transition: color 0.3s ease, background 0.3s ease, transform 0.4s ease, padding-left 0.3s ease, opacity 0.4s ease;
+                border-radius: 10px;
+                transition: color 0.3s ease, background 0.3s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), padding-left 0.3s ease, opacity 0.4s ease;
                 opacity: 0;
-                transform: translateX(18px);
+                transform: translateY(-12px) scale(0.9) !important;
                 user-select: none;
                 cursor: pointer;
                 flex-shrink: 0;
@@ -5151,7 +5119,7 @@
 
             #nav.open .nav-link {
                 opacity: 1;
-                transform: translateX(0);
+                transform: translateY(0) scale(1) !important;
             }
 
             /* Staggered entry delays for drawer links */
@@ -5183,11 +5151,12 @@
                 transition-delay: 0.29s;
             }
 
+            /* Section highlighting uses the dynamic scroll variable color */
             .nav-link:hover,
             .nav-link.active {
-                color: var(--accent) !important;
-                background: var(--accent-dim) !important;
-                padding-left: 20px !important;
+                color: var(--toggle-accent, var(--accent)) !important;
+                background: rgba(255, 255, 255, 0.05) !important;
+                padding-left: 18px !important;
                 transform: none !important;
             }
 
@@ -5200,44 +5169,33 @@
                 display: none;
             }
 
-            /* Mobile Nav Toggle Button Styles */
+            /* Redesigned Mobile Nav Toggle Button Styles - Minimal 3-Line Design */
             .mobile-nav-toggle {
                 display: block !important;
                 position: fixed;
-                top: 22px;
-                right: 26px;
+                top: 11px !important;
+                right: 16px !important;
                 width: 42px;
                 height: 42px;
                 z-index: 1002;
-                background: transparent;
-                border: none;
-                outline: none;
+                background: transparent !important;
+                border: none !important;
+                outline: none !important;
                 cursor: pointer;
                 padding: 0;
                 user-select: none;
-                transition: transform 0.1s ease;
+                transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+                box-shadow: none !important;
             }
 
             .mobile-nav-toggle:active {
-                transform: scale(0.95);
+                transform: scale(0.9) !important;
             }
 
-            .toggle-bg {
-                position: absolute;
-                inset: 0;
-                border-radius: 50%;
-                background: rgba(255, 255, 255, 0.05);
-                border: 1px solid rgba(255, 255, 255, 0.05);
-                backdrop-filter: blur(12px);
-                -webkit-backdrop-filter: blur(12px);
-                transition: background 0.4s ease, border-color 0.4s ease, transform 0.4s var(--ease-spring);
-            }
-
-            .mobile-nav-toggle:hover .toggle-bg,
-            .mobile-nav-toggle.active .toggle-bg {
-                background: var(--accent-dim);
-                border-color: var(--accent-border);
-                transform: scale(1.05);
+            /* Hiding background circle and 3D liquid blobs completely */
+            .toggle-bg,
+            .blob {
+                display: none !important;
             }
 
             .toggle-svg {
@@ -5246,84 +5204,80 @@
                 width: 100%;
                 height: 100%;
                 overflow: visible;
+                transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             }
 
-            /* 3D Liquid blob animations */
-            .blob {
-                transform-origin: 25px 25px;
-                transform-box: view-box;
-                transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
-            }
-
-            .blob-main {
-                animation: blobPulse 5s ease-in-out infinite alternate;
-            }
-
-            .blob-sub-1 {
-                animation: blobOrbit1 7s linear infinite;
-            }
-
-            .blob-sub-2 {
-                animation: blobOrbit2 10s linear infinite;
-            }
-
-            @keyframes blobPulse {
-                0% {
-                    transform: scale(1);
-                }
-
-                100% {
-                    transform: scale(1.06);
-                }
-            }
-
-            @keyframes blobOrbit1 {
-                0% {
-                    transform: rotate(0deg) translate(2.5px) rotate(0deg);
-                }
-
-                100% {
-                    transform: rotate(360deg) translate(2.5px) rotate(-360deg);
-                }
-            }
-
-            @keyframes blobOrbit2 {
-                0% {
-                    transform: rotate(360deg) translate(-3px) rotate(-360deg);
-                }
-
-                100% {
-                    transform: rotate(0deg) translate(-3px) rotate(0deg);
-                }
-            }
-
-            /* Hamburger morph lines */
+            /* Hamburger lines styled with high contrast to background */
             .line {
-                stroke: var(--text-muted);
-                transition: stroke 0.4s ease, transform 0.4s var(--ease-spring), opacity 0.3s ease;
+                stroke: #ffffff !important; /* High-contrast white */
+                stroke-width: 2.8 !important;
+                transition: stroke 0.4s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, filter 0.4s ease;
                 transform-origin: 25px 25px;
                 transform-box: view-box;
             }
 
-            .mobile-nav-toggle:hover .line {
-                stroke: var(--text);
-            }
-
+            .mobile-nav-toggle:hover .line,
             .mobile-nav-toggle.active .line {
-                stroke: var(--accent);
+                stroke: var(--toggle-accent, #00ffb7) !important;
+                filter: drop-shadow(0 0 5px var(--toggle-accent, #00ffb7));
             }
 
+            /* Line animation: top and bottom form a cross (X); middle line moves left and dissolves into section title */
             .mobile-nav-toggle.active .top-line {
-                transform: translateY(7px) rotate(45deg);
-            }
-
-            .mobile-nav-toggle.active .mid-line {
-                transform: scaleX(0);
-                opacity: 0;
+                transform: translateY(8px) rotate(45deg) !important;
             }
 
             .mobile-nav-toggle.active .bot-line {
-                transform: translateY(-7px) rotate(-45deg);
+                transform: translateY(-8px) rotate(-45deg) !important;
+            }
+
+            .mobile-nav-toggle.active .mid-line {
+                transform: translateX(-40px) scaleX(0.1) !important; /* Move left and dissolve into section title text */
+                opacity: 0 !important;
+            }
+
+            /* Dynamic floating section title breadcrumb styling */
+            .mobile-section-title {
+                display: none;
+            }
+            @media (max-width: 768px) {
+                .mobile-section-title {
+                    display: block !important;
+                    position: fixed;
+                    top: 23px !important;
+                    right: 62px !important;
+                    font-family: monospace;
+                    font-size: 0.76rem;
+                    font-weight: 700;
+                    letter-spacing: 0.15em;
+                    color: #ffffff;
+                    text-transform: uppercase;
+                    z-index: 1001;
+                    pointer-events: none;
+                    transition: color 0.4s ease, opacity 0.4s ease, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+                    text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+                }
+
+                #nav.open ~ .mobile-section-title {
+                    color: var(--toggle-accent, #00ffb7) !important;
+                    filter: drop-shadow(0 0 4px var(--toggle-accent, #00ffb7));
+                    transform: scale(1.05);
+                }
+            }
+
+            /* Increase project arrow touch targets and layer priority on mobile viewports */
+            .proj-header-container {
+                position: relative !important;
+                z-index: 100 !important;
+            }
+            .proj-header-controls {
+                position: relative !important;
+                z-index: 101 !important;
+            }
+            .proj-arrow-btn {
+                width: 42px !important;
+                height: 42px !important;
+                pointer-events: auto !important;
             }
 
             /* Scroll nudge: position absolutely at the bottom of the hero section on mobile
@@ -5400,15 +5354,68 @@
             .proj-card-wrap {
                 width: min(330px, 90vw) !important;
                 height: 520px !important;
-                transform: translate3d(-50%, 6px, 0) scale(0.97) !important;
+                transform: translate3d(-50%, 6px, 0) !important;
             }
 
             .proj-card-wrap.active {
-                transform: translate3d(-50%, 0, 0) scale(1) !important;
+                transform: translate3d(-50%, 0, 0) !important;
             }
 
             .proj-card-wrap.active:hover {
-                transform: translate3d(-50%, -4px, 0) scale(1.012) !important;
+                transform: translate3d(-50%, -4px, 0) !important;
+            }
+
+            /* Minimal & aesthetic projects progress bar on mobile, positioned next to the header title */
+            .proj-header-container > div {
+                display: contents !important;
+            }
+
+            .proj-header-container {
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                gap: 10px !important;
+                width: min(330px, 90vw) !important;
+                margin: 0 auto 24px !important;
+                padding: 0 !important;
+                box-sizing: border-box !important;
+            }
+
+            .proj-pagination {
+                display: inline-flex !important;
+                align-items: center !important;
+                gap: 8px !important;
+                z-index: 100 !important;
+                background: rgba(255, 255, 255, 0.03) !important;
+                border: 1px solid rgba(255, 255, 255, 0.08) !important;
+                border-radius: 99px !important;
+                padding: 4px 10px !important;
+                backdrop-filter: blur(10px) !important;
+                -webkit-backdrop-filter: blur(10px) !important;
+                font-size: 0.7rem !important;
+                color: rgba(255, 255, 255, 0.4) !important;
+                font-family: 'Inter', monospace !important;
+                letter-spacing: 0.06em !important;
+                transform: translateY(-2px) !important; /* raised slightly to align with the large title */
+                margin: 0 !important;
+            }
+
+            .proj-pagination-num-active {
+                font-size: 0.7rem !important;
+                font-weight: 700 !important;
+            }
+
+            .proj-pagination-bar {
+                width: 35px !important;
+                height: 2px !important;
+                background: rgba(255, 255, 255, 0.1) !important;
+                border-radius: 99px !important;
+            }
+
+            .proj-header-controls {
+                margin-left: auto !important;
+                display: flex !important;
+                gap: 8px !important;
             }
 
             .proj-card {
@@ -5422,6 +5429,13 @@
                 border-right: none !important;
                 border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
                 padding: 16px !important;
+            }
+
+            .proj-left-panel svg {
+                max-width: 100% !important;
+                max-height: 100% !important;
+                width: auto !important;
+                height: auto !important;
             }
 
             .proj-right-panel {
@@ -5449,6 +5463,11 @@
 
             .proj-category-badge {
                 margin-bottom: 10px !important;
+            }
+
+            .courses-grid {
+                padding: 16px 18px 24px !important;
+                gap: 16px !important;
             }
 
             .course-card {
@@ -5572,6 +5591,11 @@
 
             .proj-card {
                 height: 492px !important;
+            }
+
+            .courses-grid {
+                padding: 12px 14px 20px !important;
+                gap: 12px !important;
             }
 
             .course-card {
@@ -6117,7 +6141,7 @@
                     </div>
 
                     <!-- Hand written bezel brand -->
-                    <div class="bezel-brand-text">abu hato // PORTFOLIO</div>
+                    <div class="bezel-brand-text">kayilai // PORTFOLIO</div>
 
                     <!-- Right side knobs & power LED -->
                     <div class="bezel-controls-wrapper">
@@ -6215,6 +6239,7 @@
          MOBILE NAVIGATION TOGGLE — Smooth 3D liquid animated SVG button
          Only displayed on mobile screens (max-width: 768px).
          ================================================================ -->
+    <span id="mobileSectionTitle" class="mobile-section-title">HERO</span>
     <button id="mobileNavToggle" class="mobile-nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
         <div class="toggle-bg"></div>
         <svg class="toggle-svg" viewBox="0 0 50 50" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -6226,17 +6251,17 @@
                         result="goo" />
                     <feBlend in="SourceGraphic" in2="goo" />
                 </filter>
-                <!-- Redesigned 3D lighting radial gradient for liquid blobs -->
+                <!-- Redesigned 3D lighting radial gradient for liquid blobs - fresh neon mint aquamarine -->
                 <radialGradient id="grad3d" cx="30%" cy="30%" r="70%">
-                    <stop offset="0%" stop-color="#a78bfa" /> <!-- Soft purple highlight -->
-                    <stop offset="35%" stop-color="#22d3ee" /> <!-- Vibrant cyan accent -->
-                    <stop offset="70%" stop-color="#0891b2" /> <!-- Deep teal shading -->
-                    <stop offset="100%" stop-color="#020617" /> <!-- Dark slate shadow -->
+                    <stop offset="0%" stop-color="#e6fffa" /> <!-- Ultra bright mint highlight -->
+                    <stop offset="35%" stop-color="#00ffb7" /> <!-- Neon mint green -->
+                    <stop offset="70%" stop-color="#00b399" /> <!-- Deep minty teal -->
+                    <stop offset="100%" stop-color="#012622" /> <!-- Dark forest teal -->
                 </radialGradient>
                 <!-- Border gradient for the glass outer circle -->
                 <linearGradient id="gradBorder" x1="0" y1="0" x2="50" y2="50">
-                    <stop offset="0%" stop-color="rgba(255, 255, 255, 0.45)" />
-                    <stop offset="100%" stop-color="rgba(34, 211, 238, 0.12)" />
+                    <stop offset="0%" stop-color="rgba(0, 255, 183, 0.7)" />
+                    <stop offset="100%" stop-color="rgba(0, 179, 153, 0.15)" />
                 </linearGradient>
                 <!-- Sheen gradient for realistic 3D glass reflection -->
                 <linearGradient id="glassSheen" x1="0" y1="0" x2="50" y2="50">
@@ -6253,13 +6278,13 @@
                 <circle class="blob blob-sub-2" cx="25" cy="25" r="7.5" fill="url(#grad3d)" />
             </g>
 
-            <!-- Outer glass reflection highlight layer -->
+            <!-- Outer glass reflection highlight layer - hidden for minimalistic flat design -->
             <circle cx="25" cy="25" r="19" fill="url(#glassSheen)"
-                style="mix-blend-mode: overlay; pointer-events: none;" />
+                style="display: none; pointer-events: none;" />
 
-            <!-- Outer premium 3D glass border ring -->
+            <!-- Outer premium 3D glass border ring - hidden for minimalistic flat design -->
             <circle cx="25" cy="25" r="21" stroke="url(#gradBorder)" stroke-width="1.2"
-                style="mix-blend-mode: overlay;" />
+                style="display: none;" />
 
             <!-- Hamburger menu lines morphing into 'X' when active -->
             <g class="hamburger-lines" stroke="#f0f0f0" stroke-width="2.2" stroke-linecap="round">
@@ -7789,11 +7814,11 @@
             window.lenis = null;
             if (typeof Lenis !== 'undefined') {
                 window.lenis = new Lenis({
-                    duration: 1.2,
-                    // !! EDIT: Change duration (seconds) for faster/slower scroll
+                    duration: 1.4,
+                    lerp: 0.085, // Add a tiny bit of liquid inertial damping resistance
                     easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                     smooth: true,
-                    smoothTouch: false, // Disable on touch for native feel
+                    smoothTouch: false,
                 });
 
                 // Lenis requires being called every frame
@@ -7946,19 +7971,51 @@
                     link.classList.toggle('active', isActive);
                     if (isActive) setIndicatorTarget(link);
                 });
+
+                // Update mobile nav toggle accent color based on scrolling position
+                const sectionAccents = {
+                    'hero': '#00ffb7',         // mint green
+                    'about': '#a78bfa',        // purple
+                    'skills': '#f43f5e',       // rose
+                    'projects': 'var(--active-accent, #00ffb7)', // dynamic project accent
+                    'experience': '#00c9a7',   // emerald
+                    'connect': '#ec4899'       // pink
+                };
+                const toggleColor = sectionAccents[current] || '#00ffb7';
+                document.documentElement.style.setProperty('--toggle-accent', toggleColor);
+
+                const mobSecTitle = document.getElementById('mobileSectionTitle');
+                if (mobSecTitle) {
+                    if (current && current !== 'hero') {
+                        mobSecTitle.textContent = current.toUpperCase();
+                        mobSecTitle.style.opacity = '0.85';
+                    } else {
+                        mobSecTitle.textContent = '';
+                        mobSecTitle.style.opacity = '0';
+                    }
+                }
             });
 
             // Smooth scroll when clicking nav links
             navLinks.forEach(link => {
                 link.addEventListener('click', e => {
                     e.preventDefault();
+
+                    // If mobile nav container is open, close it first to resume Lenis scroll
+                    const navCont = document.getElementById('nav');
+                    if (navCont && navCont.classList.contains('open')) {
+                        setDrawerState(false);
+                    }
+
                     const target = document.querySelector(link.getAttribute('href'));
                     if (!target) return;
 
-                    // For the last section (connect) use offset 0 so Lenis
-                    // doesn't try to scroll past the document bottom.
                     const isLast = target === sections[sections.length - 1];
-                    scrollTo(target, isLast ? 0 : -80);
+
+                    // Delay slightly to allow the drawer close transition and Lenis resumption
+                    setTimeout(() => {
+                        scrollTo(target, isLast ? 0 : -80);
+                    }, 80);
                 });
             });
 
@@ -8015,12 +8072,7 @@
                 // Close drawer when clicking overlay
                 navOverlay?.addEventListener('click', () => setDrawerState(false));
 
-                // Close drawer when clicking any navigation link
-                navLinks.forEach(link => {
-                    link.addEventListener('click', () => {
-                        setDrawerState(false);
-                    });
-                });
+                // Close drawer when clicking any navigation link (handled unified above)
 
                 // Close drawer when clicking outside nav pill and toggle
                 document.addEventListener('click', (e) => {
@@ -8465,18 +8517,148 @@
             const projLeft = document.getElementById('projLeft');
             const projRight = document.getElementById('projRight');
 
+            let globalAudioCtx = null;
+            function unlockAudio() {
+                try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContextClass) return;
+                    if (!globalAudioCtx) {
+                        globalAudioCtx = new AudioContextClass();
+                    }
+                    if (globalAudioCtx.state === 'suspended') {
+                        globalAudioCtx.resume();
+                    }
+                } catch (e) {
+                    console.warn("Audio Context unlock failed:", e);
+                }
+            }
+            document.addEventListener('click', unlockAudio, { once: true, capture: true });
+            document.addEventListener('touchstart', unlockAudio, { once: true, capture: true });
+
+            function triggerTapticFeedback(btn) {
+                if (!btn) return;
+                if (navigator.vibrate) {
+                    try {
+                        navigator.vibrate(10);
+                    } catch (e) {}
+                }
+                btn.classList.add('taptic-active');
+                setTimeout(() => {
+                    btn.classList.remove('taptic-active');
+                }, 100);
+            }
+
+            // Synthesize mechanical shutter/switch click sound dynamically (Web Audio API)
+            function playClickSound() {
+                try {
+                    if (!globalAudioCtx) {
+                        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                        if (!AudioContextClass) return;
+                        globalAudioCtx = new AudioContextClass();
+                    }
+                    
+                    const audioCtx = globalAudioCtx;
+                    if (audioCtx.state === 'suspended') {
+                        audioCtx.resume();
+                    }
+                    
+                    // Osc 1: High frequency transient click
+                    const osc1 = audioCtx.createOscillator();
+                    const gain1 = audioCtx.createGain();
+                    osc1.connect(gain1);
+                    gain1.connect(audioCtx.destination);
+                    
+                    osc1.type = 'triangle';
+                    osc1.frequency.setValueAtTime(1400, audioCtx.currentTime);
+                    osc1.frequency.exponentialRampToValueAtTime(450, audioCtx.currentTime + 0.035);
+                    
+                    gain1.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
+                    
+                    // Osc 2: Medium frequency snap body
+                    const osc2 = audioCtx.createOscillator();
+                    const gain2 = audioCtx.createGain();
+                    osc2.connect(gain2);
+                    gain2.connect(audioCtx.destination);
+                    
+                    osc2.type = 'sine';
+                    osc2.frequency.setValueAtTime(700, audioCtx.currentTime);
+                    osc2.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.045);
+                    
+                    gain2.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.045);
+                    
+                    osc1.start(audioCtx.currentTime);
+                    osc1.stop(audioCtx.currentTime + 0.04);
+                    
+                    osc2.start(audioCtx.currentTime);
+                    osc2.stop(audioCtx.currentTime + 0.05);
+                } catch (e) {
+                    console.warn("Dynamic click sound failed/blocked:", e);
+                }
+            }
+
             projLeft?.addEventListener('click', (e) => {
                 e.preventDefault();
+                try {
+                    triggerTapticFeedback(projLeft);
+                } catch(err) {}
+                try {
+                    playClickSound();
+                } catch(err) {}
                 showProject(currentProjIndex - 1, true);
             });
 
             projRight?.addEventListener('click', (e) => {
                 e.preventDefault();
+                try {
+                    triggerTapticFeedback(projRight);
+                } catch(err) {}
+                try {
+                    playClickSound();
+                } catch(err) {}
                 showProject(currentProjIndex + 1, true);
             });
 
             // Initialize Projects Carousel state on paint
             showProject(0, false);
+
+            // Add swipe gestures for project cards on mobile
+            const projGrid = document.getElementById('projGrid');
+            if (projGrid) {
+                let projStartX = 0;
+                let projStartY = 0;
+                let projEndX = 0;
+                let projEndY = 0;
+
+                projGrid.addEventListener('touchstart', (e) => {
+                    projStartX = e.touches[0].clientX;
+                    projStartY = e.touches[0].clientY;
+                }, { passive: true });
+
+                projGrid.addEventListener('touchmove', (e) => {
+                    projEndX = e.touches[0].clientX;
+                    projEndY = e.touches[0].clientY;
+                }, { passive: true });
+
+                projGrid.addEventListener('touchend', () => {
+                    const diffX = projEndX - projStartX;
+                    const diffY = projEndY - projStartY;
+
+                    // Only trigger swipe if horizontal sweep is significant and vertical sweep is small
+                    if (Math.abs(diffX) > 50 && Math.abs(diffY) < 40) {
+                        if (diffX > 0) {
+                            showProject(currentProjIndex - 1, true);
+                        } else {
+                            showProject(currentProjIndex + 1, true);
+                        }
+                    }
+                    projStartX = 0;
+                    projStartY = 0;
+                    projEndX = 0;
+                    projEndY = 0;
+                }, { passive: true });
+            }
 
 
             // ================================================================

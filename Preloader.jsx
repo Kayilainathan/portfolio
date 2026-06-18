@@ -1,15 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
 
-interface PreloaderProps {
-  onComplete: () => void;
-}
-
-export default function Preloader({ onComplete }: PreloaderProps) {
+export default function Preloader({ onComplete }) {
   const [progress, setProgress] = useState(0);
-  const [phase, setPhase] = useState < "intro" | "folder" | "core" | "finished" > ("intro");
+  const [phase, setPhase] = useState("intro");
   const [glitchActive, setGlitchActive] = useState(false);
-  const [logs, setLogs] = useState < string[] > ([]);
+  const [logs, setLogs] = useState([]);
   const [isExiting, setIsExiting] = useState(false);
   const [seed, setSeed] = useState(0);
 
@@ -64,7 +60,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       setProgress(next);
 
       // Transition glitches
-      const checkThreshold = (val: number, prevVal: number, thresh: number) =>
+      const checkThreshold = (val, prevVal, thresh) =>
         prevVal < thresh && val >= thresh;
 
       if (checkThreshold(next, prev, 31) || checkThreshold(next, prev, 66) || checkThreshold(next, prev, 91)) {
@@ -361,7 +357,7 @@ export default function Preloader({ onComplete }: PreloaderProps) {
             </div>
 
             <div className="font-mono text-[9px] font-bold text-slate-500 tracking-wider absolute left-1/2 transform -translate-x-1/2 select-none" style={{ filter: "url(#vector-wiggle)" }}>
-              abu hato // PORTFOLIO
+              kayilai // PORTFOLIO
             </div>
 
             <div className="flex items-center gap-2">
