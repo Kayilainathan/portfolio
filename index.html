@@ -4,9 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cloud.umami.is https://unpkg.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://shrug-person-78902957.figma.site; connect-src 'self' https://cloud.umami.is;">
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    <script defer src="https://cloud.umami.is/script.js"
+        data-website-id="57e4e94a-32fc-428b-8aa2-0efbe742fb34"></script>
 
     <!-- !! EDIT: Page title shown in browser tab !! -->
-    <title>Kayilainathan J — Portfolio</title>
+    <title>Kayilainathan J | Portfolio</title>
     <link rel="icon" type="image/png" href="img/favicon.png">
 
     <!-- SEO meta description -->
@@ -19,7 +23,7 @@
         rel="stylesheet">
 
     <!-- Lenis — Buttery smooth scroll library -->
-    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
+    <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js" integrity="sha256-spWPFC+DLw1eVHze935vrfzha+pgmC/Iu/UDlaJDnfg=" crossorigin="anonymous"></script>
 
     <!-- Retro CRT Preloader Styles -->
     <style id="crt-preloader-styles">
@@ -4862,7 +4866,8 @@
                 --section-gap: 90px;
             }
 
-            html, body {
+            html,
+            body {
                 overflow-x: hidden !important;
                 width: 100% !important;
                 max-width: 100% !important;
@@ -5067,11 +5072,13 @@
                 overflow: hidden !important;
                 max-width: none;
                 flex-wrap: nowrap;
+                pointer-events: none !important;
             }
 
             #nav.open .nav-pill {
                 opacity: 1 !important;
                 transform: translateY(0) scale(1) !important;
+                pointer-events: auto !important;
             }
 
             /* Drawer Header & Footer are hidden to keep layout extremely clean & compact */
@@ -5209,7 +5216,8 @@
 
             /* Hamburger lines styled with high contrast to background */
             .line {
-                stroke: #ffffff !important; /* High-contrast white */
+                stroke: #ffffff !important;
+                /* High-contrast white */
                 stroke-width: 2.8 !important;
                 transition: stroke 0.4s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease, filter 0.4s ease;
                 transform-origin: 25px 25px;
@@ -5232,7 +5240,8 @@
             }
 
             .mobile-nav-toggle.active .mid-line {
-                transform: translateX(-40px) scaleX(0.1) !important; /* Move left and dissolve into section title text */
+                transform: translateX(-40px) scaleX(0.1) !important;
+                /* Move left and dissolve into section title text */
                 opacity: 0 !important;
             }
 
@@ -5240,6 +5249,7 @@
             .mobile-section-title {
                 display: none;
             }
+
             @media (max-width: 768px) {
                 .mobile-section-title {
                     display: block !important;
@@ -5258,7 +5268,7 @@
                     text-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
                 }
 
-                #nav.open ~ .mobile-section-title {
+                #nav.open~.mobile-section-title {
                     color: var(--toggle-accent, #00ffb7) !important;
                     filter: drop-shadow(0 0 4px var(--toggle-accent, #00ffb7));
                     transform: scale(1.05);
@@ -5270,10 +5280,12 @@
                 position: relative !important;
                 z-index: 100 !important;
             }
+
             .proj-header-controls {
                 position: relative !important;
                 z-index: 101 !important;
             }
+
             .proj-arrow-btn {
                 width: 42px !important;
                 height: 42px !important;
@@ -5366,7 +5378,7 @@
             }
 
             /* Minimal & aesthetic projects progress bar on mobile, positioned next to the header title */
-            .proj-header-container > div {
+            .proj-header-container>div {
                 display: contents !important;
             }
 
@@ -5396,7 +5408,8 @@
                 color: rgba(255, 255, 255, 0.4) !important;
                 font-family: 'Inter', monospace !important;
                 letter-spacing: 0.06em !important;
-                transform: translateY(-2px) !important; /* raised slightly to align with the large title */
+                transform: translateY(-2px) !important;
+                /* raised slightly to align with the large title */
                 margin: 0 !important;
             }
 
@@ -6279,12 +6292,10 @@
             </g>
 
             <!-- Outer glass reflection highlight layer - hidden for minimalistic flat design -->
-            <circle cx="25" cy="25" r="19" fill="url(#glassSheen)"
-                style="display: none; pointer-events: none;" />
+            <circle cx="25" cy="25" r="19" fill="url(#glassSheen)" style="display: none; pointer-events: none;" />
 
             <!-- Outer premium 3D glass border ring - hidden for minimalistic flat design -->
-            <circle cx="25" cy="25" r="21" stroke="url(#gradBorder)" stroke-width="1.2"
-                style="display: none;" />
+            <circle cx="25" cy="25" r="21" stroke="url(#gradBorder)" stroke-width="1.2" style="display: none;" />
 
             <!-- Hamburger menu lines morphing into 'X' when active -->
             <g class="hamburger-lines" stroke="#f0f0f0" stroke-width="2.2" stroke-linecap="round">
@@ -6318,11 +6329,11 @@
             <a href="#connect" class="nav-link" data-section="connect">Connect</a>
 
             <div class="drawer-footer">
-                <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" class="drawer-social-btn"
-                    aria-label="LinkedIn">LN</a>
-                <a href="https://github.com/Kayilainathan" target="_blank" class="drawer-social-btn"
+                <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener noreferrer" class="drawer-social-btn"
+                    data-umami-event="LinkedIn Click Mobile Menu" aria-label="LinkedIn">LN</a>
+                <a href="https://github.com/Kayilainathan" target="_blank" rel="noopener noreferrer" class="drawer-social-btn"
                     aria-label="GitHub">GH</a>
-                <a href="mailto:kayilainathan19@gmail.com" class="drawer-social-btn" aria-label="Email">EM</a>
+                <a href="mailto:kayilainathan19@gmail.com" class="drawer-social-btn" data-umami-event="Email Click Mobile Menu" aria-label="Email">EM</a>
             </div>
         </div>
     </nav>
@@ -6412,8 +6423,8 @@
                         <div class="profile-actions-wrapper reveal">
                             <!-- Static placeholder containing the Resume button by default -->
                             <div id="resume-placeholder" class="resume-placeholder">
-                                <a href="./resume/resume.PDF" target="_blank" download="Kayilainathan_J_Resume.pdf"
-                                    class="resume-btn" id="resumeBtn" aria-label="Download Resume">
+                                <a href="./resume/resume.PDF" target="_blank" rel="noopener" download="Kayilainathan_J_Resume.pdf"
+                                    class="resume-btn" id="resumeBtn" data-umami-event="Resume Download Button" aria-label="Download Resume">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
@@ -6427,8 +6438,8 @@
                             <div class="social-actions-group">
                                 <!-- LinkedIn -->
                                 <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank"
-                                    rel="noopener" class="action-icon-btn action-linkedin"
-                                    aria-label="LinkedIn Profile">
+                                    rel="noopener noreferrer" class="action-icon-btn action-linkedin"
+                                    data-umami-event="LinkedIn Click Top" aria-label="LinkedIn Profile">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
                                         <path
                                             d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
@@ -6437,7 +6448,7 @@
 
                                 <!-- Email -->
                                 <a href="mailto:kayilainathan19@gmail.com" class="action-icon-btn action-email"
-                                    aria-label="Send Email">
+                                    data-umami-event="Email Click Top" aria-label="Send Email">
                                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <rect width="20" height="16" x="2" y="4" rx="2" />
@@ -6700,7 +6711,7 @@
                             </p>
                             <!-- !! EDIT: Update href to your LinkedIn post / certificate !! -->
                             <a href="https://www.linkedin.com/posts/kayilainathan-j-170267305_nlcindia-internship-psu-ugcPost-7467236949762752512-Bb-l/?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAE3QfiQBvMkzwfUcFA71i80zo2g_dSie6Sk"
-                                target="_blank" rel="noopener" class="exp-link">
+                                target="_blank" rel="noopener noreferrer" class="exp-link">
                                 <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor">
                                     <path
                                         d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
@@ -6725,7 +6736,7 @@
                             <div class="exp-role">Your Role</div>
                             <div class="exp-org">Organisation Name</div>
                             <p class="exp-desc">Your description here.</p>
-                            <a href="#" target="_blank" rel="noopener" class="exp-link">View →</a>
+                            <a href="#" target="_blank" rel="noopener noreferrer" class="exp-link">View →</a>
                         </div>
                     </div>
 
@@ -6983,7 +6994,7 @@
                                             <span class="tag">HTML / CSS</span>
                                             <span class="tag">AI</span>
                                         </div>
-                                        <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener"
+                                        <a href="https://github.com/depthra-devs/depthra" target="_blank" rel="noopener noreferrer"
                                             class="project-link" aria-label="View on GitHub">
                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                                                 <path
@@ -7065,7 +7076,7 @@
                                     <span class="proj-num" aria-hidden="true">03</span>
                                     <div class="proj-category-badge">Embedded Systems</div>
                                     <div class="project-title">Smart Drainage System</div>
-                                    <p class="project-desc">
+                                    <p class="proj-desc">
                                         ESP32-based real-time drainage monitoring using ultrasonic and flow
                                         sensors for automated blockage detection and smart alerts.
                                     </p>
@@ -7179,7 +7190,7 @@
                                             <span class="tag">Vivado</span>
                                         </div>
                                         <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank"
-                                            rel="noopener" class="project-link" aria-label="View on GitHub">
+                                            rel="noopener noreferrer" class="project-link" aria-label="View on GitHub">
                                             <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
                                                 <path
                                                     d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" />
@@ -7555,7 +7566,7 @@
                             </div>
                             <div class="course-bottom">
                                 <a href="https://www.kaggle.com/learn/certification/kayilainathanj/time-series"
-                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    target="_blank" rel="noopener noreferrer" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="8" r="7"></circle>
@@ -7588,7 +7599,7 @@
                             </div>
                             <div class="course-bottom">
                                 <a href="https://www.kaggle.com/learn/certification/kayilainathanj/intermediate-machine-learning"
-                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    target="_blank" rel="noopener noreferrer" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="8" r="7"></circle>
@@ -7617,7 +7628,7 @@
                             </div>
                             <div class="course-bottom">
                                 <a href="https://www.coursera.org/account/accomplishments/verify/QYD3R1YECXEH"
-                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    target="_blank" rel="noopener noreferrer" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="8" r="7"></circle>
@@ -7681,7 +7692,7 @@
                             </div>
                             <div class="course-bottom">
                                 <a href="https://www.coursera.org/account/accomplishments/verify/SRKBW27SV5KX"
-                                    target="_blank" rel="noopener" class="course-link-btn">
+                                    target="_blank" rel="noopener noreferrer" class="course-link-btn">
                                     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                         stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                         <circle cx="12" cy="8" r="7"></circle>
@@ -7749,8 +7760,8 @@
                     <div class="connect-links">
 
                         <!-- LinkedIn -->
-                        <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener"
-                            class="connect-btn connect-btn-linkedin">
+                         <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener noreferrer"
+                            class="connect-btn connect-btn-linkedin" data-umami-event="LinkedIn Click Bottom">
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
                                 <path
                                     d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
@@ -7759,7 +7770,7 @@
                         </a>
 
                         <!-- GitHub -->
-                        <a href="https://github.com/Kayilainathan" target="_blank" rel="noopener"
+                        <a href="https://github.com/Kayilainathan" target="_blank" rel="noopener noreferrer"
                             class="connect-btn connect-btn-github">
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -7772,7 +7783,7 @@
 
                         <!-- Email -->
                         <!-- !! EDIT: Replace with your email address !! -->
-                        <a href="mailto:kayilainathan19@gmail.com" class="connect-btn connect-btn-email">
+                        <a href="mailto:kayilainathan19@gmail.com" class="connect-btn connect-btn-email" data-umami-event="Email Click Bottom">
                             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <rect width="20" height="16" x="2" y="4" rx="2" />
@@ -8540,7 +8551,7 @@
                 if (navigator.vibrate) {
                     try {
                         navigator.vibrate(10);
-                    } catch (e) {}
+                    } catch (e) { }
                 }
                 btn.classList.add('taptic-active');
                 setTimeout(() => {
@@ -8556,41 +8567,41 @@
                         if (!AudioContextClass) return;
                         globalAudioCtx = new AudioContextClass();
                     }
-                    
+
                     const audioCtx = globalAudioCtx;
                     if (audioCtx.state === 'suspended') {
                         audioCtx.resume();
                     }
-                    
+
                     // Osc 1: High frequency transient click
                     const osc1 = audioCtx.createOscillator();
                     const gain1 = audioCtx.createGain();
                     osc1.connect(gain1);
                     gain1.connect(audioCtx.destination);
-                    
+
                     osc1.type = 'triangle';
                     osc1.frequency.setValueAtTime(1400, audioCtx.currentTime);
                     osc1.frequency.exponentialRampToValueAtTime(450, audioCtx.currentTime + 0.035);
-                    
+
                     gain1.gain.setValueAtTime(0.08, audioCtx.currentTime);
                     gain1.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.035);
-                    
+
                     // Osc 2: Medium frequency snap body
                     const osc2 = audioCtx.createOscillator();
                     const gain2 = audioCtx.createGain();
                     osc2.connect(gain2);
                     gain2.connect(audioCtx.destination);
-                    
+
                     osc2.type = 'sine';
                     osc2.frequency.setValueAtTime(700, audioCtx.currentTime);
                     osc2.frequency.exponentialRampToValueAtTime(150, audioCtx.currentTime + 0.045);
-                    
+
                     gain2.gain.setValueAtTime(0.06, audioCtx.currentTime);
                     gain2.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.045);
-                    
+
                     osc1.start(audioCtx.currentTime);
                     osc1.stop(audioCtx.currentTime + 0.04);
-                    
+
                     osc2.start(audioCtx.currentTime);
                     osc2.stop(audioCtx.currentTime + 0.05);
                 } catch (e) {
@@ -8602,10 +8613,10 @@
                 e.preventDefault();
                 try {
                     triggerTapticFeedback(projLeft);
-                } catch(err) {}
+                } catch (err) { }
                 try {
                     playClickSound();
-                } catch(err) {}
+                } catch (err) { }
                 showProject(currentProjIndex - 1, true);
             });
 
@@ -8613,10 +8624,10 @@
                 e.preventDefault();
                 try {
                     triggerTapticFeedback(projRight);
-                } catch(err) {}
+                } catch (err) { }
                 try {
                     playClickSound();
-                } catch(err) {}
+                } catch (err) { }
                 showProject(currentProjIndex + 1, true);
             });
 
