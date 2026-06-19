@@ -1204,8 +1204,10 @@
             background: var(--accent);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9999;
+            z-index: 10000;
             transform: translate(-50%, -50%);
+            opacity: 1;
+            display: block;
             /* Smooth size transitions on state changes */
             transition: width 0.25s var(--ease-out),
                 height 0.25s var(--ease-out),
@@ -1222,8 +1224,10 @@
             border: 1.5px solid rgba(34, 211, 238, 0.45);
             border-radius: 50%;
             pointer-events: none;
-            z-index: 9998;
+            z-index: 9999;
             transform: translate(-50%, -50%);
+            opacity: 1;
+            display: block;
             transition: width 0.35s var(--ease-out),
                 height 0.35s var(--ease-out),
                 border-color 0.35s ease,
@@ -1473,13 +1477,16 @@
             pointer-events: auto;
             /* Hidden by default; JS adds .visible after scroll */
             opacity: 0;
+            visibility: hidden;
             transform: translateY(-20px) scale(0.94);
             transition: opacity 0.5s var(--ease-out),
-                transform 0.5s var(--ease-spring);
+                transform 0.5s var(--ease-spring),
+                visibility 0.5s;
         }
 
         .nav-pill.visible {
             opacity: 1;
+            visibility: visible;
             transform: translateY(0) scale(1);
         }
 
@@ -4670,86 +4677,1421 @@
         /* ================================================================
            CONNECT SECTION — Centered call-to-action
            ================================================================ */
-        .connect-inner {
-            padding: 56px 42px;
-            text-align: center;
+        /* ================================================================
+           CONNECT SECTION — Premium interactive grid and 3D Smartphone
+           ================================================================ */
+        .connect-card-outer {
+            position: relative;
+            border-radius: 24px;
+            background: #07090e;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            padding: 1px;
+            transition: border-color 0.4s var(--ease-out);
+        }
+
+        .connect-backdrop-container {
+            position: absolute;
+            inset: 0;
+            border-radius: 24px;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .connect-backdrop-container canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .radial-glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            pointer-events: none;
+            opacity: 0.15;
+            z-index: 1;
+        }
+
+        .glow-cyan {
+            top: -128px;
+            left: -128px;
+            width: 384px;
+            height: 384px;
+            background: #06b6d4;
+        }
+
+        .glow-purple {
+            bottom: -128px;
+            right: -128px;
+            width: 384px;
+            height: 384px;
+            background: #8b5cf6;
+        }
+
+        .connect-grid-container {
+            position: relative;
+            z-index: 2;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            align-items: center;
+            padding: 48px 24px;
+        }
+
+        @media (min-width: 1024px) {
+            .connect-grid-container {
+                grid-template-columns: repeat(12, minmax(0, 1fr));
+                gap: 48px;
+                padding: 64px;
+            }
+            .connect-left-column {
+                grid-column: span 6 / span 6;
+            }
+            .connect-right-column {
+                grid-column: span 6 / span 6;
+            }
+        }
+
+        .connect-left-column {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            gap: 32px;
+            text-align: left;
+        }
+
+        .connect-right-column {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            margin-top: 16px;
+        }
+
+        @media (min-width: 1024px) {
+            .connect-right-column {
+                margin-top: 0;
+            }
+        }
+
+        .connect-header-group {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .connect-section-title {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 500;
+            color: #ffffff;
+            text-transform: uppercase;
+            letter-spacing: -0.02em;
+            line-height: 1;
+        }
+
+        .connect-gradient-span {
+            background: linear-gradient(to right, #06b6d4, #8b5cf6, #f43f5e);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .connect-description {
+            color: #94a3b8;
+            font-size: clamp(0.9rem, 2vw, 1rem);
+            line-height: 1.6;
+            max-width: 512px;
+        }
+
+        .portal-buttons-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            max-width: 512px;
+            width: 100%;
+        }
+
+        .portal-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 28px;
+            justify-content: center;
+            padding: 16px 8px;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            cursor: pointer;
+            outline: none;
+            transition: all 0.3s var(--ease-out);
+            position: relative;
+            overflow: hidden;
+            text-align: center;
+            text-decoration: none;
         }
 
-        .connect-title {
-            font-size: clamp(1.7rem, 4vw, 2.3rem);
+        .portal-btn:active {
+            transform: scale(0.96) translateY(0);
+        }
+
+        .portal-btn-icon-socket {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid #1e293b;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .portal-icon {
+            color: #94a3b8;
+            transition: color 0.3s ease;
+        }
+
+        .portal-btn-label {
+            font-family: inherit;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-top: 12px;
+            color: #94a3b8;
+            transition: color 0.3s ease;
+        }
+
+        .portal-btn:hover {
+            transform: translateY(-3px) scale(1.015);
+        }
+
+        /* Email Button Highlight Color */
+        .portal-btn-email:hover, .portal-btn-email.active {
+            border-color: rgba(6, 182, 212, 0.3);
+            background: rgba(6, 182, 212, 0.02);
+        }
+        .portal-btn-email:hover .portal-btn-icon-socket, .portal-btn-email.active .portal-btn-icon-socket {
+            border-color: rgba(6, 182, 212, 0.5);
+            box-shadow: 0 0 12px rgba(6, 182, 212, 0.2);
+        }
+        .portal-btn-email:hover .portal-icon, .portal-btn-email.active .portal-icon {
+            color: #06b6d4;
+        }
+        .portal-btn-email:hover .portal-btn-label, .portal-btn-email.active .portal-btn-label {
+            color: #ffffff;
+        }
+
+        /* LinkedIn Button Highlight Color */
+        .portal-btn-linkedin:hover, .portal-btn-linkedin.active {
+            border-color: rgba(59, 130, 246, 0.3);
+            background: rgba(59, 130, 246, 0.02);
+        }
+        .portal-btn-linkedin:hover .portal-btn-icon-socket, .portal-btn-linkedin.active .portal-btn-icon-socket {
+            border-color: rgba(96, 165, 250, 0.5);
+            box-shadow: 0 0 12px rgba(59, 130, 246, 0.2);
+        }
+        .portal-btn-linkedin:hover .portal-icon, .portal-btn-linkedin.active .portal-icon {
+            color: #60a5fa;
+        }
+        .portal-btn-linkedin:hover .portal-btn-label, .portal-btn-linkedin.active .portal-btn-label {
+            color: #ffffff;
+        }
+
+        /* GitHub Button Highlight Color */
+        .portal-btn-github:hover, .portal-btn-github.active {
+            border-color: rgba(244, 63, 94, 0.3);
+            background: rgba(244, 63, 94, 0.02);
+        }
+        .portal-btn-github:hover .portal-btn-icon-socket, .portal-btn-github.active .portal-btn-icon-socket {
+            border-color: rgba(244, 63, 94, 0.5);
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.2);
+        }
+        .portal-btn-github:hover .portal-icon, .portal-btn-github.active .portal-icon {
+            color: #f43f5e;
+        }
+        .portal-btn-github:hover .portal-btn-label, .portal-btn-github.active .portal-btn-label {
+            color: #ffffff;
+        }
+
+        .connect-metadata-badge {
+            padding: 16px;
+            border-radius: 26px;
+            background: rgba(2, 6, 23, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            max-width: 512px;
+            width: 100%;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: monospace;
+            font-size: 10.5px;
+            color: #64748b;
+        }
+
+        .meta-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .meta-dot.bg-cyan {
+            background: #06b6d4;
+            animation: pulse-glow-cyan 2s infinite;
+        }
+
+        @keyframes pulse-glow-cyan {
+            0% { transform: scale(0.9); opacity: 0.5; box-shadow: 0 0 0 0 rgba(6, 182, 212, 0.4); }
+            50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 8px 2px rgba(6, 182, 212, 0.4); }
+            100% { transform: scale(0.9); opacity: 0.5; box-shadow: 0 0 0 0 rgba(6, 182, 212, 0); }
+        }
+
+        .meta-val {
+            font-family: monospace;
+        }
+
+        .meta-val.val-white {
+            color: #cbd5e1;
+            font-family: system-ui, -apple-system, sans-serif;
+            font-weight: 500;
+        }
+
+        .meta-copy-btn {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 9999px;
+            padding: 8px 16px;
+            font-family: monospace;
+            font-size: 9.5px;
+            font-weight: 900;
+            color: #cbd5e1;
+            cursor: pointer;
+            outline: none;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .meta-copy-btn:hover {
+            border-color: #06b6d4;
+            color: #ffffff;
+            background: rgba(6, 182, 212, 0.1);
+            box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);
+        }
+
+        .copy-btn-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #06b6d4;
+            display: inline-block;
+            margin-right: 6px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-btn-dot.copied {
+            background: #10b981;
+            animation: copy-ping 1s infinite;
+        }
+
+        @keyframes copy-ping {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        /* 3D Smartphone Stage */
+        .phone-stage-wrapper {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 280px;
+            height: 550px;
+            perspective: 1200px;
+            transform-style: preserve-3d;
+        }
+
+        .phone-backlight-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.45;
+            mix-blend-mode: screen;
+            z-index: -1;
+            pointer-events: none;
+            transition: background 0.7s ease, transform 0.1s ease-out;
+            animation: phone-float 6s ease-in-out infinite;
+        }
+
+        @keyframes phone-float {
+            0%, 100% { transform: translate(-50%, -52%); }
+            50% { transform: translate(-50%, -48%); }
+        }
+
+        .phone-backlight-glow.glow-blue { background: radial-gradient(circle, rgba(37, 99, 235, 0.45) 0%, transparent 70%); }
+        .phone-backlight-glow.glow-cyan { background: radial-gradient(circle, rgba(6, 182, 212, 0.45) 0%, transparent 70%); }
+        .phone-backlight-glow.glow-rose { background: radial-gradient(circle, rgba(244, 63, 94, 0.45) 0%, transparent 70%); }
+
+        .smartphone-chassis {
+            width: 280px;
+            height: 550px;
+            border-radius: 38px;
+            background: #1a1b22;
+            border: 6px solid #2c2d35;
+            padding: 3px;
+            position: relative;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.95), inset 0 2px 2px rgba(255, 255, 255, 0.15);
+            transform-style: preserve-3d;
+            transform: rotateX(1.5deg) rotateY(-3deg);
+            transition: transform 0.1s ease-out;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .dynamic-island {
+            position: absolute;
+            top: 11px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 76px;
+            height: 21px;
+            border-radius: 9999px;
+            background: #000000;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 10px;
+            gap: 4px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.8);
+        }
+
+        .notch-led {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+        }
+
+        .notch-led.led-green {
+            background: #10b981;
+            animation: notch-pulse 1.8s infinite;
+        }
+
+        .notch-led.led-purple {
+            background: #6366f1;
+        }
+
+        @keyframes notch-pulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .phone-speaker {
+            position: absolute;
+            top: 4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 34px;
+            height: 2px;
+            border-radius: 9999px;
+            background: #1e1e24;
+            z-index: 50;
+        }
+
+        .phone-button {
+            position: absolute;
+            background: #2d2e36;
+            width: 3px;
+        }
+
+        .button-left-silent { left: -9px; top: 95px; height: 20px; border-radius: 0 2px 2px 0; }
+        .button-left-volup { left: -9px; top: 132px; height: 40px; border-radius: 0 2px 2px 0; }
+        .button-left-voldown { left: -9px; top: 182px; height: 40px; border-radius: 0 2px 2px 0; }
+        .button-right-power { right: -9px; top: 125px; height: 55px; border-radius: 2px 0 0 2px; }
+
+        .phone-screen-container {
+            width: 100%;
+            height: 100%;
+            border-radius: 30px;
+            overflow: hidden;
+            background: #07090d;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            box-shadow: inset 0 4px 12px rgba(0, 0, 0, 0.95);
+        }
+
+        /* Glitch overlay displacement style */
+        .phone-glitch-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 48;
+            pointer-events: none;
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .phone-glitch-overlay.active {
+            display: flex;
+        }
+
+        .glitch-color-cyan {
+            position: absolute;
+            inset: 0;
+            background: rgba(6, 182, 212, 0.1);
+            mix-blend-mode: screen;
+            animation: glitch-flicker 0.1s infinite;
+        }
+
+        .glitch-color-rose {
+            position: absolute;
+            inset: 0;
+            background: rgba(244, 63, 94, 0.1);
+            mix-blend-mode: screen;
+            animation: glitch-flicker 0.1s infinite;
+            animation-delay: 60ms;
+        }
+
+        @keyframes glitch-flicker {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 0.9; }
+        }
+
+        .glitch-line-one {
+            height: 3px;
+            background: rgba(6, 182, 212, 0.3);
+            width: 100%;
+            position: absolute;
+            animation: glitch-move-1 0.14s infinite;
+        }
+
+        .glitch-line-two {
+            height: 2px;
+            background: rgba(244, 63, 94, 0.4);
+            width: 100%;
+            position: absolute;
+            animation: glitch-move-2 0.22s infinite;
+        }
+
+        .glitch-line-three {
+            height: 6px;
+            background: rgba(139, 92, 246, 0.15);
+            width: 100%;
+            position: absolute;
+            animation: glitch-move-3 0.08s infinite;
+        }
+
+        @keyframes glitch-move-1 {
+            0%, 100% { top: 12%; }
+            50% { top: 22%; }
+        }
+        @keyframes glitch-move-2 {
+            0%, 100% { top: 52%; }
+            50% { top: 62%; }
+        }
+        @keyframes glitch-move-3 {
+            0%, 100% { top: 78%; }
+            50% { top: 88%; }
+        }
+
+        .glitch-tag-one {
+            position: absolute;
+            top: 35%;
+            left: 8%;
+            font-size: 8.5px;
+            color: #00ffcc;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+        }
+
+        .glitch-tag-two {
+            position: absolute;
+            bottom: 30%;
+            right: 8%;
+            font-size: 7px;
+            color: #f43f5e;
+            font-weight: 900;
+            letter-spacing: 0.12em;
+            background: rgba(0, 0, 0, 0.85);
+            padding: 2px 6px;
+            border-radius: 4px;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+
+        .glitch-scanlines {
+            position: absolute;
+            inset: 0;
+            opacity: 0.3;
+            background: linear-gradient(rgba(18,16,16,0) 50%, rgba(0,0,0,0.55) 55%);
+            background-size: 100% 4px;
+        }
+
+        /* iOS Status bar */
+        .phone-status-bar {
+            width: 100%;
+            height: 34px;
+            padding: 0 16px;
+            padding-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 10px;
+            letter-spacing: 0.08em;
+            color: #94a3b8;
+            z-index: 40;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+        }
+
+        .status-time {
+            font-family: inherit;
             font-weight: 700;
-            letter-spacing: -0.03em;
+            font-size: 11px;
+            color: #ffffff;
+            letter-spacing: normal;
+        }
+
+        .status-indicators {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .status-wifi-icon {
+            width: 11px;
+            height: 11px;
+            color: #cbd5e1;
+        }
+
+        .network-badge {
+            font-size: 8px;
+            font-weight: 500;
+            color: #cbd5e1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1px 4px;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .battery-icon {
+            width: 16px;
+            height: 8px;
+            border-radius: 3px;
+            border: 1px solid #94a3b8;
+            padding: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        .battery-fill {
+            height: 100%;
+            width: 85%;
+            background: #f1f5f9;
+            border-radius: 1.5px;
+        }
+
+        /* Screen app content view ports */
+        .phone-app-screen {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow-y: auto;
+            padding: 10px 10px 32px;
+            scrollbar-width: none;
+            display: flex;
+            flex-direction: column;
+            background: #050608;
+        }
+
+        .phone-app-screen::-webkit-scrollbar {
+            display: none;
+        }
+
+        .app-view {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            filter: blur(8px);
+            transition: opacity 0.3s ease-out, filter 0.3s ease-out;
+        }
+
+        .app-view.active {
+            display: flex;
+            opacity: 1;
+            filter: blur(0px);
+        }
+
+        .phone-home-indicator {
+            width: 100%;
+            height: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            z-index: 40;
+            background: #07090d;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+
+        .home-bar {
+            width: 70px;
+            height: 3px;
+            border-radius: 9999px;
+            background: #475569;
+            margin-bottom: 2px;
+        }
+
+        /* SecureMail view styling */
+        .app-email-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+            margin-top: 4px;
+        }
+
+        .app-email-logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .mail-icon-bg {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            background: #007aff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+        }
+
+        .app-email-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+        }
+
+        .app-email-ver {
+            font-size: 9px;
+            color: #64748b;
+            letter-spacing: 0.04em;
+        }
+
+        .app-email-metadata {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 10px;
+            font-size: 10px;
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .meta-row.border-top {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 6px;
+        }
+
+        .row-label {
+            color: #64748b;
+            font-size: 8px;
+            text-transform: uppercase;
+        }
+
+        .row-label.block-label {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .row-val {
+            font-weight: 500;
+            color: #cbd5e1;
+        }
+
+        .row-val.val-cyan {
+            color: #06b6d4;
+        }
+
+        .app-email-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            padding: 2px 6px;
+            color: #ffffff;
+            font-size: 10px;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .app-email-input:focus {
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .app-email-body-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-top: 12px;
+        }
+
+        .app-email-textarea {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 8px;
+            color: #ffffff;
+            font-size: 10px;
+            line-height: 1.5;
+            outline: none;
+            resize: none;
+            transition: border-color 0.2s ease;
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+        }
+
+        .app-email-textarea::-webkit-scrollbar {
+            width: 4px;
+        }
+        .app-email-textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .app-email-textarea::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 99px;
+        }
+        .app-email-textarea::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .app-email-textarea:focus {
+            border-color: rgba(6, 182, 212, 0.4);
+        }
+
+        .app-email-footer {
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+        }
+
+        .app-email-send-btn {
+            width: 100%;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 10px;
+            letter-spacing: 0.05em;
+            border: none;
+            background: linear-gradient(to right, #06b6d4, #2563eb);
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.15);
+        }
+
+        .app-email-send-btn:hover {
+            transform: scale(1.04);
+            filter: brightness(1.2);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.6);
+        }
+
+        .app-email-send-btn:active {
+            transform: scale(0.975);
+        }
+
+        .app-email-send-btn:disabled {
+            background: #10b981;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+            cursor: default;
+        }
+
+        /* LinkedIn Screen App View styling */
+        .app-linkedin-header {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+            margin-top: 2px;
+        }
+
+        .linkedin-logo-wrapper {
+            color: #0077b5;
+            display: flex;
+            align-items: center;
+        }
+
+        .linkedin-search-bar {
+            flex-grow: 1;
+            padding: 2.5px 8px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 9px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .linkedin-search-bar:hover {
+            border-color: rgba(96, 165, 250, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            transform: scale(1.01);
+        }
+
+        .search-text {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .app-linkedin-card {
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            background: #12151e;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            margin-top: 12px;
+        }
+
+        .linkedin-banner {
+            height: 50px;
+            background: #dfd6cb;
+            position: relative;
+            padding: 6px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        .banner-initial {
+            position: absolute;
+            left: -4px;
+            bottom: -15px;
+            font-size: 60px;
+            font-weight: 700;
+            color: #cfc2b3;
+            opacity: 0.4;
+            line-height: 1;
+        }
+
+        .banner-info {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
             line-height: 1.1;
         }
 
-        .connect-sub {
-            font-size: 0.98rem;
-            color: var(--text-muted);
-            max-width: 380px;
-            line-height: 1.75;
+        .info-name {
+            font-size: 6.5px;
+            font-weight: 900;
+            letter-spacing: 0.08em;
+            color: #3a342a;
         }
 
-        .connect-links {
+        .info-school {
+            font-size: 3.8px;
+            font-weight: 800;
+            letter-spacing: 0.04em;
+            color: #554c3c;
+            margin-top: 2px;
+        }
+
+        .info-sub {
+            font-size: 3.2px;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            color: #554c3c;
+        }
+
+        .linkedin-profile-body {
+            padding: 0 12px 12px;
+            position: relative;
+        }
+
+        .linkedin-avatar-container {
+            position: absolute;
+            top: -24px;
+            left: 12px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            padding: 1px;
+            background: #12151e;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .linkedin-intro-details {
+            padding-top: 24px;
+            margin-top: 4px;
             display: flex;
-            gap: 12px;
-            flex-wrap: wrap;
-            justify-content: center;
+            flex-direction: column;
+            gap: 2px;
         }
 
-        /* Connect / social buttons */
-        .connect-btn {
-            display: inline-flex;
+        .name-badge-row {
+            display: flex;
             align-items: center;
-            gap: 9px;
-            padding: 11px 26px;
+            gap: 4px;
+        }
+
+        .intro-name {
+            font-size: 12px;
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.02em;
+            line-height: 1.1;
+        }
+
+        .linkedin-verified-badge {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #1da1f2;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 6px;
+            line-height: 1;
+            font-weight: bold;
+        }
+
+        .intro-tagline {
+            font-size: 8.5px;
+            color: #cbd5e1;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+
+        .intro-location {
+            font-size: 8px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 0;
+        }
+
+        .location-pin-icon {
+            color: #8b5cf6;
+            flex-shrink: 0;
+        }
+
+        .linkedin-edu-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .edu-logo {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            background: #a31d1d;
+            color: #ffffff;
+            font-weight: 900;
+            font-size: 6.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 8px rgba(163, 29, 29, 0.3);
+        }
+
+        .edu-name {
+            font-size: 8px;
+            font-weight: 600;
+            color: #cbd5e1;
+        }
+
+        .app-linkedin-footer {
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .app-linkedin-connect-btn {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            border: none;
+            background: #0077b5;
+            color: #ffffff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: 0 4px 12px rgba(0, 119, 181, 0.15);
+        }
+
+        .app-linkedin-connect-btn:not(.connecting):not(.invited):hover {
+            transform: scale(1.04);
+            filter: brightness(1.2);
+            box-shadow: 0 0 20px rgba(0, 119, 181, 0.6);
+        }
+
+        .app-linkedin-connect-btn:not(.connecting):not(.invited):active {
+            transform: scale(0.975);
+        }
+
+        .app-linkedin-connect-btn.connecting {
+            background: rgba(79, 70, 229, 0.25);
+            color: #cbd5e1;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            cursor: default;
+            box-shadow: none;
+            animation: connect-pulse-glow 1.5s infinite;
+        }
+
+        @keyframes connect-pulse-glow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .app-linkedin-connect-btn.invited {
+            background: rgba(16, 185, 129, 0.15);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.25);
+            cursor: default;
+            box-shadow: none;
+        }
+
+        .linkedin-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 8px;
+            color: #64748b;
+            padding: 0 2px;
+        }
+
+        /* GitHub App Screen styling */
+        .app-github-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 6px;
+            margin-top: 4px;
+        }
+
+        .github-logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .github-title {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .github-header-sub {
+            font-size: 8px;
+            color: #64748b;
+            letter-spacing: 0.05em;
+        }
+
+        .app-github-body {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .github-user-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .github-avatar-container {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .github-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .github-user-fullname {
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .github-username {
+            font-size: 8px;
+            color: #64748b;
+        }
+
+        .github-bio {
+            font-size: 8px;
+            color: #cbd5e1;
+            line-height: 1.4;
+        }
+
+        .github-stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+        }
+
+        .stat-box {
+            padding: 4px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+        .stat-box.bg-dark {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .stat-num {
+            font-size: 10px;
+            font-weight: 700;
+            color: #ffffff;
+        }
+
+        .stat-lbl {
+            font-size: 7px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .github-contrib-card {
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 8px;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .contrib-title {
+            font-size: 7px;
+            font-weight: 700;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .contrib-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(16, 1fr);
+            gap: 2px;
+        }
+
+        .contrib-node {
+            aspect-ratio: 1;
+            border-radius: 1px;
+            background: #1e293b;
+            transition: all 0.2s ease;
+        }
+
+        .contrib-node.w0 { background: #1e293b; }
+        .contrib-node.w1 { background: #064e3b; }
+        .contrib-node.w2 { background: #047857; }
+        .contrib-node.w3 { background: #10b981; }
+        .contrib-node.w4 {
+            background: #6ee7b7;
+            box-shadow: 0 0 4px rgba(110, 231, 183, 0.2);
+        }
+
+        .contrib-legend {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2px;
+            font-size: 6px;
+            color: #64748b;
+            text-transform: uppercase;
+        }
+
+        .legend-blocks {
+            display: flex;
+            gap: 2px;
+        }
+
+        .l-block {
+            width: 6px;
+            height: 6px;
+            border-radius: 0.5px;
+        }
+
+        .l-block.bg-slate { background: #1e293b; }
+
+        .github-pinned-section {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .pinned-section-title {
+            font-size: 7.5px;
+            color: #475569;
+            text-transform: uppercase;
+        }
+
+        .pinned-repo-card {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 6px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .pinned-repo-card:hover {
+            border-color: rgba(0, 255, 204, 0.3);
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            color: var(--text-muted);
+            transform: scale(1.015);
+        }
+
+        .pinned-repo-name {
+            font-size: 9px;
+            color: #00ffcc;
             text-decoration: none;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background 0.35s var(--ease-out),
-                border-color 0.35s var(--ease-out),
-                color 0.35s var(--ease-out),
-                transform 0.35s var(--ease-out),
-                box-shadow 0.35s var(--ease-out);
         }
 
-        .connect-btn:hover {
-            background: rgba(255, 255, 255, 0.07);
-            border-color: rgba(255, 255, 255, 0.18);
-            color: var(--text);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+        .pinned-repo-name:hover {
+            text-decoration: underline;
         }
 
-        /* LinkedIn hover style — glows cyan */
-        .connect-btn-linkedin:hover {
-            background: rgba(34, 211, 238, 0.12);
-            border-color: rgba(34, 211, 238, 0.45);
-            color: var(--accent);
-            box-shadow: 0 8px 32px rgba(34, 211, 238, 0.25);
+        .pinned-repo-desc {
+            font-size: 7.5px;
+            color: #cbd5e1;
+            margin-top: 2px;
+            line-height: 1.3;
         }
 
-        /* GitHub hover style — glows purple */
-        .connect-btn-github:hover {
-            background: rgba(167, 139, 250, 0.12);
-            border-color: rgba(167, 139, 250, 0.45);
-            color: var(--purple);
-            box-shadow: 0 8px 32px rgba(167, 139, 250, 0.25);
+        .app-github-footer {
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: auto;
         }
 
-        /* Email hover style — glows rose */
-        .connect-btn-email:hover {
-            background: rgba(236, 72, 153, 0.12);
-            border-color: rgba(236, 72, 153, 0.45);
-            color: #ec4899;
-            box-shadow: 0 8px 32px rgba(236, 72, 153, 0.25);
+        .app-github-follow-btn {
+            width: 100%;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-family: monospace;
+            font-size: 9px;
+            letter-spacing: 0.08em;
+            border: none;
+            background: #ffffff;
+            color: #000000;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: all 0.3s var(--ease-out);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+        }
+
+        .app-github-follow-btn:hover {
+            background: #f1f5f9;
+            transform: scale(1.04);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        }
+
+        .app-github-follow-btn:active {
+            transform: scale(0.975);
+        }
+
+        .meta-item-left {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .animate-gh-btn svg {
+            transition: transform 0.3s ease;
+        }
+        
+        .animate-gh-btn:hover svg {
+            transform: translateY(-2px) scale(1.15) rotate(-5deg);
         }
 
 
@@ -4973,17 +6315,26 @@
             }
 
             /* Connect */
-            .connect-inner {
-                padding: 32px 20px;
+            .connect-metadata-badge {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+                border-radius: 20px;
+                padding: 14px;
             }
 
-            .connect-links {
-                gap: 8px;
+            .connect-metadata-badge .meta-item {
+                display: flex;
+                justify-content: space-between;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                padding-bottom: 8px;
+                width: 100%;
             }
 
-            .connect-btn {
-                padding: 10px 20px;
-                font-size: 0.86rem;
+            .connect-metadata-badge .meta-copy-btn {
+                width: 100%;
+                justify-content: center;
+                margin-top: 4px;
             }
 
             /* Section title smaller */
@@ -5031,13 +6382,15 @@
                 backdrop-filter: none !important;
                 -webkit-backdrop-filter: none !important;
                 opacity: 0;
-                transition: opacity 0.4s ease;
+                visibility: hidden;
+                transition: opacity 0.4s ease, visibility 0.4s;
                 pointer-events: none;
                 z-index: 998;
             }
 
             #nav.open .nav-overlay {
                 opacity: 1;
+                visibility: visible;
                 pointer-events: auto;
             }
 
@@ -5066,9 +6419,10 @@
 
                 /* Hidden state: slides from top-right with scale spring */
                 opacity: 0 !important;
+                visibility: hidden !important;
                 transform: translateY(-15px) scale(0.9) !important;
                 transform-origin: right top !important;
-                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important;
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease !important, visibility 0.3s !important;
                 overflow: hidden !important;
                 max-width: none;
                 flex-wrap: nowrap;
@@ -5077,6 +6431,7 @@
 
             #nav.open .nav-pill {
                 opacity: 1 !important;
+                visibility: visible !important;
                 transform: translateY(0) scale(1) !important;
                 pointer-events: auto !important;
             }
@@ -5316,10 +6671,52 @@
             }
         }
 
+        .copy-svg {
+            color: #cbd5e1;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+
+        .meta-copy-btn:hover .copy-svg {
+            color: #06b6d4;
+            transform: scale(1.1);
+        }
+
+        .meta-copy-btn.copied .copy-svg {
+            color: #10b981 !important;
+        }
+
         /* ---- 640px: standard phone ---- */
         @media (max-width: 640px) {
             :root {
                 --section-gap: 72px;
+            }
+
+            .connect-metadata-badge {
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 12px !important;
+                padding: 14px !important;
+                border-radius: 20px !important;
+            }
+
+            .connect-metadata-badge .meta-item {
+                justify-content: space-between !important;
+                width: 100% !important;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+                padding-bottom: 8px !important;
+            }
+
+            .connect-metadata-badge .meta-item:last-of-type {
+                border-bottom: none !important;
+                padding-bottom: 0 !important;
+            }
+
+            .meta-copy-btn {
+                width: 100% !important;
+                justify-content: center !important;
+                margin-top: 4px !important;
+                padding: 10px !important;
+                font-size: 10px !important;
             }
 
             .container {
@@ -7748,50 +9145,354 @@
                  !! EDIT: Update hrefs with your actual profile URLs !!
                  ============================================================ -->
             <section id="connect" class="section">
-                <div class="glass connect-inner reveal">
+                <!-- Grid wrapper mimicking the top-left gradient border-ring card -->
+                <div class="connect-card-outer reveal" id="connectCard">
+                    <!-- Wave backdrop canvas -->
+                    <div class="connect-backdrop-container">
+                        <canvas id="connectWavesCanvas"></canvas>
+                        <div class="radial-glow glow-cyan"></div>
+                        <div class="radial-glow glow-purple"></div>
+                    </div>
 
-                    <!-- !! EDIT: Heading and sub-text !! -->
-                    <h2 class="connect-title">Let's <span class="gradient-text">Connect</span></h2>
-                    <p class="connect-sub">
-                        Interested in working together or exploring embedded systems?
-                        Feel free to reach out.
-                    </p>
+                    <div class="connect-grid-container">
+                        <!-- LEFT COLUMN -->
+                        <div class="connect-left-column">
+                            <div class="connect-header-group">
+                                <h2 class="connect-section-title">
+                                    Establish <span class="connect-gradient-span">Connection</span>
+                                </h2>
+                                <p class="connect-description">
+                                    Let's build something epic. Drop a message in the simulator, or tap one of the portals to link up.
+                                </p>
+                            </div>
 
-                    <div class="connect-links">
+                            <!-- Glass Buttons Grid -->
+                            <div class="portal-buttons-grid">
+                                <!-- EMAIL PORTAL -->
+                                <a href="mailto:kayilainathan19@gmail.com" class="portal-btn portal-btn-email" id="btn-email-portal" target="_blank" rel="noopener noreferrer" data-umami-event="Email Click Bottom Portal">
+                                    <div class="portal-btn-icon-socket">
+                                        <!-- Mail SVG -->
+                                        <svg class="portal-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                            <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="portal-btn-label">Email</span>
+                                </a>
 
-                        <!-- LinkedIn -->
-                         <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener noreferrer"
-                            class="connect-btn connect-btn-linkedin" data-umami-event="LinkedIn Click Bottom">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor">
-                                <path
-                                    d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z" />
-                            </svg>
-                            LinkedIn
-                        </a>
+                                <!-- LINKEDIN PORTAL -->
+                                <a href="https://linkedin.com/in/kayilainathan-j-170267305" class="portal-btn portal-btn-linkedin" id="btn-linkedin-portal" target="_blank" rel="noopener noreferrer" data-umami-event="LinkedIn Click Bottom Portal">
+                                    <div class="portal-btn-icon-socket">
+                                        <!-- LinkedIn SVG -->
+                                        <svg class="portal-icon" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="portal-btn-label">LinkedIn</span>
+                                </a>
 
-                        <!-- GitHub -->
-                        <a href="https://github.com/Kayilainathan" target="_blank" rel="noopener noreferrer"
-                            class="connect-btn connect-btn-github">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path
-                                    d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
-                                <path d="M9 18c-4.51 2-5-2-7-2" />
-                            </svg>
-                            GitHub
-                        </a>
+                                <!-- GITHUB PORTAL -->
+                                <a href="https://github.com/Kayilainathan" class="portal-btn portal-btn-github" id="btn-github-portal" target="_blank" rel="noopener noreferrer" data-umami-event="GitHub Click Bottom Portal">
+                                    <div class="portal-btn-icon-socket">
+                                        <!-- GitHub SVG -->
+                                        <svg class="portal-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                            <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                        </svg>
+                                    </div>
+                                    <span class="portal-btn-label">GitHub</span>
+                                </a>
+                            </div>
 
-                        <!-- Email -->
-                        <!-- !! EDIT: Replace with your email address !! -->
-                        <a href="mailto:kayilainathan19@gmail.com" class="connect-btn connect-btn-email" data-umami-event="Email Click Bottom">
-                            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <rect width="20" height="16" x="2" y="4" rx="2" />
-                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
-                            </svg>
-                            Email
-                        </a>
+                            <!-- Metadata Badge -->
+                            <div class="connect-metadata-badge">
+                                <div class="meta-item">
+                                    <div class="meta-item-left">
+                                        <span class="meta-dot bg-cyan"></span>
+                                        <span class="meta-label">LOCATION:</span>
+                                    </div>
+                                    <span class="meta-val val-white">Chennai, TN, India</span>
+                                </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">ZONE:</span>
+                                    <span class="meta-val">GMT +5:30</span>
+                                </div>
+                                <button class="meta-copy-btn" id="btn-copy-email" data-umami-event="Copy Email Button">
+                                    <svg class="copy-svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 6px;">
+                                        <rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect>
+                                        <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path>
+                                    </svg>
+                                    <span class="copy-btn-dot" id="copy-dot" style="display: none;"></span>
+                                    <span class="copy-btn-text" id="copy-text">COPY EMAIL</span>
+                                </button>
+                            </div>
+                        </div>
 
+                        <!-- RIGHT COLUMN: Smartphone Simulator -->
+                        <div class="connect-right-column">
+                            <!-- Outer 3D Phone stage -->
+                            <div class="phone-stage-wrapper" id="phoneStage">
+                                <!-- Soft backlight cloud glow behind phone -->
+                                <div class="phone-backlight-glow glow-blue" id="phoneBacklight"></div>
+
+                                <!-- Smartphone chassis -->
+                                <div class="smartphone-chassis" id="smartphoneChassis">
+                                    <!-- Dynamic Island notch -->
+                                    <div class="dynamic-island">
+                                        <span class="notch-led led-green"></span>
+                                        <span class="notch-led led-purple"></span>
+                                    </div>
+                                    <!-- Speaker grill -->
+                                    <div class="phone-speaker"></div>
+
+                                    <!-- Side buttons -->
+                                    <div class="phone-button button-left-silent"></div>
+                                    <div class="phone-button button-left-volup"></div>
+                                    <div class="phone-button button-left-voldown"></div>
+                                    <div class="phone-button button-right-power"></div>
+
+                                    <!-- App screen container -->
+                                    <div class="phone-screen-container">
+                                        <!-- Telemetry Glitch overlay -->
+                                        <div class="phone-glitch-overlay" id="phoneGlitch">
+                                            <div class="glitch-color-cyan"></div>
+                                            <div class="glitch-color-rose"></div>
+                                            <div class="glitch-line-one"></div>
+                                            <div class="glitch-line-two"></div>
+                                            <div class="glitch-line-three"></div>
+                                            <div class="glitch-tag-one font-mono">SYSTEM_RESET_SHIFT</div>
+                                            <div class="glitch-tag-two font-mono">MUT_INDEX_WARP</div>
+                                            <div class="glitch-scanlines"></div>
+                                        </div>
+
+                                        <!-- iOS Status bar -->
+                                        <div class="phone-status-bar font-mono">
+                                            <div class="status-time" id="statusBarTime">16:22</div>
+                                            <div class="status-indicators">
+                                                <!-- Wifi icon -->
+                                                <svg class="status-wifi-icon" width="10" height="10" viewBox="0 0 16 16" fill="currentColor">
+                                                    <path d="M15.384 6.115a.485.485 0 0 0-.047-.736A12.444 12.444 0 0 0 8 3 12.44 12.44 0 0 0 .663 5.379a.485.485 0 0 0-.048.736.518.518 0 0 0 .668.05A11.448 11.448 0 0 1 8 4c2.507 0 4.827.802 6.716 2.164a.517.517 0 0 0 .668-.049z"></path>
+                                                    <path d="M13.229 8.271a.482.482 0 0 0-.063-.745A9.455 9.455 0 0 0 8 6c-1.905 0-3.68.56-5.166 1.526a.48.48 0 0 0-.063.745.525.525 0 0 0 .652.065A8.46 8.46 0 0 1 8 7a8.46 8.46 0 0 1 4.577 1.336.525.525 0 0 0 .652-.065zm-2.183 2.183c.226-.207.22-.569-.024-.741A6.5 6.5 0 0 0 8 9c-1.285 0-2.46.37-3.447.994-.244.172-.25.534-.024.741a.53.53 0 0 0 .633.053A5.474 5.474 0 0 1 8 10c1.07 0 2.054.307 2.885.835a.53.53 0 0 0 .633-.053zm-1.892 1.892c.262-.236.216-.692-.12-.835A3.483 3.483 0 0 0 8 11c-.518 0-1 .112-1.434.314-.336.143-.382.6-.12.835.215.193.532.15.719-.074A2.478 2.478 0 0 1 8 12c.31 0 .597.056.835.158a.49.49 0 0 0 .717-.074z"></path>
+                                                </svg>
+                                                <div class="network-badge">6G</div>
+                                                <div class="battery-icon">
+                                                    <div class="battery-fill"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Screen Apps Content -->
+                                        <div class="phone-app-screen" id="phoneAppScreen">
+                                            
+                                            <!-- EMAIL VIEW -->
+                                            <div class="app-view app-view-email active" id="view-email-app">
+                                                <div class="app-email-header">
+                                                    <div class="app-email-logo">
+                                                        <div class="mail-icon-bg">
+                                                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                                                <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                                                                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                                                            </svg>
+                                                        </div>
+                                                        <span class="app-email-title">SecureMail</span>
+                                                    </div>
+                                                    <span class="app-email-ver font-mono">v3.5_SECURE</span>
+                                                </div>
+
+                                                <div class="app-email-metadata">
+                                                    <div class="meta-row">
+                                                        <span class="row-label font-mono">To:</span>
+                                                        <span class="row-val val-cyan truncate">kayilainathan19@gmail.com</span>
+                                                    </div>
+                                                    <div class="meta-row border-top">
+                                                        <span class="row-label font-mono">From:</span>
+                                                        <span class="row-val font-mono truncate">guest@industrial-sis.io</span>
+                                                    </div>
+                                                    <div class="meta-row border-top text-left">
+                                                        <label class="row-label font-mono block-label">Subject:</label>
+                                                        <input type="text" id="email-subject-input" class="app-email-input font-sans" value="Industrial SIS Failure Predictor Inquiry">
+                                                    </div>
+                                                </div>
+
+                                                <div class="app-email-body-group text-left">
+                                                    <label class="row-label font-mono">Project message:</label>
+                                                    <textarea id="email-body-textarea" class="app-email-textarea font-sans" rows="4">Hello Kayilainathan J,
+
+I visited your portfolio and would like to interface regarding your embedded electronics projects.</textarea>
+                                                </div>
+
+                                                <div class="app-email-footer">
+                                                    <button class="app-email-send-btn" id="btn-email-send" data-umami-event="Email Click Bottom">
+                                                        <svg class="send-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                                                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                                        </svg>
+                                                        <span class="send-text">LAUNCH EMAIL CLIENT</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <!-- LINKEDIN VIEW -->
+                                            <div class="app-view app-view-linkedin" id="view-linkedin-app">
+                                                <div class="app-linkedin-header">
+                                                    <div class="linkedin-logo-wrapper">
+                                                        <svg class="linkedin-brand-icon" viewBox="0 0 24 24" fill="currentColor" width="16" height="16">
+                                                            <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z"></path>
+                                                        </svg>
+                                                    </div>
+                                                    <a href="https://linkedin.com/in/kayilainathan-j-170267305" target="_blank" rel="noopener noreferrer" class="linkedin-search-bar font-sans text-decoration-none">
+                                                        <span>🔍</span>
+                                                        <span class="search-text">linkedin.com/in/kayilainathan-j</span>
+                                                    </a>
+                                                </div>
+
+                                                <div class="app-linkedin-card">
+                                                    <!-- Card Banner -->
+                                                    <div class="linkedin-banner">
+                                                        <span class="banner-initial font-serif">K</span>
+                                                        <div class="banner-info font-sans">
+                                                            <span class="info-name font-sans">KAYILAINATHAN J</span>
+                                                            <span class="info-school font-sans">MADRAS INSTITUTE OF TECHNOLOGY</span>
+                                                            <span class="info-sub font-sans">ANNA UNIVERSITY</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="linkedin-profile-body text-left">
+                                                        <!-- Round Profile Vector Avatar -->
+                                                        <div class="linkedin-avatar-container">
+                                                            <div class="custom-avatar-svg-wrapper" id="profileAvatarConnect"></div>
+                                                        </div>
+
+                                                        <div class="linkedin-intro-details">
+                                                            <div class="name-badge-row">
+                                                                <h3 class="intro-name font-sans">KAYILAINATHAN J</h3>
+                                                                <div class="linkedin-verified-badge">✓</div>
+                                                            </div>
+                                                            <p class="intro-tagline font-sans">Sophomore @ MIT, Anna University | IEEE Member | Ex-Intern NLCIL</p>
+                                                            <div class="intro-location font-mono">
+                                                                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="location-pin-icon">
+                                                                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                                                                    <circle cx="12" cy="10" r="3"></circle>
+                                                                </svg>
+                                                                <span>Chennai, Tamil Nadu</span>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="linkedin-edu-link">
+                                                            <div class="edu-logo bg-red font-sans font-bold">MIT</div>
+                                                            <span class="edu-name font-sans">Madras Institute of Technology</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="app-linkedin-footer">
+                                                    <button class="app-linkedin-connect-btn" id="btn-linkedin-connect" data-umami-event="LinkedIn Click Bottom">
+                                                        <span class="connect-btn-icon-socket">
+                                                            <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12">
+                                                                <path d="M19 0H5C2.24 0 0 2.24 0 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5V5c0-2.76-2.24-5-5-5zM8 19H5V8h3v11zM6.5 6.73a1.77 1.77 0 110-3.54 1.77 1.77 0 010 3.54zM20 19h-3v-5.6c0-3.37-4-3.12-4 0V19h-3V8h3v1.77C14.4 7.17 20 6.97 20 12.29V19z"></path>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="connect-btn-text">CONNECT ON LINKEDIN</span>
+                                                    </button>
+                                                    <div class="linkedin-stats font-mono">
+                                                        <span>150+ NODES</span>
+                                                        <span>PEER-CHECKED LOGIC</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- GITHUB VIEW -->
+                                            <div class="app-view app-view-github" id="view-github-app">
+                                                <div class="app-github-header">
+                                                    <div class="github-logo-wrapper">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" class="text-cyan">
+                                                            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                                            <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                                        </svg>
+                                                        <span class="github-title font-mono font-bold">github.com/Kayilainathan</span>
+                                                    </div>
+                                                    <span class="github-header-sub font-mono">stats board</span>
+                                                </div>
+
+                                                <div class="app-github-body space-y-2 text-left">
+                                                    <div class="github-user-row">
+                                                        <div class="github-avatar-container">
+                                                            <div class="custom-avatar-svg-wrapper-small" id="profileAvatarConnectSmall"></div>
+                                                        </div>
+                                                        <div class="github-user-info leading-tight">
+                                                            <div class="github-user-fullname font-sans font-bold">Kayilainathan J</div>
+                                                            <div class="github-username font-mono">@kayilainathan19</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <p class="github-bio font-sans text-left">Designing from first principles. Exploring Digital Logic, Analog Electronics & ML equations.</p>
+
+                                                    <!-- Stats boxes -->
+                                                    <div class="github-stats-grid">
+                                                        <div class="stat-box bg-dark">
+                                                            <div class="stat-num font-mono text-white">14</div>
+                                                            <div class="stat-lbl font-mono">Repos</div>
+                                                        </div>
+                                                        <div class="stat-box bg-dark">
+                                                            <div class="stat-num font-mono text-white">52</div>
+                                                            <div class="stat-lbl font-mono">Contrib</div>
+                                                        </div>
+                                                        <div class="stat-box bg-dark">
+                                                            <div class="stat-num font-mono text-white">32</div>
+                                                            <div class="stat-lbl font-mono">Follow</div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Activity Grid -->
+                                                    <div class="github-contrib-card">
+                                                        <div class="contrib-title font-mono">52 Contributions over past period</div>
+                                                        <!-- Grid container generated dynamically by Javascript -->
+                                                        <div class="contrib-matrix-grid" id="githubContribGrid"></div>
+                                                        
+                                                        <div class="contrib-legend font-mono">
+                                                            <span>Less</span>
+                                                            <div class="legend-blocks">
+                                                                <span class="l-block bg-slate"></span>
+                                                                <span class="l-block bg-emerald-900"></span>
+                                                                <span class="l-block bg-emerald-700"></span>
+                                                                <span class="l-block bg-emerald-500"></span>
+                                                                <span class="l-block bg-emerald-300"></span>
+                                                            </div>
+                                                            <span>More</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Pinned repos -->
+                                                    <div class="github-pinned-section text-left">
+                                                        <div class="pinned-section-title font-mono font-bold">PINNED REPOS</div>
+                                                        <div class="pinned-repo-card">
+                                                            <a href="https://github.com/Kayilainathan/Verilog-4Bit-ALU" target="_blank" rel="noopener noreferrer" class="pinned-repo-name font-mono font-bold">Verilog-4Bit-ALU</a>
+                                                            <p class="pinned-repo-desc font-sans truncate">High fidelity 4-bit ALU programmed on Verilog HDL.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="app-github-footer">
+                                                    <button class="app-github-follow-btn animate-gh-btn" id="btn-github-follow" data-umami-event="GitHub Click Bottom">
+                                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="12" height="12" class="text-black">
+                                                            <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4"></path>
+                                                            <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                                                        </svg>
+                                                        <span class="follow-btn-text">FOLLOW ON GITHUB</span>
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- iOS Home Slider Indicator -->
+                                        <div class="phone-home-indicator">
+                                            <div class="home-bar"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -7866,6 +9567,12 @@
                 // Dot follows instantly
                 cursorDot.style.left = mx + 'px';
                 cursorDot.style.top = my + 'px';
+                
+                // Failsafe: Ensure visible on first movement
+                if (cursorDot.style.opacity === '0' || cursorDot.style.opacity === '') {
+                    cursorDot.style.opacity = '1';
+                    cursorRing.style.opacity = '1';
+                }
             });
 
             // Animate ring with LERP each frame
@@ -9952,6 +11659,298 @@
                 }
                 requestAnimationFrame(updateCursorPhysics);
 
+            })();
+
+            // ================================================================
+            // PREMIUM CONNECT SECTION CONTROLLER
+            // ================================================================
+            (function initConnectSection() {
+                // Vector techy avatar SVG string to load dynamically
+                const avatarSvg = `
+                <svg class="w-full h-full text-[#00ffcc]" viewBox="0 0 100 100" fill="none">
+                  <circle cx="50" cy="50" r="50" fill="#111827" />
+                  <circle cx="50" cy="50" r="42" stroke="rgba(6, 182, 212, 0.25)" stroke-width="1" stroke-dasharray="3 3" />
+                  <circle cx="50" cy="50" r="30" stroke="rgba(139, 92, 246, 0.2)" stroke-width="1" />
+                  <path d="M50 22 C37 22 30 30 30 40 C30 43 33 46 36 46 C39 46 41 43 43 40 C43 36 46 33 50 33 C54 33 57 36 57 40 C59 43 61 46 64 46 C67 46 70 43 70 40 C70 30 63 22 50 22 Z" fill="rgba(6, 182, 212, 0.45)" stroke="rgba(6, 182, 212, 0.8)" stroke-width="1" />
+                  <circle cx="50" cy="46" r="13" fill="#1f2937" stroke="rgba(6, 182, 212, 0.6)" stroke-width="1.2" />
+                  <rect x="42" y="42" width="6" height="4" rx="1" stroke="#00ffcc" stroke-width="1.2" fill="none" />
+                  <rect x="52" y="42" width="6" height="4" rx="1" stroke="#00ffcc" stroke-width="1.2" fill="none" />
+                  <line x1="48" y1="44" x2="52" y2="44" stroke="#00ffcc" stroke-width="1.2" />
+                  <path d="M26 80 C26 66 36 60 50 60 C64 60 74 66 74 80" fill="rgba(139, 92, 246, 0.35)" stroke="rgba(139, 92, 246, 0.7)" stroke-width="1.2" />
+                </svg>
+                `;
+                const connectAvatar = document.getElementById("profileAvatarConnect");
+                const connectAvatarSmall = document.getElementById("profileAvatarConnectSmall");
+                if (connectAvatar) connectAvatar.innerHTML = avatarSvg;
+                if (connectAvatarSmall) connectAvatarSmall.innerHTML = avatarSvg;
+
+                // 1. HTML5 Canvas Waves loop
+                const connectCanvas = document.getElementById("connectWavesCanvas");
+                if (connectCanvas) {
+                    const ctx = connectCanvas.getContext("2d");
+                    let offset = 0;
+                    
+                    // LERP variables for smooth wave sways
+                    let targetHover = { x: 0, y: 0 };
+                    let currentHover = { x: 0, y: 0 };
+                    let hasMouseMoved = false;
+                    
+                    const resizeCanvas = () => {
+                        connectCanvas.width = connectCanvas.offsetWidth;
+                        connectCanvas.height = connectCanvas.offsetHeight;
+                        if (!hasMouseMoved) {
+                            targetHover.x = connectCanvas.width / 2;
+                            targetHover.y = connectCanvas.height / 2;
+                            currentHover.x = targetHover.x;
+                            currentHover.y = targetHover.y;
+                        }
+                    };
+                    resizeCanvas();
+                    window.addEventListener("resize", resizeCanvas);
+                    
+                    const connectCard = document.getElementById("connectCard");
+                    if (connectCard) {
+                        connectCard.addEventListener("mousemove", (e) => {
+                            const rect = connectCard.getBoundingClientRect();
+                            targetHover.x = e.clientX - rect.left;
+                            targetHover.y = e.clientY - rect.top;
+                            hasMouseMoved = true;
+                        });
+                        connectCard.addEventListener("mouseleave", () => {
+                            targetHover.x = connectCanvas.width / 2;
+                            targetHover.y = connectCanvas.height / 2;
+                        });
+                    }
+                    
+                    const drawWaves = () => {
+                        if (!ctx) return;
+                        ctx.clearRect(0, 0, connectCanvas.width, connectCanvas.height);
+                        offset += 0.006;
+                        
+                        // Smoothly transition coordinates
+                        currentHover.x += (targetHover.x - currentHover.x) * 0.05;
+                        currentHover.y += (targetHover.y - currentHover.y) * 0.05;
+                        
+                        const waveCount = 3;
+                        const colors = [
+                            "rgba(6, 182, 212, 0.08)",
+                            "rgba(139, 92, 246, 0.08)",
+                            "rgba(244, 63, 94, 0.04)"
+                        ];
+                        
+                        for (let i = 0; i < waveCount; i++) {
+                            ctx.beginPath();
+                            ctx.lineWidth = 1.6 - i * 0.3;
+                            ctx.strokeStyle = colors[i % colors.length];
+                            
+                            const amplitude = 30 + i * 8 + (currentHover.y / connectCanvas.height) * 12;
+                            const frequency = 0.003 + i * 0.0008 + (currentHover.x / connectCanvas.width) * 0.0015;
+                            const speed = offset * (1 + i * 0.15);
+                            
+                            for (let x = 0; x < connectCanvas.width; x++) {
+                                const y = connectCanvas.height / 2 + Math.sin(x * frequency + speed) * amplitude;
+                                if (x === 0) ctx.moveTo(x, y);
+                                else ctx.lineTo(x, y);
+                            }
+                            ctx.stroke();
+                        }
+                        requestAnimationFrame(drawWaves);
+                    };
+                    drawWaves();
+                }
+
+                // 2. Status Bar Time Tick & Updates
+                const timeBar = document.getElementById("statusBarTime");
+                const updateTime = () => {
+                    if (timeBar) {
+                        const now = new Date();
+                        let hr = now.getHours();
+                        let mn = now.getMinutes();
+                        timeBar.textContent = `${hr < 10 ? '0' + hr : hr}:${mn < 10 ? '0' + mn : mn}`;
+                    }
+                };
+                updateTime();
+                setInterval(updateTime, 1000);
+
+                // 3. 3D Smartphone tilt effect (Reduced tilt/scale factors for softer magnetic movement)
+                const smartphone = document.getElementById("smartphoneChassis");
+                const phoneStage = document.getElementById("phoneStage");
+                const phoneBacklight = document.getElementById("phoneBacklight");
+                if (smartphone && phoneStage) {
+                    let currentRotX = 1.5, currentRotY = -3, currentScale = 1;
+                    let targetRotX = 1.5, targetRotY = -3, targetScale = 1;
+                    let targetGlowX = 0, targetGlowY = 0;
+                    let currentGlowX = 0, currentGlowY = 0;
+                    
+                    phoneStage.addEventListener("mousemove", (e) => {
+                        const rect = phoneStage.getBoundingClientRect();
+                        const x = e.clientX - rect.left - rect.width / 2;
+                        const y = e.clientY - rect.top - rect.height / 2;
+                        
+                        targetRotX = -(y / (rect.height / 2)) * 4; // reduced from 8 to 4
+                        targetRotY = (x / (rect.width / 2)) * 4;   // reduced from 8 to 4
+                        targetScale = 1.015;                       // reduced from 1.025
+                        
+                        targetGlowX = (x / (rect.width / 2)) * 8;  // reduced from 15 to 8
+                        targetGlowY = (y / (rect.height / 2)) * 8; // reduced from 15 to 8
+                    });
+                    
+                    phoneStage.addEventListener("mouseleave", () => {
+                        targetRotX = 1.5;
+                        targetRotY = -3;
+                        targetScale = 1;
+                        targetGlowX = 0;
+                        targetGlowY = 0;
+                    });
+                    
+                    const animatePhoneTilt = () => {
+                        currentRotX += (targetRotX - currentRotX) * 0.12;
+                        currentRotY += (targetRotY - currentRotY) * 0.12;
+                        currentScale += (targetScale - currentScale) * 0.12;
+                        currentGlowX += (targetGlowX - currentGlowX) * 0.12;
+                        currentGlowY += (targetGlowY - currentGlowY) * 0.12;
+                        
+                        smartphone.style.transform = `rotateX(${currentRotX}deg) rotateY(${currentRotY}deg) scale(${currentScale})`;
+                        if (phoneBacklight) {
+                            phoneBacklight.style.transform = `translate(calc(-50% + ${currentGlowX}px), calc(-50% + ${currentGlowY}px))`;
+                        }
+                        requestAnimationFrame(animatePhoneTilt);
+                    };
+                    animatePhoneTilt();
+                }
+
+                // 4. Simulator Auto-rotation Carousel (4.5s Interval)
+                const appViews = document.querySelectorAll(".app-view");
+                const backlight = document.getElementById("phoneBacklight");
+                const glitchOverlay = document.getElementById("phoneGlitch");
+                
+                const glowColors = {
+                    email: "glow-blue",
+                    linkedin: "glow-cyan",
+                    github: "glow-rose"
+                };
+                
+                const tabs = ["email", "linkedin", "github"];
+                let activeTabIdx = 0;
+                
+                const switchToTab = (tab) => {
+                    if (glitchOverlay) {
+                        glitchOverlay.classList.add("active");
+                        setTimeout(() => {
+                            glitchOverlay.classList.remove("active");
+                        }, 280);
+                    }
+                    
+                    setTimeout(() => {
+                        appViews.forEach(view => view.classList.remove("active"));
+                        const activeView = document.getElementById(`view-${tab}-app`);
+                        if (activeView) activeView.classList.add("active");
+                        
+                        if (backlight) {
+                            backlight.className = `phone-backlight-glow ${glowColors[tab]}`;
+                        }
+                        
+                        // Force update clock time instantly on rotation between apps
+                        updateTime();
+                    }, 100);
+                };
+
+                const autoRotateInterval = setInterval(() => {
+                    activeTabIdx = (activeTabIdx + 1) % tabs.length;
+                    switchToTab(tabs[activeTabIdx]);
+                }, 4500);
+
+                // 5. SecureMail input submission triggers
+                const emailSendBtn = document.getElementById("btn-email-send");
+                const subjectInput = document.getElementById("email-subject-input");
+                const bodyTextarea = document.getElementById("email-body-textarea");
+                if (emailSendBtn && subjectInput && bodyTextarea) {
+                    emailSendBtn.addEventListener("click", () => {
+                        emailSendBtn.disabled = true;
+                        const sendText = emailSendBtn.querySelector(".send-text");
+                        if (sendText) sendText.textContent = "TELEPORTING DRAFT...";
+                        emailSendBtn.classList.add("success");
+                        
+                        setTimeout(() => {
+                            emailSendBtn.disabled = false;
+                            if (sendText) sendText.textContent = "LAUNCH EMAIL CLIENT";
+                            emailSendBtn.classList.remove("success");
+                            
+                            const subject = subjectInput.value;
+                            const body = bodyTextarea.value;
+                            window.open(`mailto:kayilainathan19@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`);
+                        }, 1500);
+                    });
+                }
+
+                // 6. LinkedIn connect button state simulation
+                const linkedinConnectBtn = document.getElementById("btn-linkedin-connect");
+                if (linkedinConnectBtn) {
+                    linkedinConnectBtn.addEventListener("click", () => {
+                        const btnText = linkedinConnectBtn.querySelector(".connect-btn-text");
+                        
+                        linkedinConnectBtn.classList.add("connecting");
+                        if (btnText) btnText.textContent = "CONNECTING...";
+                        linkedinConnectBtn.disabled = true;
+                        
+                        setTimeout(() => {
+                            linkedinConnectBtn.classList.remove("connecting");
+                            linkedinConnectBtn.classList.add("invited");
+                            if (btnText) btnText.textContent = "INVITATION SENT ✓";
+                        }, 1500);
+                    });
+                }
+
+                // 7. GitHub follow redirect
+                const githubFollowBtn = document.getElementById("btn-github-follow");
+                if (githubFollowBtn) {
+                    githubFollowBtn.addEventListener("click", () => {
+                        window.open("https://github.com/Kayilainathan", "_blank", "noopener,noreferrer");
+                    });
+                }
+
+                // 8. Clipboard Copy Email action
+                const copyBtn = document.getElementById("btn-copy-email");
+                const copyDot = document.getElementById("copy-dot");
+                const copyText = document.getElementById("copy-text");
+                if (copyBtn && copyText) {
+                    copyBtn.addEventListener("click", () => {
+                        navigator.clipboard.writeText("kayilainathan19@gmail.com").then(() => {
+                            copyBtn.classList.add("copied");
+                            if (copyDot) copyDot.classList.add("copied");
+                            copyText.textContent = "COPIED!";
+                            copyBtn.style.borderColor = "#10b981";
+                            copyBtn.style.color = "#ffffff";
+                            copyBtn.style.background = "rgba(16, 185, 129, 0.1)";
+                            copyBtn.style.boxShadow = "0 0 15px rgba(16, 185, 129, 0.3)";
+                            
+                            setTimeout(() => {
+                                copyBtn.classList.remove("copied");
+                                if (copyDot) copyDot.classList.remove("copied");
+                                copyText.textContent = "COPY EMAIL";
+                                copyBtn.style.borderColor = "";
+                                copyBtn.style.color = "";
+                                copyBtn.style.background = "";
+                                copyBtn.style.boxShadow = "";
+                            }, 2000);
+                        });
+                    });
+                }                // 9. Dynamic activity contribution grid creation
+                const githubGrid = document.getElementById("githubContribGrid");
+                if (githubGrid) {
+                    for (let i = 0; i < 64; i++) {
+                        const r = Math.random();
+                        let weight = 0;
+                        if (r > 0.82) weight = 4;
+                        else if (r > 0.68) weight = 3;
+                        else if (r > 0.52) weight = 2;
+                        else if (r > 0.32) weight = 1;
+                        
+                        const node = document.createElement("div");
+                        node.className = `contrib-node w${weight}`;
+                        githubGrid.appendChild(node);
+                    }
+                }
             })();
 
         });
