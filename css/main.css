@@ -85,6 +85,20 @@
             overflow: hidden;
         }
 
+        /* On mobile, ensure Lenis-stopped doesn't permanently block scroll.
+           When smoothTouch is false, Lenis hands off to native scroll,
+           so lenis-smooth is not set on mobile — this is intentional. */
+        @media (max-width: 768px) {
+            .lenis.lenis-stopped {
+                overflow: hidden;
+            }
+            /* Enable GPU compositing on the main scroll container for smoothness */
+            html {
+                transform: translateZ(0);
+                -webkit-transform: translateZ(0);
+            }
+        }
+
         /* Prevent jiggle on scroll: isolate stacking contexts for animated elements */
         .connect-right-column,
         .phone-stage-wrapper {
@@ -95,6 +109,8 @@
         /* Prevent overscroll/bounce jiggle on mobile */
         html, body {
             overscroll-behavior: none;
+            /* Ensure body doesn't inadvertently clip scroll */
+            min-height: 100%;
         }
 
         body {
@@ -108,6 +124,10 @@
             -moz-osx-font-smoothing: grayscale;
             cursor: none;
             /* Default cursor is hidden — we use a custom one */
+            /* Allow vertical touch scrolling while preventing horizontal swipe-back gestures */
+            touch-action: pan-y;
+            /* Smooth momentum scrolling on older iOS/Safari */
+            -webkit-overflow-scrolling: touch;
         }
 
         /* Subtle blueprint grid matrix background overlay */
@@ -298,6 +318,8 @@
         .section {
             padding-bottom: var(--section-gap);
             scroll-margin-top: 80px;
+            /* GPU compositing hint for smooth scroll performance */
+            will-change: auto;
         }
 
 
@@ -5352,6 +5374,10 @@
                 overflow-x: hidden !important;
                 width: 100% !important;
                 max-width: 100% !important;
+                /* Restore native vertical scroll on mobile — do NOT set overflow-y: hidden */
+                overflow-y: auto;
+                /* Momentum/inertial scrolling on iOS */
+                -webkit-overflow-scrolling: touch;
             }
 
             .container {

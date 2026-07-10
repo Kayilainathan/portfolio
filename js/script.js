@@ -5,25 +5,36 @@ document.addEventListener('DOMContentLoaded', () => {
             // Remove this block if you don't want smooth scrolling.
             // ================================================================
             window.lenis = null;
+
+            // Detect touch/mobile devices
+            const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
             if (typeof Lenis !== 'undefined') {
                 window.lenis = new Lenis({
-                    duration: 1.4,
-                    lerp: 0.075, // liquid inertial damping — lower = smoother glide
+                    // On mobile: higher lerp = snappier response that doesn't fight native momentum
+                    // On desktop: lower lerp = butter-smooth glide inertia
+                    lerp: isTouchDevice ? 0.18 : 0.075,
                     easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                     smooth: true,
-                    smoothTouch: true, // enable smooth inertial scrolling on mobile touch screens
-                    touchMultiplier: 1.5,
+                    // CRITICAL: smoothTouch must be false on mobile.
+                    // When true with a low lerp, Lenis overrides native iOS/Android momentum
+                    // scrolling and makes it feel sluggish or completely stuck.
+                    smoothTouch: false,
+                    touchMultiplier: 2.0,   // More responsive touch scrolling
                     infinite: false,
-                    normalizeWheel: true, // normalize wheel delta across browsers for consistent smoothness
+                    normalizeWheel: true,   // normalize wheel delta for consistent smoothness
+                    gestureOrientation: 'vertical', // only intercept vertical gestures
                 });
 
-                // Lenis requires being called every frame via rAF
-                let rafId;
+                // Lenis requires being called every frame via rAF.
+                // Use a persistent 'lenisActive' flag so the loop NEVER stops itself —
+                // stopping was causing mobile scroll to freeze after preloader.
+                let lenisActive = true;
                 (function lenisRaf(time) {
-                    if (window.lenis) {
+                    if (lenisActive && window.lenis) {
                         window.lenis.raf(time);
-                        rafId = requestAnimationFrame(lenisRaf);
                     }
+                    requestAnimationFrame(lenisRaf);
                 })(performance.now());
             }
 
@@ -2181,7 +2192,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                                 clearInterval(seedInterval);
                                                 if (window.lenis) {
                                                     window.lenis.start();
+                                                    // Force position resync for mobile
+                                                    window.lenis.scrollTo(0, { immediate: true });
                                                 }
+                                                // Sync all scroll-dependent state
+                                                window.dispatchEvent(new Event('scroll'));
                                             }, 700);
                                         }, 550);
                                     }, 500);
@@ -2192,7 +2207,11 @@ document.addEventListener('DOMContentLoaded', () => {
                                 clearInterval(seedInterval);
                                 if (window.lenis) {
                                     window.lenis.start();
+                                    // Force position resync for mobile
+                                    window.lenis.scrollTo(0, { immediate: true });
                                 }
+                                // Sync all scroll-dependent state
+                                window.dispatchEvent(new Event('scroll'));
                             }
                         }, 1600);
                     }
