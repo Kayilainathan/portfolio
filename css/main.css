@@ -92,17 +92,13 @@
             .lenis.lenis-stopped {
                 overflow: hidden;
             }
-            /* Enable GPU compositing on the main scroll container for smoothness */
-            html {
-                transform: translateZ(0);
-                -webkit-transform: translateZ(0);
-            }
         }
 
-        /* Prevent jiggle on scroll: isolate stacking contexts for animated elements */
+        /* Prevent jiggle on scroll: isolate stacking contexts for animated elements.
+           NOTE: 'contain: layout' would break position:fixed on mobile, so use 'style' only. */
         .connect-right-column,
         .phone-stage-wrapper {
-            contain: layout style;
+            contain: style;
             isolation: isolate;
         }
 
@@ -1378,7 +1374,8 @@
             pointer-events: auto;
             z-index: 1;
             /* Scroll parallax via hardware-accelerated transforms */
-            will-change: transform;
+            /* Note: will-change:transform removed to avoid creating a containing block
+               that breaks position:fixed elements on mobile browsers */
         }
 
         .about-asset-img {
@@ -1388,9 +1385,8 @@
             user-select: none;
             pointer-events: auto;
             cursor: pointer;
-            /* Spring timing curve for dynamic hover physics popouts (stiffness: 450, damping: 15) */
+            /* Spring timing curve for dynamic hover physics popouts */
             transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.35s cubic-bezier(0.25, 1, 0.5, 1);
-            will-change: transform, filter;
         }
 
         /* Hover states matching the Tactile3DIcon redesign: scale: 1.22, brightness(1.1) and 10px 25px glow shadow */
@@ -5374,8 +5370,6 @@
                 overflow-x: hidden !important;
                 width: 100% !important;
                 max-width: 100% !important;
-                /* Restore native vertical scroll on mobile — do NOT set overflow-y: hidden */
-                overflow-y: auto;
                 /* Momentum/inertial scrolling on iOS */
                 -webkit-overflow-scrolling: touch;
             }
