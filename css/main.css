@@ -68,7 +68,14 @@
 
         html {
             scroll-behavior: auto;
-            /* Lenis handles smooth scrolling */
+            /* Lenis handles smooth scrolling on desktop */
+        }
+
+        /* On mobile (no Lenis): use native CSS smooth scroll for anchor links */
+        @media (hover: none) and (pointer: coarse) {
+            html {
+                scroll-behavior: smooth;
+            }
         }
 
         /* Lenis compatibility overrides */

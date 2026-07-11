@@ -6,42 +6,39 @@ document.addEventListener('DOMContentLoaded', () => {
             // ================================================================
             window.lenis = null;
 
-            // Detect touch/mobile devices
+            // Only use Lenis on desktop (non-touch) devices.
+            // On mobile (Chrome, Samsung, Safari), Lenis touch listeners interfere
+            // with the browser's native scroll pipeline causing scroll to break.
+            // Native scroll + CSS scroll-behavior:smooth is butter-smooth on mobile.
             const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
 
-            if (typeof Lenis !== 'undefined') {
+            if (typeof Lenis !== 'undefined' && !isTouchDevice) {
                 window.lenis = new Lenis({
-                    // On mobile: higher lerp = snappier response that doesn't fight native momentum
-                    // On desktop: lower lerp = butter-smooth glide inertia
-                    lerp: isTouchDevice ? 0.18 : 0.075,
+                    lerp: 0.075, // butter-smooth glide inertia on desktop
                     easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
                     smooth: true,
-                    // CRITICAL: smoothTouch must be false on mobile.
-                    // When true with a low lerp, Lenis overrides native iOS/Android momentum
-                    // scrolling and makes it feel sluggish or completely stuck.
                     smoothTouch: false,
-                    touchMultiplier: 2.0,   // More responsive touch scrolling
                     infinite: false,
-                    normalizeWheel: true,   // normalize wheel delta for consistent smoothness
-                    gestureOrientation: 'vertical', // only intercept vertical gestures
+                    normalizeWheel: true,
+                    gestureOrientation: 'vertical',
                 });
 
-                // Lenis requires being called every frame via rAF.
-                // Use a persistent 'lenisActive' flag so the loop NEVER stops itself —
-                // stopping was causing mobile scroll to freeze after preloader.
-                let lenisActive = true;
+                // Persistent RAF loop — never self-cancels
                 (function lenisRaf(time) {
-                    if (lenisActive && window.lenis) {
-                        window.lenis.raf(time);
-                    }
+                    if (window.lenis) window.lenis.raf(time);
                     requestAnimationFrame(lenisRaf);
                 })(performance.now());
             }
 
             // Helper: smooth scroll to an element with Lenis or fallback
             function scrollTo(el, offset = -80) {
-                if (window.lenis) window.lenis.scrollTo(el, { offset, duration: 1.2 });
-                else el.scrollIntoView({ behavior: 'smooth' });
+                if (window.lenis) {
+                    window.lenis.scrollTo(el, { offset, duration: 1.2 });
+                } else {
+                    // Native mobile scroll — accounts for fixed header offset
+                    const top = el.getBoundingClientRect().top + window.scrollY + offset;
+                    window.scrollTo({ top, behavior: 'smooth' });
+                }
             }
 
 
