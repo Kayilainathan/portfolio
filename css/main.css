@@ -109,9 +109,10 @@
             isolation: isolate;
         }
 
-        /* Prevent overscroll/bounce jiggle on mobile */
+        /* Prevent horizontal swipe bounce but keep vertical native scrolling completely free */
         html, body {
-            overscroll-behavior: none;
+            overscroll-behavior-x: none;
+            overscroll-behavior-y: auto;
             /* Ensure body doesn't inadvertently clip scroll */
             min-height: 100%;
         }
@@ -127,8 +128,8 @@
             -moz-osx-font-smoothing: grayscale;
             cursor: none;
             /* Default cursor is hidden — we use a custom one */
-            /* Allow vertical touch scrolling while preventing horizontal swipe-back gestures */
-            touch-action: pan-y;
+            /* Keep touch-action auto to let mobile Chrome composite scroll gestures natively */
+            touch-action: auto;
             /* Smooth momentum scrolling on older iOS/Safari */
             -webkit-overflow-scrolling: touch;
         }
@@ -3341,9 +3342,6 @@
 
 
         /* ================================================================
-           COURSES SECTION — 2-column compact list
-           ================================================================ */
-        /* ================================================================
            COURSES SECTION — Horizontal scroll carousel
            ================================================================ */
         .course-outer {
@@ -3382,9 +3380,9 @@
             position: relative;
             overflow: hidden;
             background: #0A0A0C;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 16px;
-            box-shadow: 4px 4px 0px rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
             transition:
                 transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
                 box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
@@ -3392,13 +3390,47 @@
         }
 
         .course-card:hover {
-            transform: translateY(-6px) scale(1.01);
+            transform: translateY(-6px) scale(1.015);
             border-color: var(--card-accent);
-            box-shadow: 4px 4px 0px var(--card-accent-dim);
+            box-shadow:
+                0 16px 48px rgba(0, 0, 0, 0.5),
+                0 0 24px var(--card-accent-glow);
         }
 
+        /* Top Glowing Cloud — more cloudy, smooth, and glowy */
         .course-card::before {
-            display: none;
+            content: '';
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 80px;
+            background: radial-gradient(circle, var(--card-accent) 0%, transparent 70%);
+            filter: blur(18px);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .course-card:hover::before {
+            opacity: 0.85;
+            animation: pulseCloud 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseCloud {
+            0% {
+                opacity: 0.60;
+                filter: blur(20px);
+                transform: translateX(-50%) scale(0.9);
+            }
+
+            100% {
+                opacity: 0.95;
+                filter: blur(16px);
+                transform: translateX(-50%) scale(1.1);
+            }
         }
 
         /* Accent classes */
@@ -3509,141 +3541,72 @@
             opacity: 0;
             transition: opacity 0.35s ease;
             z-index: -1;
-        }
-
-        .course-card:hover .cert-skill-btn {
-            color: rgba(255, 255, 255, 0.75);
-            border-color: rgba(255, 255, 255, 0.12);
+            pointer-events: none;
         }
 
         .cert-skill-btn:hover {
-            color: #ffffff !important;
-            border-color: var(--card-accent) !important;
-            transform: translateY(-2px) scale(1.04);
-            box-shadow: 0 4px 12px var(--card-accent-glow);
+            color: var(--text);
+            border-color: var(--card-accent-dim);
         }
 
         .cert-skill-btn:hover::before {
-            opacity: 1;
+            opacity: 0.85;
         }
 
-        /* View Cert — absolutely positioned, slides up inside the card on hover */
+        /* Bottom sliding link/badge container */
         .course-bottom {
             position: absolute;
+            bottom: 24px;
             left: 24px;
             right: 24px;
-            bottom: -48px;
-            display: flex;
-            justify-content: center;
             opacity: 0;
-            transition:
-                opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.04s,
-                bottom 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            transform: translateY(12px);
             pointer-events: none;
+            transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
             z-index: 3;
         }
 
         .course-card:hover .course-bottom {
             opacity: 1;
-            bottom: 22px;
+            transform: translateY(0);
             pointer-events: auto;
         }
 
+        /* Verification Link Button */
         .course-link-btn {
-            width: 100%;
-            justify-content: center;
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 9px 18px;
+            gap: 6px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 999px;
-            color: #fff;
             font-size: 0.76rem;
             font-weight: 600;
+            color: var(--text);
             text-decoration: none;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
-            overflow: hidden;
-            letter-spacing: 0.02em;
-            transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease, color 0.35s ease, transform 0.3s var(--ease-spring);
+            transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s var(--ease-spring);
         }
 
-        /* Outer line of color when the certificate card is hovered */
-        .course-card:hover .course-link-btn {
-            border-color: var(--card-accent);
-            box-shadow: 0 0 12px var(--card-accent-glow);
-        }
-
-        .course-link-btn::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, var(--card-accent-dim) 0%, rgba(167, 139, 250, 0.08) 100%);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            z-index: -1;
-        }
-
-        .course-link-btn:not(.course-completed-badge):hover::before {
-            opacity: 1;
-        }
-
-        /* Solid full color background on button hover */
-        .course-link-btn:not(.course-completed-badge):hover {
+        .course-link-btn:hover {
             background: var(--card-accent);
             border-color: var(--card-accent);
-            color: #0A0A0C;
-            box-shadow:
-                0 0 25px var(--card-accent),
-                0 0 10px var(--card-accent-dim);
-            transform: translateY(-2px) scale(1.02);
+            color: #030305;
+            transform: translateY(-2px);
         }
 
-        .course-link-btn svg {
-            flex-shrink: 0;
-            position: relative;
-            z-index: 2;
-            transition: transform 0.4s var(--ease-spring), color 0.35s ease;
-        }
-
-        .course-link-btn:not(.course-completed-badge):hover svg {
-            color: #0A0A0C !important;
-            transform: scale(1.15) rotate(-10deg);
-        }
-
-        /* Completed static badge button style */
         .course-completed-badge {
-            background: rgba(255, 255, 255, 0.02);
-            border-color: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.35);
+            background: rgba(16, 185, 129, 0.04);
+            border: 1px solid rgba(16, 185, 129, 0.15);
+            color: #34d399;
             cursor: default;
         }
 
-        .course-completed-badge:hover {
-            border-color: rgba(255, 255, 255, 0.08);
-            box-shadow: none;
-            transform: none;
-        }
-
-        .course-completed-badge:hover::before {
-            opacity: 0;
-        }
-
-        .course-completed-badge svg {
-            color: rgba(255, 255, 255, 0.3) !important;
-        }
-
-        .course-completed-badge:hover svg {
-            transform: none;
-        }
-
-
-        /* ---- COURSE SCROLL ARROWS ---- */
+        /* Arrows styling */
         .course-arrow {
             position: absolute;
             top: 50%;
-            transform: translateY(calc(-50% - 12px));
+            transform: translateY(-50%);
             width: 40px;
             height: 40px;
             border-radius: 50%;
@@ -3668,41 +3631,41 @@
         }
 
         .course-arrow:hover {
-            background: rgba(167, 139, 250, 0.12);
-            border-color: rgba(167, 139, 250, 0.35);
-            color: var(--purple);
-            box-shadow: 0 0 18px rgba(167, 139, 250, 0.25);
+            background: rgba(34, 211, 238, 0.12);
+            border-color: rgba(34, 211, 238, 0.35);
+            color: var(--accent);
+            box-shadow: 0 0 18px rgba(34, 211, 238, 0.25);
         }
 
         .course-arrow-left {
-            left: 8px;
+            left: 12px;
         }
 
         .course-arrow-right {
-            right: 8px;
+            right: 12px;
         }
 
-        /* ---- COURSE SLIDER ---- */
+        /* Custom scroll indicator slider below */
         .course-slider-wrap {
-            margin-top: 24px;
+            margin-top: 10px;
             display: flex;
             justify-content: center;
         }
 
         .course-slider-track {
-            width: 200px;
-            height: 3px;
-            background: rgba(255, 255, 255, 0.12);
-            border: none;
+            width: 140px;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 999px;
             position: relative;
             cursor: pointer;
-            overflow: visible;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, border-color 0.3s ease;
         }
 
         .course-slider-wrap:hover .course-slider-track {
-            background: rgba(255, 255, 255, 0.18);
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(34, 211, 238, 0.3);
         }
 
         .course-slider-thumb {
@@ -3712,21 +3675,18 @@
             transform: translateY(-50%);
             height: 10px;
             border-radius: 999px;
-            background: var(--accent);
-            box-shadow: none;
-            transition: background 0.3s ease;
+            background: linear-gradient(90deg, var(--accent), var(--purple));
+            transition: box-shadow 0.35s ease, height 0.3s ease;
             cursor: grab;
         }
 
         .course-slider-wrap:hover .course-slider-thumb {
-            background: var(--accent);
-            box-shadow: none;
+            box-shadow: 0 0 12px rgba(34, 211, 238, 0.8), 0 0 20px rgba(34, 211, 238, 0.5);
         }
 
         .course-slider-thumb.dragging {
             cursor: grabbing;
-            background: var(--accent);
-            box-shadow: none;
+            box-shadow: 0 0 16px rgba(34, 211, 238, 0.9), 0 0 28px rgba(34, 211, 238, 0.7);
         }
 
 

@@ -1652,6 +1652,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             document.addEventListener('mousemove', e => {
                 if (!courseSliderDragging) return;
+                if (!courseTrack || !courseThumb) return;
                 const trackW = courseTrack.clientWidth;
                 const thumbW = courseThumb.offsetWidth;
                 const available = trackW - thumbW;
